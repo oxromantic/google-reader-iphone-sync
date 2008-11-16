@@ -117,6 +117,12 @@
 	return dateStr;
 }
 
+- (NSString *) paddingClassForTop:(BOOL) is_top {
+	is_top = is_top ? 1 : 0;
+	BOOL nav_on_bottom = [[[[UIApplication sharedApplication] delegate] settings] navBarOnTop] ? 0 : 1;
+	return is_top ^ nav_on_bottom ? @"on" : @"off";
+}
+
 - (NSString *) htmlForPosition:(NSString *)position_info {
 	return [[NSString stringWithFormat:
 		@"<html>                                                                                            \n\
@@ -126,6 +132,7 @@
 			</head>                                                                                         \n\
 			<body>                                                                                          \n\
 				<div class='post-info header'>                                                              \n\
+					<div class=\"pad top %@\"></div>                       <!-- pad-top -->                 \n\
 					<h1 id='title'>                                                                         \n\
 						<a href='%@'>%@</a>                                <!-- url, title -->              \n\
 					</h1>                                                                                   \n\
@@ -144,10 +151,19 @@
 					<div>                                                                                   \n\
 						(<i>%@</i>)                                        <!-- domain -->                  \n\
 					</div>                                                                                  \n\
+					<div class=\"pad bottom %@\"></div>                    <!-- pad-bottom -->              \n\
 				</div>                                                                                      \n\
 			</body>                                                                                         \n\
 		</html>",
-		url, title, [self truncateString: feed_name toMaxLength: 84], content, [self dateStr:YES], tag_name, position_info, [self domainName]] autorelease];
+		[self paddingClassForTop:YES],
+		url, title,
+		[self truncateString: feed_name toMaxLength: 84],
+		content,
+		[self dateStr:YES], tag_name,
+		position_info,
+		[self domainName],
+		[self paddingClassForTop:NO]
+		] autorelease];
 }
 
 - (void) userDidScrollPast {

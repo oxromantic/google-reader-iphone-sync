@@ -1,7 +1,7 @@
 #import "ApplicationSettings.h"
 #import "TCHelpers.h"
 
-#define CONTENT_HEIGHT 285
+#define CONTENT_HEIGHT 330
 
 @implementation ApplicationSettings
 - (NSString *) docsPath{ return docsPath; }
@@ -191,9 +191,9 @@
 }
 
 #pragma mark GETTING values
-- (int) itemsPerFeedValue: (id) sender {
-	// - [UISlider value] just returns the UISlider object itself. How useful!
-	return (int)(([[sender valueForKey:@"value"] floatValue] / 5) + 0.5) * 5;
+- (int) itemsPerFeedValue: (UISlider *) sender {
+	float raw_val = [sender value];
+	return (int)(roundf(raw_val / 5)) * 5;
 }
 
 - (BOOL) boolFromKey:(NSString *) key {
@@ -201,6 +201,16 @@
 	return val && [val boolValue];
 }
 
+- (float) floatFromKey:(NSString *) key {
+	NSNumber * val = [plistData valueForKey:key];
+	if(!val) {
+		return 1.0;
+	} else {
+		return [val floatValue];
+	}
+}
+
+- (float) navBarOpacity    { return [self floatFromKey:@"navBarOpacity"]; }
 - (BOOL) navBarOnTop       { return [self boolFromKey:@"navBarOnTop"]; }
 - (BOOL) openLinksInSafari { return [self boolFromKey:@"openInSafari"]; }
 - (BOOL) showReadItems     { return [self boolFromKey:@"showReadItems"]; }
@@ -232,6 +242,12 @@
 	[plistData setValue: [NSNumber numberWithBool: val] forKey:key];
 }
 
+- (void) setFloat:(float) val forKey:(NSString *) key {
+	dbg(@"Setting float value %@ to %f", key, val);
+	[plistData setValue: [NSNumber numberWithFloat: val] forKey:key];
+}
+
+- (void) setNavBarOpacity: (float) newVal   { [self setFloat:newVal forKey:@"navBarOpacity"]; }
 - (void) setNavBarOnTop:(BOOL) newVal       { [self setBool:newVal forKey:@"navBarOnTop"];  }
 - (void) setOpenLinksInSafari:(BOOL) newVal { [self setBool:newVal forKey:@"openInSafari"];  }
 - (void) setReadItems:(BOOL) newVal         { [self setBool:newVal forKey:@"showReadItems"]; }
@@ -267,6 +283,15 @@
 	dbg(@"setting %@ = %@", key, [sender text]);
 	[plistData setValue: [sender text] forKey:key];
 	dbg(@"plist is now %@", plistData);
+}
+
+- (IBAction) sliderValueDidChange:(UISlider *) sender {
+	float newValue = [sender value];
+	if(sender == navBarOpacitySlider) {
+		[self setNavBarOpacity: newValue];
+	} else {
+		dbg(@"unknown sender sent sliderValueDidChange to ApplicationSettings");
+	}
 }
 
 - (IBAction) switchValueDidChange:(id) sender {

@@ -25,6 +25,7 @@
 	IBOutlet id openLinksInSafariToggle;
 	IBOutlet id navBarOnTopToggle;
 	IBOutlet id newestItemsFirstToggle;
+	IBOutlet id navBarOpacitySlider;
 	BOOL rotationLock;
 	
 	IBOutlet id feedList;
@@ -43,9 +44,13 @@
 - (IBAction) itemsPerFeedDidChange: (id) sender;
 - (IBAction) stringValueDidChange:(id)sender;
 - (IBAction) switchValueDidChange:(id) sender;
+- (IBAction) sliderValueDidChange:(UISlider *) sender;
+- (void) setFloat:(float) val forKey:(NSString *) key;
 
 - (IBAction) activatePasswordField:(id)sender;
 - (IBAction) deactivateBothFields:(id)sender;
 - (IBAction) textFieldDidEndEditing:(UITextField *)sender;
 - (IBAction) deactivateTagListField:(id) sender;
+
+- (float) navBarOpacity;
 @end

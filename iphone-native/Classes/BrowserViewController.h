@@ -3,9 +3,9 @@
 
 @interface BrowserViewController : UIViewController {
 	IBOutlet id webViewContainer;
-	IBOutlet id webView;
-	IBOutlet id navigationView;
-	IBOutlet id browseScreenView;
+	IBOutlet UIView * webView;
+	IBOutlet UIView * navigationView;
+	IBOutlet UIView * browseScreenView;
 	IBOutlet id topLevelWindow;
 }
 - (void) activate;
