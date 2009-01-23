@@ -166,6 +166,8 @@
 - (void) setUIElements {
 	[emailField setText: [self email]];
 	[passwordField setText: [self password]];
+	[ipaperEmailField setText: [self ipaperEmail]];
+	[ipaperPasswordField setText: [self ipaperPassword]];
 	[itemsPerFeedSlider setValue:[self itemsPerFeed]];
 	[itemsPerFeedLabel setText:[NSString stringWithFormat:@"%d", [self itemsPerFeed]]];
 	[showReadItemsToggle setOn: [self showReadItems]];
@@ -200,6 +202,8 @@
 - (BOOL) showReadItems     { return [self boolFromKey:@"showReadItems"]; }
 - (BOOL) rotationLock      { return rotationLock; }
 - (BOOL) sortNewestItemsFirst{ return [self boolFromKey:@"newestFirst"]; }
+- (BOOL) ipaperEmail       { return [plistData valueForKey:@"ipaperUser"]; }
+- (BOOL) ipaperPassword    { return [plistData valueForKey:@"ipaperPassword"]; }
 
 - (NSString *) email       { return [plistData valueForKey:@"user"]; }
 - (NSString *) password    { return [plistData valueForKey:@"password"]; }
@@ -260,6 +264,10 @@
 		key = @"user";
 	} else if (sender == passwordField) {
 		key = @"password";
+	} else if (sender == ipaperPasswordField) {
+		key = @"ipaperPassword";
+	} else if (sender == ipaperEmailField) {
+		key = @"ipaperEmail";
 	} else {
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;
@@ -322,5 +330,7 @@
 	[self saveValue:[NSNumber numberWithInt:itemsPerFeed] forKey:@"num_items"];
 	[sender setValue: itemsPerFeed];
 }
+
+// TODO: hook up a "clear instapaper" button
 
 @end

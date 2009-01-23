@@ -3,6 +3,7 @@
 
 @interface ItemViewDelegate : NSObject {
 	IBOutlet id spinner;
+	id waitingForInstapaperLinkClick;
 }
 
 @end

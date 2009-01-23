@@ -106,6 +106,7 @@
 	}
 	[[self delegate] showSpinner: NO];
 }
+
 - (void) loadHTMLString: (NSString *) newHTML {
 	[newHTML retain];
 	/*
@@ -140,6 +141,36 @@
 
 - (IBAction) toggleReadForCurrentItem:(id) sender {
 	[buttonRead setSelected: [currentItem toggleReadState]];
+}
+
+- (IBAction) moreActions:(id) sender {
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Pick an action:"
+		delegate: self
+		cancelButtonTitle: @"Cancel"
+		destructiveButtonTitle: nil // is it a title or a number? the documentation is confused...
+		otherButtonTitles: @"Email a link", @"Send to instapaper", nil] autorelease];
+	[actionSheet showInView: self];
+}
+
+- (IBAction) actionSheet: (id) sender clickedButtonAtIndex: (NSInteger) index {
+	dbg(@"clicked %d", index);
+	switch(index) {
+		case 0:
+			[self emailCurrentItem: self];
+			break;
+		case 1:
+			[self instapaperSyncForCurrentItem: self];
+			break;
+	}
+}
+
+- (IBAction) instapaperSyncForCurrentItem:(id) sender {
+	// TODO: show an aleert (or something less obtrusive) saying the next link clicked will be instapaper'd
+	[[self delegate] setWaitingForInstapaperLinkClick:currentItem];
+}
+
+- (IBAction) setInstapaperURL:(NSString *) url {
+	[currentItem setIpaperURL: url];
 }
 
 - (IBAction) emailCurrentItem:(id) sender {

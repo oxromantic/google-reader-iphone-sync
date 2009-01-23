@@ -162,6 +162,13 @@
 	return sticky_read_state && !is_read;
 }
 
+- (void) setIpaperURL: (NSString *) linkUrl {
+	/* instapaper details:
+	http://www.instapaper.com/b?v=4&k=IPKEY&u=URL&t=TITLE&s=
+	*/
+	
+	dbg(@"TODO...");
+}
 
 - (BOOL) toggleReadState {
 	if (!sticky_read_state) {
