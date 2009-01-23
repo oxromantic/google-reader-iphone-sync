@@ -14,6 +14,7 @@ from lib.GoogleReader import GoogleReader, CONST
 import app_globals
 import template
 from reader import Reader
+from instapaper import Ipaper
 from thread_pool import ThreadPool
 
 TASK_PROGRESS = 0
@@ -202,6 +203,7 @@ def setup(opts=None):
 	config.check()
 	proctl.ensure_singleton_process()
 	init_signals()
+	app_globals.INSTAPAPER = 
 
 def main():
 	"""

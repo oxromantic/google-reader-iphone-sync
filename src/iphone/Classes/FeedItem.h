@@ -5,6 +5,7 @@
 	NSString* google_id;
 	NSString* date;
 	NSString* url;
+	NSString* ipaper_url;
 	NSString* title;
 	NSString* content;
 	NSString* original_id;

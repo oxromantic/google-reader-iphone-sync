@@ -11,24 +11,26 @@ CONFIG = {
 
 OPTIONS = {
 	'user_config_file': 'config.plist',
-	'output_path':   '/tmp/GRiS_test',
-	'num_items':     300,
-	'no_download':   False,
-	'cautious':      False,
-	'test':          False,
-	'screen_width':  320,
-	'screen_height': 480,
-	'template_only': False,
-	'flush_output':  False,
-	'verbosity':     2,     # should be output.lvl_default, but that makes for circular dependencies
-	'tag_list_only': False,
-	'report_pid':    False,
-	'newest_first':  False,
-	'show_status':   False,
-	'aggressive':    False,
-	'tag_list':      [],
-	'user':          PLACEHOLDER,
-	'password':      PLACEHOLDER,
+	'output_path':      '/tmp/GRiS_test',
+	'num_items':        300,
+	'no_download':      False,
+	'cautious':         False,
+	'test':             False,
+	'screen_width':     320,
+	'screen_height':    480,
+	'template_only':    False,
+	'flush_output':     False,
+	'verbosity':        2,     # should be output.lvl_default, but that makes for circular dependencies
+	'tag_list_only':    False,
+	'report_pid':       False,
+	'newest_first':     False,
+	'show_status':      False,
+	'aggressive':       False,
+	'tag_list':         [],
+	'user':             PLACEHOLDER,
+	'password':         PLACEHOLDER,
+	'ipaper_user':      PLACEHOLDER,
+	'ipaper_password':  PLACEHOLDER,
 }
 
 STATS = {
@@ -42,4 +44,4 @@ STATS = {
 
 READER = None
 DATABASE = None
-
+INSTAPAPER = None

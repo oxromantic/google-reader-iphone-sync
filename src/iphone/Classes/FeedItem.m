@@ -168,6 +168,9 @@
 	*/
 	
 	dbg(@"TODO...");
+	is_dirty = YES;
+	ipaper_url = linkUrl;
+	[self save];
 }
 
 - (BOOL) toggleReadState {

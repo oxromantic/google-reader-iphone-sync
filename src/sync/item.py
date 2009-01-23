@@ -48,6 +48,7 @@ class Item:
 			self.content = feed_item['content']
 			self.original_id = feed_item['original_id']
 			self.media = try_lookup(feed_item, 'media')
+			self.instapaper_url = ""
 			self.is_dirty = False
 			self.is_stale = False
 		else:
@@ -136,6 +137,11 @@ class Item:
 		# actions are effects to apply in order to ensure the web has been updated with our current state
 		# i.e anything that the user *can* change must be set here
 		actions = []
+		
+		# instapaper URL
+		if self.instapaper_url and len(self.instapaper_url) > 0:
+			actions.append(app_globals.INSTAPAPER.add_url(self.instapaper_url)
+		
 		# read status
 		if self.is_read:
 			actions.append(app_globals.READER.set_read)

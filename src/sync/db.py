@@ -22,6 +22,7 @@ schema_history = [
 	'ALTER TABLE items ADD COLUMN is_stale BOOLEAN default 0',
 	'ALTER TABLE items ADD COLUMN tag_name BOOLEAN default ""',
 	'ALTER TABLE items ADD COLUMN is_shared BOOLEAN default 0',
+	'ALTER TABLE items ADD COLUMN instapaper_url TEXT default ""',
 	]
 
 class VersionDB:
@@ -74,6 +75,7 @@ class DB:
 				('title', 'TEXT'),
 				('content', 'TEXT'),
 				('feed_name', 'TEXT'),
+				('instapaper_url', 'TEXT'),
 				('is_read', 'BOOLEAN'),
 				('is_starred', 'BOOLEAN'),
 				('is_dirty', 'BOOLEAN default 0'),
