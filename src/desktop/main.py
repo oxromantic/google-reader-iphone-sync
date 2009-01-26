@@ -1,5 +1,9 @@
 import wx
+import wx.html
+
 import sys
+
+from item import FeedItem
 
 sys.path.append('..')
 from sync import main as sync_main
@@ -13,32 +17,34 @@ class MainFrame(wx.Frame):
 		self.Bind(wx.EVT_CLOSE, self.on_close)
 
 		panel = wx.Panel(self)
-		box = wx.BoxSizer(wx.HORIZONTAL)
 	
-		self.item_view = self.init_html()
-		self.feed_list = self.init_list()
+		splitter = wx.SplitterWindow(self, -1, style = wx.SP_LIVE_UPDATE)
+		self.item_view = self.init_html(splitter)
+		self.feed_list = self.init_list(splitter)
 		
-		m_text = wx.StaticText(panel, -1, "Hello World!")
-		m_text.SetFont(wx.Font(14, wx.SWISS, wx.NORMAL, wx.BOLD))
-		m_text.SetSize(m_text.GetBestSize())
+		splitter.SetMinimumPaneSize(20)
+		splitter.SplitVertically(self.feed_list, self.item_view, -100)
 
-		box.Add(m_text, 0, wx.ALL, 2)
-		box.Add(m_text, 1, wx.ALL, 2)
-	
-		panel.SetSizer(box)
+		
+		# box = wx.BoxSizer(wx.HORIZONTAL)
+		# box.Add(self.item_view, 0, wx.EXPAND)
+		# box.Add(self.feed_list, 1, wx.EXPAND)
+		# 	
+		# panel.SetSizer(box)
 		panel.Layout()
 
 	def on_close(self, event):
 		print "closed!"
 		self.Destroy()
 	
-	def init_html(self):
+	def init_html(self, parent):
 		wx.InitAllImageHandlers()
-		item_view = wx.html.HtmlWindow()
+		item_view = wx.html.HtmlWindow(parent, -1)
+		item_view.LoadPage("http://localhost:80/")
 		return item_view
 	
-	def init_list(self):
-		feed_list = wx.TreeCtrl()
+	def init_list(self, parent):
+		feed_list = wx.TreeCtrl(parent, -1)
 		return feed_list
 	
 
