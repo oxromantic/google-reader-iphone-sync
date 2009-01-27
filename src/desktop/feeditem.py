@@ -46,4 +46,3 @@ class FeedItem(object):
 					</div>
 				</body>
 			</html>"""
-}
