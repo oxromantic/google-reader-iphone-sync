@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-
-#FIXME: linux version requires this before wx package is importable
-import wxversion; wxversion.select(wxversion.getInstalled()[0])
-
 import wx
 import wx.html
 

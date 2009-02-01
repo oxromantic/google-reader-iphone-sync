@@ -46,7 +46,3 @@ class FeedItem(object):
 					</div>
 				</body>
 			</html>"""
-<<<<<<< HEAD:src/desktop/feeditem.py
-
-=======
->>>>>>> ac9c73d2a2dbd10f5198b244a1810a0b75287b92:src/desktop/feeditem.py
