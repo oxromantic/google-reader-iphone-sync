@@ -27,16 +27,19 @@ class MainFrame(wx.Frame):
 		self.item_view = self.init_html(splitter)
 		self.feed_list = self.init_list(splitter)
 		
-		splitter.SetMinimumPaneSize(20)
-		splitter.SplitVertically(self.feed_list, self.item_view, -100)
+		splitter.SetMinimumPaneSize(80)
+		splitter.SplitVertically(self.feed_list, self.item_view)
+		splitter.SetSashPosition(200)
 
-		
-		# box = wx.BoxSizer(wx.HORIZONTAL)
-		# box.Add(self.item_view, 0, wx.EXPAND)
-		# box.Add(self.feed_list, 1, wx.EXPAND)
-		# 	
-		# panel.SetSizer(box)
-		panel.Layout()
+		sizer = wx.BoxSizer(wx.VERTICAL)
+		sizer.Add(splitter,1,wx.EXPAND)
+
+		# layout
+		self.SetSizer(sizer)
+		self.SetAutoLayout(1)
+		sizer.Fit(self)
+
+		self.Show(True)
 
 	def on_close(self, event):
 		print "closed!"
@@ -45,18 +48,18 @@ class MainFrame(wx.Frame):
 	def init_html(self, parent):
 		wx.InitAllImageHandlers()
 		item_view = wx.html.HtmlWindow(parent, -1)
-		item_view.LoadPage("http://localhost:80/")
+		item_view.SetPage("<b>HI!</b>")
 		return item_view
 	
 	def init_list(self, parent):
 		feed_list = wx.TreeCtrl(parent, -1)
+		# feed_list = wx.Window(parent, style=wx.BORDER_SUNKEN)
+		# wx.TreeCtrl(feed_list, -1)
 		return feed_list
-	
 
 def run_wx():
 	app = wx.PySimpleApp()
 	frame = MainFrame()
-	frame.Show()
 	app.MainLoop()
 	print "exiting..."
 	sync_main.cleanup()
