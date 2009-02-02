@@ -1,7 +1,7 @@
 #import "ApplicationSettings.h"
 #import "TCHelpers.h"
 
-#define CONTENT_HEIGHT 285
+#define CONTENT_HEIGHT 685
 
 @implementation ApplicationSettings
 - (NSString *) docsPath{ return docsPath; }
@@ -266,8 +266,8 @@
 		key = @"password";
 	} else if (sender == ipaperPasswordField) {
 		key = @"ipaperPassword";
-	} else if (sender == ipaperEmailField) {
-		key = @"ipaperEmail";
+	} else if (sender == proxyField) {
+		key = @"ipaperUser";
 	} else {
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;

@@ -163,11 +163,6 @@
 }
 
 - (void) setIpaperURL: (NSString *) linkUrl {
-	/* instapaper details:
-	http://www.instapaper.com/b?v=4&k=IPKEY&u=URL&t=TITLE&s=
-	*/
-	
-	dbg(@"TODO...");
 	is_dirty = YES;
 	ipaper_url = linkUrl;
 	[self save];
