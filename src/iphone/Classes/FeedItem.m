@@ -12,8 +12,9 @@
 	feedName: (NSString *) nfeed_name
 	tagName: (NSString *) ntag_name
 	is_read: (BOOL) nis_read
-	is_starred:	(BOOL) nis_starred
-	is_shared:	(BOOL) nis_shared
+	is_starred: (BOOL) nis_starred
+	is_shared: (BOOL) nis_shared
+	ipaper_url: (NSString *) nipaper_url
 	db: (id) ndb
 {
 	self = [super init];
@@ -26,6 +27,7 @@
 	source_db = [ndb retain];
 	feed_name = [nfeed_name retain];
 	tag_name = [ntag_name retain];
+	ipaper_url = [nipaper_url retain];
 
 	// booleans don't need no retaining
 	is_read = nis_read;
@@ -161,6 +163,8 @@
 - (BOOL) userHasMarkedAsUnread {
 	return sticky_read_state && !is_read;
 }
+
+- (NSString *) ipaper_url { return ipaper_url; }
 
 - (void) setIpaperURL: (NSString *) linkUrl {
 	is_dirty = YES;

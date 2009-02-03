@@ -152,5 +152,5 @@ class Item:
 
 		self.is_dirty = False
 
-	def _google_do(self.action):
+	def _google_do(self, action):
 		return action(self.google_id)

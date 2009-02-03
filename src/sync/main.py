@@ -59,6 +59,8 @@ def execute():
 	ensure_dir_exists(app_globals.OPTIONS['output_path'])
 	ensure_dir_exists(app_globals.OPTIONS['output_path'] + '/' + app_globals.CONFIG['resources_path'])
 	
+	app_globals.INSTAPAPER = Ipaper()
+	
 	app_globals.READER = Reader()
 	app_globals.READER.save_tag_list()
 	if app_globals.OPTIONS['tag_list_only']:
@@ -203,7 +205,6 @@ def setup(opts=None):
 	config.check()
 	proctl.ensure_singleton_process()
 	init_signals()
-	app_globals.INSTAPAPER = 
 
 def main():
 	"""

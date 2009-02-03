@@ -1,0 +1,2 @@
+class LoginError(RuntimeError):
+	pass

@@ -266,7 +266,7 @@
 		key = @"password";
 	} else if (sender == ipaperPasswordField) {
 		key = @"ipaperPassword";
-	} else if (sender == proxyField) {
+	} else if (sender == ipaperEmailField) {
 		key = @"ipaperUser";
 	} else {
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);

@@ -165,7 +165,10 @@
 }
 
 - (IBAction) instapaperSyncForCurrentItem:(id) sender {
-	// TODO: show an aleert (or something less obtrusive) saying the next link clicked will be instapaper'd
+	[TCHelpers alertCalled:@"Save to instapaper" saying:@"The next link you tap will be saved to instapaper"];
+	if([[[[[UIApplication sharedApplication] delegate] settings] ipaperEmail] length] == 0) {
+		[TCHelpers alertCalled:@"Warning:" saying:@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync"];
+	}
 	[[self delegate] setWaitingForInstapaperLinkClick:currentItem];
 }
 
