@@ -144,11 +144,11 @@
 }
 
 - (IBAction) moreActions:(id) sender {
-	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Pick an action:"
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Send menu:"
 		delegate: self
 		cancelButtonTitle: @"Cancel"
 		destructiveButtonTitle: nil // is it a title or a number? the documentation is confused...
-		otherButtonTitles: @"Email a link", @"Send to instapaper", nil] autorelease];
+		otherButtonTitles: @"Email this item's link", @"Save a link to instapaper", nil] autorelease];
 	[actionSheet showInView: self];
 }
 
