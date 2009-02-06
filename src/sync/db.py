@@ -75,7 +75,6 @@ class DB:
 				('title', 'TEXT'),
 				('content', 'TEXT'),
 				('feed_name', 'TEXT'),
-				('instapaper_url', 'TEXT'),
 				('is_read', 'BOOLEAN'),
 				('is_starred', 'BOOLEAN'),
 				('is_dirty', 'BOOLEAN default 0'),
@@ -83,6 +82,7 @@ class DB:
 				('is_stale', 'BOOLEAN default 0'),
 				('tag_name', 'TEXT'),
 				('is_shared', 'BOOLEAN'),
+				('instapaper_url', 'TEXT'),
 			],
 			'indexes' : [ ('item_id_index', 'items(google_id)') ]
 		}
