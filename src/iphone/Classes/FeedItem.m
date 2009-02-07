@@ -172,16 +172,20 @@
 	[self save];
 }
 
-- (BOOL) toggleReadState {
-	if (!sticky_read_state) {
-		// the first "toggle" saves it - ie mark as UNread
-		is_read = NO;
-	} else {
-		is_read = !is_read;
-	}
+- (void) setReadState: (BOOL) read {
+	is_read = read;
 	sticky_read_state = YES;
 	is_dirty = YES;
 	[self save];
+}
+
+- (BOOL) toggleReadState {
+	if (!sticky_read_state) {
+		// the first "toggle" saves it - ie mark as UNread
+		[self setReadState: NO];
+	} else {
+		[self setReadState: !is_read];
+	}
 	return [self userHasMarkedAsUnread];
 }
 

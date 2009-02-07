@@ -125,7 +125,7 @@ NSString * all_items_tag = @"All Items";
 }
 
 - (NSString *) orderByDateString {
-	return [NSString stringWithFormat: @"order by date %@", [[self globalAppSettings] sortNewestItemsFirst] ? @"DESC" : @"ASC"];
+	return [NSString stringWithFormat: @"order by date %@, google_id DESC", [[self globalAppSettings] sortNewestItemsFirst] ? @"DESC" : @"ASC"];
 }
 
 - (NSEnumerator *) itemsMatchingCondition:(NSString *) condition, ... {

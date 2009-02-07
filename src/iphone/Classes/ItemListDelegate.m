@@ -253,6 +253,36 @@
 	return [[self itemSet] count];
 }
 
+-(void) tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+	// the mere presence of this method causes a swipe action to be recognised,
+	// and a delet button appears. like magic!
+}
+
+- (UITableViewCellEditingStyle) tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *) indexPath {
+	if([[self itemAtIndexPath: indexPath] hasChildren]) {
+		return UITableViewCellEditingStyleNone;
+	}
+	return UITableViewCellEditingStyleDelete;
+}
+
+- (void) tableView:(UITableView *)tv commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	//FIXME: when deleting rows, the other ones jump around strangely
+	// If row is deleted, remove it from the list.
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// delete the item
+		id item = [self itemAtIndexPath: indexPath];
+		[item setReadState: YES];
+		if(![settings showReadItems]) {
+			dbg(@"animating!");
+			[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+		}
+		dbg(@"reloading...");
+		[self reloadItems];
+		// [self itemSet]; // force reload
+		[tv reloadData];
+    }
+}
+
 - (void) dealloc {
 	dbg(@"dealloc: %@", self);
 	[starredImage release];
