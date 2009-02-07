@@ -48,6 +48,7 @@ class Item:
 			self.content = feed_item['content']
 			self.original_id = feed_item['original_id']
 			self.media = try_lookup(feed_item, 'media')
+			self.instapaper_url = ""
 			self.is_dirty = False
 			self.is_stale = False
 		else:
@@ -133,28 +134,23 @@ class Item:
 		if not self.is_dirty:
 			return
 		
-		# actions are effects to apply in order to ensure the web has been updated with our current state
-		# i.e anything that the user *can* change must be set here
-		actions = []
+		# instapaper URL
+		if self.instapaper_url and len(self.instapaper_url) > 0:
+			app_globals.INSTAPAPER.add_url(self.instapaper_url)
+		
 		# read status
 		if self.is_read:
-			actions.append(app_globals.READER.set_read)
+			self._google_do(app_globals.READER.set_read)
 
 		# stars
 		if self.is_starred:
-			actions.append(app_globals.READER.add_star)
+			self._google_do(app_globals.READER.add_star)
 		
 		# share
 		if self.is_shared:
-			actions.append(app_globals.READER.add_public)
+			self._google_do(app_globals.READER.add_public)
 
-		# apply the actions
-		for action in actions:
-			Item.google_do_with_id(action, self.google_id)
-		
 		self.is_dirty = False
 
-	@staticmethod
-	def google_do_with_id(action, google_id):
-		danger("Applying function %s to item %s" % (action, google_id))
-		return action(google_id)
+	def _google_do(self, action):
+		return action(self.google_id)

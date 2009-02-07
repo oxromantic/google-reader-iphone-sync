@@ -149,7 +149,6 @@ class ThreadPool:
 		self._locked_thread_finished(thread)
 	
 	def _locked_thread_finished(self, thread):
-		backtrace()
 		print "removing %s from %s" % (thread, self._threads)
 		self._threads.remove(thread)
 		debug("thread finished - there remain %s threads" % (self._count,))

@@ -1,7 +1,8 @@
 #import "ApplicationSettings.h"
 #import "TCHelpers.h"
 
-#define CONTENT_HEIGHT 285
+#define CONTENT_HEIGHT 380
+#define IPAPER_OFFSET 260
 
 @implementation ApplicationSettings
 - (NSString *) docsPath{ return docsPath; }
@@ -133,10 +134,21 @@
 
 #pragma mark UI actions
 
+
+- (id) nextInputAfter:(id) sender {
+	if(sender == emailField) {
+		return passwordField;
+	} else if (sender == ipaperEmailField) {
+		return ipaperPasswordField;
+	}
+	return nil;
+}
+
 - (BOOL) textFieldShouldReturn:(UITextField *)sender{
 	[sender resignFirstResponder];
-	if(sender == emailField) {
-		[passwordField becomeFirstResponder];
+	id nextInput = [self nextInputAfter:sender];
+	if(nextInput) {
+		[nextInput becomeFirstResponder];
 	}
 	return YES;
 }
@@ -145,14 +157,17 @@
 	[passwordField becomeFirstResponder];
 }
 - (IBAction) deactivateBothFields:(id)sender {
+	dbg(@"[deactivatebothfields]");
 	[passwordField resignFirstResponder];
 	[emailField resignFirstResponder];
+	[ipaperEmailField resignFirstResponder];
+	[ipaperPasswordField resignFirstResponder];
 }
 
 - (BOOL) getNavItem:(id *)navItem andDoneButton:(id*)btn forTextField:(id)sender {
 	*btn = nil;
 	*navItem = nil;
-	if (sender == emailField || sender == passwordField) {
+	if (sender == emailField || sender == passwordField || sender == ipaperEmailField || sender == ipaperPasswordField) {
 		*btn = stopEditingAccountButton;
 		*navItem = accountNavItem;
 	} else {
@@ -162,10 +177,20 @@
 	return (*navItem && *btn);
 }
 
+- (int) getOffsetForTextFieldEditing: (id) field {
+	if(field == ipaperEmailField || field == ipaperPasswordField) {
+		return IPAPER_OFFSET;
+	} else {
+		return -1;
+	}
+}
+
 
 - (void) setUIElements {
 	[emailField setText: [self email]];
 	[passwordField setText: [self password]];
+	[ipaperEmailField setText: [self ipaperEmail]];
+	[ipaperPasswordField setText: [self ipaperPassword]];
 	[itemsPerFeedSlider setValue:[self itemsPerFeed]];
 	[itemsPerFeedLabel setText:[NSString stringWithFormat:@"%d", [self itemsPerFeed]]];
 	[showReadItemsToggle setOn: [self showReadItems]];
@@ -200,6 +225,8 @@
 - (BOOL) showReadItems     { return [self boolFromKey:@"showReadItems"]; }
 - (BOOL) rotationLock      { return rotationLock; }
 - (BOOL) sortNewestItemsFirst{ return [self boolFromKey:@"newestFirst"]; }
+- (BOOL) ipaperEmail       { return [plistData valueForKey:@"ipaperUser"]; }
+- (BOOL) ipaperPassword    { return [plistData valueForKey:@"ipaperPassword"]; }
 
 - (NSString *) email       { return [plistData valueForKey:@"user"]; }
 - (NSString *) password    { return [plistData valueForKey:@"password"]; }
@@ -260,6 +287,10 @@
 		key = @"user";
 	} else if (sender == passwordField) {
 		key = @"password";
+	} else if (sender == ipaperPasswordField) {
+		key = @"ipaperPassword";
+	} else if (sender == ipaperEmailField) {
+		key = @"ipaperUser";
 	} else {
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;
@@ -301,8 +332,15 @@
 - (IBAction) textElementDidBeginEditing:(UITextField *)sender {
 	id btn = nil;
 	id navItem = nil;
+	int scrollOffset;
 	if([self getNavItem:&navItem andDoneButton:&btn forTextField:sender]) {
 		[navItem setRightBarButtonItem: btn];
+	}
+	
+	scrollOffset = [self getOffsetForTextFieldEditing:sender];
+	if(scrollOffset != -1) {
+		dbg(@"Scrolling to: %d", scrollOffset);
+		[mainScrollView setContentOffset: CGPointMake(0, scrollOffset) animated:YES];
 	}
 }
 
@@ -322,5 +360,7 @@
 	[self saveValue:[NSNumber numberWithInt:itemsPerFeed] forKey:@"num_items"];
 	[sender setValue: itemsPerFeed];
 }
+
+// TODO: hook up a "clear instapaper" button
 
 @end
