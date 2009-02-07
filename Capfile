@@ -90,7 +90,7 @@ namespace :package do
 		default
 		local "scp #{build_dir}/#{app}.deb #{$ipod_user}@#{$ipod_server}:/tmp"
 		sudo "dpkg -i /tmp/#{app}.deb"
-		run "rm /tmp/#{app}.deb"
+		sudo "rm /tmp/#{app}.deb"
 #		sudo "killall SpringBoard"
 	end
 
@@ -114,12 +114,22 @@ namespace :package do
 
 	task :code_sign do
 		# sign the code
-		# (man, this is hacky...)
-		local "rsync #{$rsync_opts} src/iphone/build/Release-iphoneos/GRiS.app/GRiS #{$ipod_user}@#{$ipod_server}:/tmp"
-		run "ldid -S /tmp/GRiS"
-		local "rsync #{$rsync_opts} #{$ipod_user}@#{$ipod_server}:/tmp/GRiS src/iphone/build/Release-iphoneos/GRiS.app/"
-		local "chmod +x src/iphone/build/Release-iphoneos/GRiS.app/GRiS"
-		run "rm /tmp/GRiS"
+		built_binary = "src/iphone/build/Release-iphoneos/GRiS.app/GRiS"
+		if system('which ldid')
+			# we have a local tool: use that
+			codesign_allocate = '/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate'
+			codesign_exists = File.exist? codesign_allocate
+			prefix = codesign_exists ? "export CODESIGN_ALLOCATE=#{codesign_allocate} ; " : ""
+			local "#{prefix} ldid -S #{built_binary}"
+		else
+			# try signing it on the iphone
+			# (ugh, this is hacky...)
+			local "rsync #{$rsync_opts} #{built_binary} #{$ipod_user}@#{$ipod_server}:/tmp"
+			run "ldid -S /tmp/GRiS"
+			local "rsync #{$rsync_opts} #{$ipod_user}@#{$ipod_server}:/tmp/GRiS src/iphone/build/Release-iphoneos/GRiS.app/"
+			local "chmod +x src/iphone/build/Release-iphoneos/GRiS.app/GRiS"
+			sudo "rm /tmp/GRiS"
+		end
 	end
 
 	task :do_package do
