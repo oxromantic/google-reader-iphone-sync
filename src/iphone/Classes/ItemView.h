@@ -33,4 +33,5 @@
 - (IBAction) toggleReadForCurrentItem:(id) sender;
 - (IBAction) toggleSharedForCurrentItem:(id) sender;
 - (IBAction) emailCurrentItem:(id) sender;
+- (IBAction) moreActions:(id) sender;
 @end

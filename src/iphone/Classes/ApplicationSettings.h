@@ -10,6 +10,9 @@
 	
 	IBOutlet id emailField;
 	IBOutlet id passwordField;
+	IBOutlet id ipaperEmailField;
+	IBOutlet id ipaperPasswordField;
+
 	IBOutlet id tagListField;
 	IBOutlet id itemsPerFeedSlider;
 	IBOutlet id itemsPerFeedLabel;
