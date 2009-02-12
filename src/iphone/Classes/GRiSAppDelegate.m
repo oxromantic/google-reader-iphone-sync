@@ -24,7 +24,7 @@
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	#ifndef SIMULATOR
 		// redirect stderr to a logfile if we're not on the simulator
-		NSString *logPath = [[[self settings] docsPath] stringByAppendingPathComponent: @"GRiS.native.log"];
+		NSString *logPath = [[[self settings] docsPath] stringByAppendingPathComponent: @"app.log"];
 		dbg(@"opening logfile at: %@", logPath);
 		freopen([logPath fileSystemRepresentation], "w", stderr);
 	#endif

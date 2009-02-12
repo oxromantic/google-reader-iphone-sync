@@ -79,7 +79,7 @@ def log_end():
 
 def log_start():
 	global logfile
-	logfile = open(os.path.join(app_globals.OPTIONS['output_path'], 'GRiS.log'), 'w')
+	logfile = open(os.path.join(app_globals.OPTIONS['output_path'], 'sync.log'), 'w')
 	debug("Log started at %s." % (time.ctime(),))
 	try:
 		vfile = file(os.path.join(app_globals.OPTIONS['output_path'], 'VERSION'), 'r')

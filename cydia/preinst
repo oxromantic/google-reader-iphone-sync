@@ -2,8 +2,7 @@
 
 # copy user settings to /tmp, in case this is part of a clean / reinstall
 if [ -d '/var/mobile/GRiS' ]; then
-	mkdir -p /tmp/GRiS
-	cp /var/mobile/GRiS/config.plist /tmp/GRiS/
-	cp /var/mobile/GRiS/tag_list /tmp/GRiS/
+	rm -rf -p /tmp/GRiS
+	mv /var/mobile/GRiS /tmp/GRiS
 	exit 0
 fi

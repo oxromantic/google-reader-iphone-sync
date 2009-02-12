@@ -240,3 +240,8 @@ class DB:
 			for key in current_but_read:
 				rm_rf(res_prefix + key)
 
+if __name__ == '__main__':
+	print "running DB migration..."
+	app_globals.OPTIONS['verbosity'] = lvl_debug
+	app_globals.OPTIONS['output_path'] = '.'
+	DB().close()

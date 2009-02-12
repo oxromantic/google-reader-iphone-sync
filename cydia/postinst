@@ -1,9 +1,15 @@
 #!/bin/bash
 
+set -x
 config="/tmp/GRiS"
-if [ -f "$config" ]; then
+user_files="items.sqlite config.plist tag_list _resources"
+if [ -d "$config" ]; then
 	echo "copying old config..."
-	cp "$config/*" /var/mobile/GRiS/ || exit 1
+	for fl in $user_files; do
+		cp -R "$config/$fl" /var/mobile/GRiS/
+	done
+	(cd /var/mobile/GRiS && python ./sync/db.py)
 fi
 chown -R mobile.mobile /var/mobile/GRiS
 chmod +x /Applications/GRiS.app/GRiS
+set +x
