@@ -2,7 +2,7 @@
 
 # copy user settings to /tmp, in case this is part of a clean / reinstall
 if [ -d '/var/mobile/GRiS' ]; then
-	rm -rf -p /tmp/GRiS
+	rm -rf /tmp/GRiS
 	mv /var/mobile/GRiS /tmp/GRiS
 	exit 0
 fi
