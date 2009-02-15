@@ -125,7 +125,7 @@ namespace :package do
 			# try signing it on the iphone
 			# (ugh, this is hacky...)
 			local "rsync #{$rsync_opts} #{built_binary} #{$ipod_user}@#{$ipod_server}:/tmp"
-			run "ldid -S /tmp/GRiS"
+			sudo "ldid -S /tmp/GRiS"
 			local "rsync #{$rsync_opts} #{$ipod_user}@#{$ipod_server}:/tmp/GRiS src/iphone/build/Release-iphoneos/GRiS.app/"
 			local "chmod +x src/iphone/build/Release-iphoneos/GRiS.app/GRiS"
 			sudo "rm /tmp/GRiS"

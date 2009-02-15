@@ -22,12 +22,6 @@
 - (id) mainController { return mainController; }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	#ifndef SIMULATOR
-		// redirect stderr to a logfile if we're not on the simulator
-		NSString *logPath = [[[self settings] docsPath] stringByAppendingPathComponent: @"app.log"];
-		dbg(@"opening logfile at: %@", logPath);
-		freopen([logPath fileSystemRepresentation], "w", stderr);
-	#endif
 	dbg(@"Loaded...");
 	[syncController ensureSingleton];
 	[window setBackgroundColor: [UIColor groupTableViewBackgroundColor]];

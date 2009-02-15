@@ -4,13 +4,18 @@
 #define CONTENT_HEIGHT 380
 #define IPAPER_OFFSET 260
 
+NSString * _docsPath = nil;
+
 @implementation ApplicationSettings
-- (NSString *) docsPath{ return docsPath; }
-- (void) setDocsPath:newPath{
-	[docsPath release];
-	docsPath = [newPath retain];
+- (NSString *) docsPath {
+	docsPath = [ApplicationSettings docsPath];
+	return docsPath;
 }
-- (void) findDocsPath {
+
++ (NSString *) docsPath {
+	if(_docsPath != nil) {
+		return _docsPath;
+	}
 	NSString * testingPath;
 	NSFileManager * fileManager = [NSFileManager defaultManager];
 	NSString * path = nil;
@@ -41,8 +46,8 @@
 		path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent: @"GRiS"];
 		[TCHelpers ensureDirectoryExists: path];
 	}
-	NSLog(@"using docs path: %@", path);
-	[self setDocsPath: path];
+	_docsPath = path;
+	return _docsPath;
 }
 
 - (void) save {
@@ -111,7 +116,6 @@
 - (id) init {
 	self = [super init];
 	plistName = @"config.plist";
-	[self findDocsPath];
 	[self load];
 	return self;
 }
@@ -127,7 +131,6 @@
 	dbg(@"settings is being dealloc'd - saving plist data.");
 	[self save];
 	[plistData release];
-	[docsPath release];
 	[plistName release];
 	[super dealloc];
 }

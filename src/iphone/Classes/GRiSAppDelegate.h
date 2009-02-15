@@ -23,7 +23,6 @@
 - (IBAction) toggleOptions: (id) sender;
 - (IBAction) showNavigation: (id) sender;
 - (IBAction) showViewer: (id) sender;
-- (NSString *) appDocsPath;
 - (id) settings;
 - (IBAction) markItemsAsRead: (id) sender;
 - (IBAction) markItemsAsUnread: (id) sender;
