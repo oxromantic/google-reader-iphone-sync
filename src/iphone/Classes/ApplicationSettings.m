@@ -61,12 +61,14 @@ NSString * _docsPath = nil;
 }
 
 - (void) load {
+	dbg(@"loading plist data from path: %@", [docsPath stringByAppendingPathComponent: plistName]);
 	plistData = [[NSMutableDictionary dictionaryWithContentsOfFile:[docsPath stringByAppendingPathComponent: plistName]] retain];
 	if(!plistData) {
 		NSLog(@"FAILED loading plist");
 		plistData = [[NSMutableDictionary dictionary] retain];
-		dbg_s(@"Loaded plist data: %@", plistData);
 	}
+	dbg(@"Loaded plist data", plistData);
+	dbg_s(@"%@", plistData);
 	[self loadFeedList];
 }
 
@@ -116,6 +118,7 @@ NSString * _docsPath = nil;
 - (id) init {
 	self = [super init];
 	plistName = @"config.plist";
+	[self docsPath];
 	[self load];
 	return self;
 }
@@ -160,7 +163,6 @@ NSString * _docsPath = nil;
 	[passwordField becomeFirstResponder];
 }
 - (IBAction) deactivateBothFields:(id)sender {
-	dbg(@"[deactivatebothfields]");
 	[passwordField resignFirstResponder];
 	[emailField resignFirstResponder];
 	[ipaperEmailField resignFirstResponder];
@@ -228,8 +230,8 @@ NSString * _docsPath = nil;
 - (BOOL) showReadItems     { return [self boolFromKey:@"showReadItems"]; }
 - (BOOL) rotationLock      { return rotationLock; }
 - (BOOL) sortNewestItemsFirst{ return [self boolFromKey:@"newestFirst"]; }
-- (BOOL) ipaperEmail       { return [plistData valueForKey:@"ipaperUser"]; }
-- (BOOL) ipaperPassword    { return [plistData valueForKey:@"ipaperPassword"]; }
+- (NSString *) ipaperEmail       { return [plistData valueForKey:@"ipaperUser"]; }
+- (NSString *) ipaperPassword    { return [plistData valueForKey:@"ipaperPassword"]; }
 
 - (NSString *) email       { return [plistData valueForKey:@"user"]; }
 - (NSString *) password    { return [plistData valueForKey:@"password"]; }
@@ -298,7 +300,7 @@ NSString * _docsPath = nil;
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;
 	}
-	dbg(@"setting plist value '%@' to '%@'", key, [sender text]);
+	dbg_s(@"setting plist value '%@' to '%@'", key, [sender text]);
 	[self saveValue: [sender text] forKey:key];
 }
 

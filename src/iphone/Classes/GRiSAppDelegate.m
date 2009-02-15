@@ -22,7 +22,7 @@
 - (id) mainController { return mainController; }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	dbg(@"Loaded...");
+	dbg(@"application finished launching");
 	[syncController ensureSingleton];
 	[window setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
 	

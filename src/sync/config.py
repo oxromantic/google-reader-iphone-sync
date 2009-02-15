@@ -150,7 +150,7 @@ def set_opt(key, val, disguise = False):
 	if key.startswith('--'):
 		key = key[2:]
 	key = pythonise_option_key(key)
-	if key.startswith("pass"):
+	if "pass" in key or "Pass" in key:
 		disguise = True
 	if key in path_keys:
 		val = os.path.expanduser(val)
