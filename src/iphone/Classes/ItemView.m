@@ -144,11 +144,14 @@
 }
 
 - (IBAction) moreActions:(id) sender {
-	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Send menu:"
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Send a link:"
 		delegate: self
 		cancelButtonTitle: @"Cancel"
 		destructiveButtonTitle: nil // is it a title or a number? the documentation is confused...
-		otherButtonTitles: @"Email this item's link", @"Save a link to instapaper", nil] autorelease];
+		otherButtonTitles:
+			@"Email this item",
+			@"Instapaper (read later)",
+			nil] autorelease];
 	[actionSheet showInView: self];
 }
 
@@ -170,10 +173,6 @@
 		[TCHelpers alertCalled:@"Warning:" saying:@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync"];
 	}
 	[[self delegate] setWaitingForInstapaperLinkClick:currentItem];
-}
-
-- (IBAction) setInstapaperURL:(NSString *) url {
-	[currentItem setIpaperURL: url];
 }
 
 - (IBAction) emailCurrentItem:(id) sender {

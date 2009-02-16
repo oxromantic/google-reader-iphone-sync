@@ -168,6 +168,8 @@
 
 - (void) setIpaperURL: (NSString *) linkUrl {
 	is_dirty = YES;
+	[linkUrl retain];
+	[ipaper_url release];
 	ipaper_url = linkUrl;
 	[self save];
 }

@@ -25,6 +25,8 @@ class Ipaper(object):
 			info("WARNING: Instapaper url dropped: %s" % (url,))
 			return
 
+		debug("saving instapaper URL: %s" % (url,))
+		
 		post_url = 'https://www.instapaper.com/api/add'
 		params = {
 			'username': self.user,
@@ -35,7 +37,7 @@ class Ipaper(object):
 			params['title'] = title
 		else:
 			params['auto-title'] = '1'
-
+		
 		self._post(post_url, params)
 	
 	def _post(self, url, params):

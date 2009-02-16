@@ -23,6 +23,7 @@
 			dbg(@"saving url for instapaper: %@", [[request URL] absoluteString]);
 			[waitingForInstapaperLinkClick setIpaperURL: [[request URL] absoluteString]];
 			dealtWith = YES;
+			[TCHelpers alertCalled:@"Instapaper" saying:@"Link will be saved on next sync."];
 		}
 		waitingForInstapaperLinkClick = nil;
 		if (dealtWith) return NO;
