@@ -36,7 +36,7 @@ $remote_ipod = "#{$ipod_user}@#{$ipod_server}:"
 $run_opts = {}
 
 task :default do nose end
-
+	
 # -----------------------------------------
 
 desc "flush the dns cache"
@@ -89,9 +89,9 @@ namespace :package do
 	task :install do
 		default
 		local "scp #{build_dir}/#{app}.deb #{$ipod_user}@#{$ipod_server}:/tmp"
-		sudo "dpkg -i /tmp/#{app}.deb"
-		sudo "rm /tmp/#{app}.deb"
-#		sudo "killall SpringBoard"
+		run "dpkg -i /tmp/#{app}.deb"
+		run "rm /tmp/#{app}.deb"
+#		run "killall SpringBoard"
 	end
 
 	task :build_repository do
@@ -125,10 +125,10 @@ namespace :package do
 			# try signing it on the iphone
 			# (ugh, this is hacky...)
 			local "rsync #{$rsync_opts} #{built_binary} #{$ipod_user}@#{$ipod_server}:/tmp"
-			sudo "ldid -S /tmp/GRiS"
+			run "ldid -S /tmp/GRiS"
 			local "rsync #{$rsync_opts} #{$ipod_user}@#{$ipod_server}:/tmp/GRiS src/iphone/build/Release-iphoneos/GRiS.app/"
 			local "chmod +x src/iphone/build/Release-iphoneos/GRiS.app/GRiS"
-			sudo "rm /tmp/GRiS"
+			run "rm /tmp/GRiS"
 		end
 	end
 
