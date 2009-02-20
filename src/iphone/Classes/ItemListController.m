@@ -64,7 +64,7 @@
 	alertWasForMarkingAsRead = read;
 	markAsReadAlert = [[UIAlertView alloc]
 		initWithTitle: [NSString stringWithFormat: @"Mark as %@",read ? @"read":@"unread"]
-		message: [NSString stringWithFormat:@"Do you really want to mark ALL items as %@?", read ? @"read":@"unread"]
+		message: [NSString stringWithFormat:@"Do you really want to mark all these items as %@?", read ? @"read":@"unread"]
 		delegate: self
 		cancelButtonTitle: @"Cancel"
 		otherButtonTitles: @"OK", nil];

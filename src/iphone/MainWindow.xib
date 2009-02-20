@@ -8,11 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="309"/>
 			<integer value="625"/>
-			<integer value="494"/>
-			<integer value="615"/>
 			<integer value="575"/>
+			<integer value="615"/>
+			<integer value="494"/>
+			<integer value="309"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1873,14 +1873,6 @@ dGluZ3MiKQ</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">settings</string>
-						<reference key="source" ref="421261942"/>
-						<reference key="destination" ref="523458082"/>
-					</object>
-					<int key="connectionID">463</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">showReadItemsToggle</string>
 						<reference key="source" ref="523458082"/>
 						<reference key="destination" ref="1051479470"/>
@@ -3624,12 +3616,10 @@ dGluZ3MiKQ</string>
 							<string>itemSet</string>
 							<string>navigationController</string>
 							<string>optionsButton</string>
-							<string>settings</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>ItemDB</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

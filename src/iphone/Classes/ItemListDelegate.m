@@ -259,7 +259,8 @@
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *) indexPath {
-	if([[self itemAtIndexPath: indexPath] hasChildren]) {
+	id item = [self itemAtIndexPath: indexPath];
+	if([item hasChildren] || [item is_read]) {
 		return UITableViewCellEditingStyleNone;
 	}
 	return UITableViewCellEditingStyleDelete;
@@ -272,14 +273,16 @@
 		// delete the item
 		id item = [self itemAtIndexPath: indexPath];
 		[item setReadState: YES];
+		[self reloadItems];
+		id settings = [[[UIApplication sharedApplication] delegate] settings];
+		dbg(@"new items? %d", ([settings showReadItems]));
 		if(![settings showReadItems]) {
 			dbg(@"animating!");
-			[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+			[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		} else {
+			dbg(@"no animation for me!");
+			[tv reloadData];
 		}
-		dbg(@"reloading...");
-		[self reloadItems];
-		// [self itemSet]; // force reload
-		[tv reloadData];
     }
 }
 
@@ -296,3 +299,4 @@
 }
 
 @end
+

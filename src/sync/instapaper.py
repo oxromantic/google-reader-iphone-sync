@@ -16,7 +16,7 @@ class Ipaper(object):
 			self.password = app_globals.OPTIONS['ipaper_password']
 			self.is_setup = True
 		
-	def missing(obj):
+	def missing(self, obj):
 		return (not isinstance(obj, str)) or len(obj) == 0
 	
 	def add_url(self, url, title = None):

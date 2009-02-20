@@ -11,7 +11,6 @@
 	UIImage * sharedImage;
 	UIImage * sharedAndStarredImage;
 	UIFont * cellFont;
-	IBOutlet id settings;
 	IBOutlet id navigationController;
 	NSString * tag;
 }
