@@ -255,7 +255,7 @@
 
 -(void) tableView:(UITableView*)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
 	// the mere presence of this method causes a swipe action to be recognised,
-	// and a delet button appears. like magic!
+	// and a delete button appears. like magic!
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *) indexPath {

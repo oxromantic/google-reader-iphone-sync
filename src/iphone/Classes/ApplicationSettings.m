@@ -46,7 +46,7 @@ NSString * _docsPath = nil;
 		path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent: @"GRiS"];
 		[TCHelpers ensureDirectoryExists: path];
 	}
-	_docsPath = path;
+	_docsPath = [path retain];
 	return _docsPath;
 }
 
