@@ -251,11 +251,14 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 	headers = dl.headers
 
 	try:
-		if headers.getmaintype().lower() == 'image':
+		mime_type = headers.getmaintype().lower()
+		if mime_type == 'image':
 			filetype = headers.subtype
 		else:
+			debug("not an image type: %s" % (mime_type,))
 			filetype = None
-	except StandardError:
+	except StandardError, e:
+		debug("error: %s" % (e,))
 		filetype = None
 	
 	try:

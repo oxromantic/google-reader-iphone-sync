@@ -28,7 +28,8 @@ class Reader:
 		try:
 			if not self.gr.login():
 				raise RuntimeError("Login failed")
-		except StandardError:
+		except StandardError, e:
+			debug("error logging in: %s" % (e,))
 			raise RuntimeError("Login failed")
 		
 	def get_tag_list(self):
