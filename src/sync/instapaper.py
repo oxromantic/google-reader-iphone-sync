@@ -14,14 +14,14 @@ class Ipaper(object):
 		if not self.is_setup:
 			self.user = app_globals.OPTIONS['ipaper_user']
 			self.password = app_globals.OPTIONS['ipaper_password']
-			if not (isinstance(self.user, str) and isinstance(self.password, str)):
-				raise LoginError("Instapaper username or password not set")
 			self.is_setup = True
+		
+	def missing(obj):
+		return (not isinstance(obj, str)) or len(obj) == 0
 	
 	def add_url(self, url, title = None):
 		self._setup()
-
-		if len(self.user) == len(self.password) == 0:
+		if self.missing(self.user) or not isinstance(self.password, str):
 			info("WARNING: Instapaper url dropped: %s" % (url,))
 			return
 
