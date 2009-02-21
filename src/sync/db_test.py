@@ -125,21 +125,6 @@ class DBTest(unittest.TestCase):
 		# and check it still looks the same:
 		assert item.title == u'caf\xe9'
 	
-	def test_changing_item_feed(self):
-		# add to DB
-		input_item = fake_item(tag_name=u'tagname_1')
-		self.db.add_item(input_item)
-		
-		input_item.tag_name = 'tagname_2'
-		self.db.update_feed_for_item(input_item)
-
-		# grab it out
-		items = list(self.db.get_items())
-		assert len(items) == 1
-		item = items[0]
-
-		self.assertEqual(item.tag_name, u'tagname_2')
-
 	def test_deleting_an_item(self):
 		a = fake_item(google_id = 'a')
 		b = fake_item(google_id = 'b')
@@ -187,6 +172,16 @@ class DBTest(unittest.TestCase):
 		assert self.db.is_read('sample_id') == False
 		self.db.sql('update items set is_read = 1 where google_id = "sample_id"')
 		assert self.db.is_read('sample_id') == True
+	
+	def test_updating_item_contents(self):
+		assert self.db.is_read('sample_id') == None
+		item = fake_item()
+		self.db.add_item(fake_item())
+		item = fake_item(content='content2', tag_name='tagname2')
+		self.db.update_content_for_item(item)
+		item = list(self.db.get_items('google_id = "sample_id"'))[0]
+		self.assertEqual(item.content, 'content2')
+		self.assertEqual(item.tag_name, 'tagname2')
 	
 	def test_google_sync(self):
 		# mock out the google reader

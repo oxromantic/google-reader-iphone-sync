@@ -143,6 +143,8 @@ def download_images(soup, dest_folder, href_prefix, base_href = None):
 	for img in images:
 		debug("processing image %s of %s" % (img_num, len(images)))
 		img_num += 1
+		if img['src'].startswith('_resources'):
+			continue
 		href = absolute_url(img['src'], base_href)
 		
 		filename = get_filename(img['src'])
@@ -157,8 +159,8 @@ def download_images(soup, dest_folder, href_prefix, base_href = None):
 		# since this is a long running process; let the thread know we're still alive
 		try:
 			threading.currentThread().ping()
-		except AttributeError:
-			log_error("threading: ping() not defined for thread" % (threading.currentThread(),))
+		except AttributeError, e:
+			debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),), e)
 	
 	return success
 
@@ -294,3 +296,7 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 		return output_filename
 	else:
 		return contents
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

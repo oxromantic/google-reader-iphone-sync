@@ -97,6 +97,11 @@ class Item:
 		# save changes back as content
 		self.soup_teardown()
 	
+	def redownload_images(self):
+		self.had_errors = False
+		self.download_images()
+		self.update()
+	
 	def download_images(self, need_soup=True):
 		self.had_errors = False
 
@@ -123,6 +128,9 @@ class Item:
 	
 	def save(self):
 		app_globals.DATABASE.add_item(self)
+	
+	def update(self):
+		app_globals.DATABASE.update_content_for_item(self)
 
 	def delete(self):
 		app_globals.DATABASE.remove_item(self)

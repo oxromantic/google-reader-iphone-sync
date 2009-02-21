@@ -45,17 +45,21 @@ task :dns do `sudo dscacheutil -flushcache` end
 desc "test the source code with nosetest"
 task :nose do
 	args = ENV['args'] || ''
-	if ENV['file']
-		where = ENV['file']
+	if ENV['module']
+		modules = ENV['module'].split(/[, ]+/)
 	else
-		puts " (add file=src/sync/<module>.py to test a single module)"
-		where = '--where=src/sync'
+		modules = []
+		puts "  (add \"module=some_test[,another_test]\" to test specific modules)"
 	end
-	packages = Dir['src/sync/*.py'].collect {|p| p.gsub(/\.py$/i, '').gsub('/','.') }
+	
+	packages = Dir['src/sync/*.py'].collect{|p| p.gsub(/\.py$/i, '').gsub('/','.').gsub('src.sync.','') }
 	packages.reject! {|p| p =~ /__init__/ }
 	
-	puts "nosetests -c nose.cfg #{where} --cover-package='#{packages.join(',')}' #{args}"
-	system("nosetests -c nose.cfg #{where} --cover-package='#{packages.join(',')}' #{args}")
+	cmd = "cd src/sync; nosetests -c ../../nose.cfg --cover-package='#{packages.join(', ')}' #{args} #{modules.join(' ')}"
+	
+	puts
+	puts cmd
+	system cmd
 end
 
 desc "copy ~/.ssh/id_rsa.pub to ipod / iphone authorized keys"

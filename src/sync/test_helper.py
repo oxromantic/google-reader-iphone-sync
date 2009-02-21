@@ -39,6 +39,7 @@ def fake_item(**kwargs):
 		'had_errors' : False,
 		'is_stale': False,
 		'is_shared': False,
+		'instapaper_url': '',
 		}
 	args.update(kwargs)
 	return OpenStruct(**args)

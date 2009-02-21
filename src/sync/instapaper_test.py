@@ -6,13 +6,6 @@ import urllib
 import urllib2
 from misc import *
 
-class SetupTest(TestCase):
-	def test_should_lazy_init_and_then_complain_if_login_details_are_wrong(self):
-		app_globals.OPTIONS['ipaper_user'] = app_globals.OPTIONS['ipaper_password'] = None
-		ip = Ipaper()
-		self.assertRaises(LoginError, lambda: ip.add_url('foo'))
-	
-
 class InstapaperTest(TestCase):
 	def setUp(self):
 		# test_helper.init_output_folder()
@@ -59,6 +52,12 @@ class InstapaperTest(TestCase):
 	def test_should_silently_fail_if_username_and_pass_are_blank(self):
 		app_globals.OPTIONS['ipaper_user'] = ''
 		app_globals.OPTIONS['ipaper_password'] = ''
+		mock_on(urllib2).urlopen.is_expected.no_times()
+		self.ip.add_url('http://localhost/', 'the title')
+		
+	def test_should_silently_fail_if_username_and_pass_are_none(self):
+		app_globals.OPTIONS['ipaper_user'] = None
+		app_globals.OPTIONS['ipaper_password'] = None
 		mock_on(urllib2).urlopen.is_expected.no_times()
 		self.ip.add_url('http://localhost/', 'the title')
 		

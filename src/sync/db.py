@@ -106,6 +106,12 @@ class DB:
 
 		return result
 	
+	def get(self, google_id, default=None):
+		items = list(self.get_items('google_id = ?', (google_id,)))
+		if len(items) == 0:
+			return default
+		return items[0]
+	
 	def erase(self):
 		if not app_globals.OPTIONS['test']:
 			raise Exception("erase() called, but we're not in test mode...")
@@ -126,6 +132,9 @@ class DB:
 	def add_item(self, item):
 		self.sql("insert into items (%s) values (%s)" % (', '.join(self.cols), ', '.join(['?'] * len(self.cols))),
 			[getattr(item, attr) for attr in self.cols])
+	
+	def update_content_for_item(self, item):
+		self.sql("update items set content=?, tag_name=? where google_id=?", (item.content, item.tag_name, item.google_id))
 	
 	def remove_item(self, item):
 		google_id = item.google_id
@@ -150,9 +159,6 @@ class DB:
 		cursor = self.sql(sql, args)
 		return cursor.next()[0]
 
-	def get_items_that_had_errors(self):
-		return self.get_items(condition='had_errors = 1')
-	
 	def get_items_list(self, *args, **kwargs):
 		return [x for x in self.get_items(*args, **kwargs)]
 
@@ -197,9 +203,6 @@ class DB:
 		except StopIteration:
 			return None
 		
-	def update_feed_for_item(self, item):
-		self.sql('update items set tag_name = ? where google_id = ?', (item.tag_name, item.google_id))
-	
 	def sync_to_google(self):
 		puts("Syncing with google...")
 		status("SUBTASK_TOTAL", self.get_item_count('is_dirty = 1'))

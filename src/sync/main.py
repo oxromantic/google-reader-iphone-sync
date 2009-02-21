@@ -82,18 +82,10 @@ def execute():
 	if app_globals.OPTIONS['no_download']:
 		info("not downloading any new items...")
 	else:
-#		retry_failed_items() # TODO: Re-enable this
 		app_globals.DATABASE.prepare_for_download()
 		download_new_items()
 		new_task("Cleaning up old resources")
 		app_globals.DATABASE.cleanup() # remove old _resources files
-
-def retry_failed_items():
-	new_task("Re-trying failed image downloads")
-	for item in app_globals.DATABASE.get_items_that_had_errors():
-		info("trying to re-download images for item: %s" % (item['title'],))
-		item.download_images()
-		item.save()
 
 def download_feed(feed, feed_tag):
 	new_subtask(len(feed) * 2)
@@ -127,10 +119,10 @@ def error_reporter_for_item(item):
 	return error_report
 
 def process_item(item, item_thread_pool = None):
-	state = app_globals.DATABASE.is_read(item.google_id)
+	db_item = app_globals.DATABASE.get(item.google_id, None)
 	name = item.basename
 	
-	item_is_read = state is True or item.is_read
+	item_is_read = item.is_read or (db_item is not None and db_item.is_read)
 	if item_is_read:
 		# item has been read either online or offline
 		puts("READ: " + name)
@@ -138,11 +130,16 @@ def process_item(item, item_thread_pool = None):
 		danger("About to delete item")
 		item.delete()
 
-	already_seen = state is not None
-
-	if already_seen:
-		# we've already downloaded it
-		app_globals.DATABASE.update_feed_for_item(item)
+	if db_item is not None:
+		# we aready know about it - update any necessary info
+		if db_item.had_errors or db_item.tag_name != item.tag_name:
+			print "setting %s tag name to %s" % (db_item, item.tag_name)
+			db_item.tag_name = item.tag_name
+			print "set it to %s" % (db_item.tag_name,)
+			if db_item.had_errors:
+				debug("reprocessing erroneous item: %s" % (item.title,))
+				db_item.redownload_images()
+			db_item.update()
 		increment_subtask()
 	else:
 		try:

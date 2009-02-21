@@ -45,7 +45,8 @@ def matches_any_regex(s, regexes, flags = 0):
 def try_shell(cmd):
 	"""
 	Execute a shell command. if it returns a non-zero (error) status, raise an exception
-	
+
+		>>> app_globals.OPTIONS['verbosity'] = 0
 		>>> try_shell('[ 0 = 0 ]')
 		>>> try_shell('[ 0 = 1 ]')
 		Traceback (most recent call last):
@@ -183,3 +184,7 @@ def first(l):
 		return l[0]
 	except TypeError, e:
 		return l
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

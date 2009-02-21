@@ -21,21 +21,41 @@ class MainTest(unittest.TestCase):
 	def tearDown(self):
 		pass
 
-	def test_item_feeds_being_updated(self):
-		"""Items that already exist in the database should be updated with their new feed / tag (if it has changed)"""
-		i = item_test.sample_item.copy()
+	def test_item_should_be_updated_with_new_feed_name(self):
 		item = Item(item_test.sample_item)
 		
-		self.db.is_read.return_value = False
-		main.process_item(item)
-		self.assertTrue(self.db.is_read.called)
-		self.db.is_read.reset()
+		db_item = Mock()
+		item.tag_name = 'feedb'
+		self.db.get.return_value = db_item
+		db_item.is_read = False
+		db_item.had_errors = False
 		
-		self.db.is_read.return_value = True
-		item.feed_id = 'feedb'
 		main.process_item(item)
-		self.assertTrue(self.db.is_read.called)
-		self.assertTrue(('update_feed_for_item',(item,),{}) in self.db.method_calls)
+		
+		self.assertEqual(db_item.tag_name, 'feedb')
+		self.assertEqual(self.db.method_calls, [('get', (item.google_id, None), {})])
+		self.assertEqual(db_item.method_calls, [('update', (), {})])
+	
+	def test_item_with_errors_should_have_images_redownloaded(self):
+		item = Item(item_test.sample_item)
+		
+		db_item = Mock()
+		db_item.is_read = False
+		db_item.had_errors = True
+		self.db.get.return_value = db_item
+		
+		main.process_item(item)
+		
+		self.assertEqual(db_item.method_calls, [('redownload_images', (), {}), ('update', (), {})])
+	
+	def test_item_should_not_be_updated_if_it_didnt_exist_in_db(self):
+		item = item_test.sample_item.copy()
+		item['content'] = ''
+		item = Item(item)
+		
+		self.db.get.return_value = None
+		main.process_item(item)
+		self.assertEqual(self.db.method_calls, [('get', (item.google_id, None), {}), ('add_item', (item,), {})])
 
 	def test_setup_should_report_pid(self):
 		main.proctl = Mock()
@@ -48,4 +68,4 @@ class MainTest(unittest.TestCase):
 		app_globals.OPTIONS['report_pid'] = False
 		main.setup(['--user=a','--password=b'])
 		self.assertTrue(main.proctl.ensure_singleton_process.called)
-		
+

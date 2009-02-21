@@ -38,7 +38,9 @@ all_options = (bootstrap_options[0] + main_options[0],
                bootstrap_options[1] + main_options[1])
 
 def unicode_argv(args = None):
-	return [unicode(arg, 'utf-8') for arg in (sys.argv[1:] if args is None else args)]
+	if args is None:
+		args = sys.argv[1:]
+	return [unicode(arg, 'utf-8') for arg in args]
 
 def bootstrap(argv = None):
 	argv = unicode_argv(argv)
