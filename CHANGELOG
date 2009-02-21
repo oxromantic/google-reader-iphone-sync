@@ -1,6 +1,11 @@
+0.6.1:
+	- Retry broken images on next sync
+	- Bug fixes for instapaper and UI
+	
 0.6.0:
 	- Instapaper integration. The "send to" button in the reading panel
 	  now has both email and instapaper options.
+	- Swipe to mark as read ("delete") in the feed item list
 
 0.5.3:
 	- sync process will now abandon threads that appear to be stuck, instead
