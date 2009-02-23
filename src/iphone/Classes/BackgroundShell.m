@@ -42,8 +42,14 @@ static FILE * my_popen (char * command, const char * type, pid * tid);
 #pragma mark the main polling loop
 - (void) main {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	BOOL success = TRUE;
+	if(delegate && [delegate respondsToSelector:@selector(backgroundShellShouldBegin:)]) {
+		success = (BOOL)[delegate backgroundShellShouldBegin:self];
+		if(!success) {
+			goto main_end;
+		}
+	}
 	FILE *proc = [self startCommand];
-	BOOL success;
 	if(proc == NULL) {
 		NSLog("popen failed!");
 		success = false;
@@ -54,6 +60,8 @@ static FILE * my_popen (char * command, const char * type, pid * tid);
 			pool = [[NSAutoreleasePool alloc] init];
 		}
 	}
+
+main_end:
 	[self performSelectorOnMainThread:@selector(notifyOfCompletion:) withObject:[NSNumber numberWithBool:success] waitUntilDone:YES];
 	[pool release];
 }

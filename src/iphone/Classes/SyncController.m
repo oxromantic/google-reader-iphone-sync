@@ -98,7 +98,7 @@ NSString * escape_single_quotes(NSString * str) {
 	[status_taskProgress setHidden:NO];
 	[status_mainProgress setHidden:NO];
 	
-	// animate!
+	// animate
 	[syncStatusView animateFadeIn];
 	
 	// reset output
@@ -119,6 +119,30 @@ NSString * escape_single_quotes(NSString * str) {
 
 - (IBAction) syncStatusOnly: (id) sender {
 	[self syncWithType: Status];
+}
+
+- (BOOL) backgroundShellShouldBegin: (id) bgshell {
+	BOOL ret = [self forceInternetConnection];
+	if(!ret) {
+		last_output_line = @"No internet connection found";
+	}
+	return ret;
+}
+
+- (BOOL) forceInternetConnection {
+	// grab google's home page; forcing an EDGE/3G connection to be made
+	// (python's urlopen seems not to trigger this, so we do it in obj-c land)
+	dbg(@"Forcing connection to google.com...");
+	NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString: @"http://www.google.com/"] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval: 20];
+	NSURLResponse * response;
+	NSData * data = [NSURLConnection sendSynchronousRequest: request returningResponse: &response error: nil];
+	BOOL success = (data != nil);
+	if(!success) {
+		dbg(@"connection failed");
+	} else {
+		dbg(@"..OK");
+	}
+	return success;
 }
 
 - (void) ensureSingletonWorkerAction:(id)obj {
