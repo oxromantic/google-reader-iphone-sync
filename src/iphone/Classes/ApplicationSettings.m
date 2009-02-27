@@ -6,6 +6,22 @@
 
 NSString * _docsPath = nil;
 
+// these keys should not be changed without good reason - it'll break
+// configs saved with an earlier version of the app:
+NSString * keyIpaperUser = @"ipaperUser";
+NSString * keyIpaperPassword = @"ipaperPassword";
+NSString * keyPassword = @"password";
+NSString * keyUser = @"user";
+NSString * keyNumItems = @"num_items";
+NSString * keyTagList = @"tagList";
+NSString * keyLastItemID = @"lastItemID";
+NSString * keyLastItemTag = @"lastItemTag";
+NSString * keyNavBarOnTop = @"navBarOnTop";
+NSString * keyRotationLock = @"rotationLock";
+NSString * keyOpenInSafari = @"openInSafari";
+NSString * keyShowReadItems = @"showReadItems";
+NSString * keyNewestFirst = @"newestFirst";
+
 @implementation ApplicationSettings
 - (NSString *) docsPath {
 	docsPath = [ApplicationSettings docsPath];
@@ -202,6 +218,7 @@ NSString * _docsPath = nil;
 	[navBarOnTopToggle setOn: [self navBarOnTop]];
 	[openLinksInSafariToggle setOn:[self openLinksInSafari]];
 	[newestItemsFirstToggle setOn: [self sortNewestItemsFirst]];
+	[rotationLockToggle setOn: [self rotationLock]];
 	[feedList setSelectedFeeds: [self tagList]];
 	[feedList setFeedList: possibleTags];
 	for(id view in [feedsPlaceholderView subviews]) {
@@ -225,32 +242,32 @@ NSString * _docsPath = nil;
 	return val && [val boolValue];
 }
 
-- (BOOL) navBarOnTop       { return [self boolFromKey:@"navBarOnTop"]; }
-- (BOOL) openLinksInSafari { return [self boolFromKey:@"openInSafari"]; }
-- (BOOL) showReadItems     { return [self boolFromKey:@"showReadItems"]; }
-- (BOOL) rotationLock      { return rotationLock; }
-- (BOOL) sortNewestItemsFirst{ return [self boolFromKey:@"newestFirst"]; }
-- (NSString *) ipaperEmail       { return [plistData valueForKey:@"ipaperUser"]; }
-- (NSString *) ipaperPassword    { return [plistData valueForKey:@"ipaperPassword"]; }
+- (BOOL) navBarOnTop       { return [self boolFromKey:keyNavBarOnTop]; }
+- (BOOL) openLinksInSafari { return [self boolFromKey:keyOpenInSafari]; }
+- (BOOL) showReadItems     { return [self boolFromKey:keyShowReadItems]; }
+- (BOOL) sortNewestItemsFirst{ return [self boolFromKey:keyNewestFirst]; }
+- (BOOL) rotationLock      { return [self boolFromKey:keyRotationLock]; }
+- (NSString *) ipaperEmail       { return [plistData valueForKey:keyIpaperUser]; }
+- (NSString *) ipaperPassword    { return [plistData valueForKey:keyIpaperPassword]; }
 
-- (NSString *) email       { return [plistData valueForKey:@"user"]; }
-- (NSString *) password    { return [plistData valueForKey:@"password"]; }
+- (NSString *) email       { return [plistData valueForKey:keyUser]; }
+- (NSString *) password    { return [plistData valueForKey:keyPassword]; }
 
 - (id) tagList     { 
-	id tags = [plistData valueForKey:@"tagList"];
+	id tags = [plistData valueForKey:keyTagList];
 	if([[tags class] isSubclassOfClass: [@"" class]]) { // TODO: why can't I just pass the NSString class object?
 		tags = [tags componentsSeparatedByString:@"\n"];
 	}
 	return tags;
 }
 - (int) itemsPerFeed     {
-	int val = [[plistData valueForKey:@"num_items"] intValue];
+	int val = [[plistData valueForKey:keyNumItems] intValue];
 	if(val) return val;
 	return 20; // default
 }
 
-- (NSString *) getLastViewedItem { return [plistData valueForKey:@"lastItemID"]; }
-- (NSString *) getLastViewedTag { return [plistData valueForKey:@"lastItemTag"]; }
+- (NSString *) getLastViewedItem { return [plistData valueForKey:keyLastItemID]; }
+- (NSString *) getLastViewedTag { return [plistData valueForKey:keyLastItemTag]; }
 	
 #pragma mark SETTING values
 - (void) saveValue:(id) val forKey:(NSString *) key {
@@ -262,26 +279,26 @@ NSString * _docsPath = nil;
 	[self saveValue: [NSNumber numberWithBool: val] forKey:key];
 }
 
-- (void) setNavBarOnTop:(BOOL) newVal       { [self setBool:newVal forKey:@"navBarOnTop"];  }
-- (void) setOpenLinksInSafari:(BOOL) newVal { [self setBool:newVal forKey:@"openInSafari"];  }
-- (void) setReadItems:(BOOL) newVal         { [self setBool:newVal forKey:@"showReadItems"]; }
-- (void) setRotationLock:(BOOL) newVal      { rotationLock = newVal; } // this is intentionally not persisted
+- (void) setNavBarOnTop:(BOOL) newVal       { [self setBool:newVal forKey:keyNavBarOnTop];  }
+- (void) setOpenLinksInSafari:(BOOL) newVal { [self setBool:newVal forKey:keyOpenInSafari];  }
+- (void) setReadItems:(BOOL) newVal         { [self setBool:newVal forKey:keyShowReadItems]; }
+- (void) setRotationLock:(BOOL) newVal      { [self setBool:newVal forKey:keyRotationLock]; }
 - (void) setSortNewestItemsFirst:(BOOL) newVal {
-	[self setBool:newVal forKey:@"newestFirst"];
+	[self setBool:newVal forKey:keyNewestFirst];
 	[[self globalAppDelegate] refreshItemLists];
 }
 
 - (void) saveLastViewedItem {
 	[plistData setValue:
 		[[[UIApplication sharedApplication] delegate] currentItemID]
-		forKey:@"lastItemID"];
+		forKey:keyLastItemID];
 	[plistData setValue:
 		[[[[[[[UIApplication sharedApplication] delegate] mainController] navController] topViewController] delegate] tag]
-		forKey:@"lastItemTag"];
+		forKey:keyLastItemTag];
 }
 
 - (void) setTagList: (NSArray *) selectedTags {
-	[self saveValue:selectedTags forKey:@"tagList"];
+	[self saveValue:selectedTags forKey:keyTagList];
 }
 
 #pragma mark event handlers
@@ -289,13 +306,13 @@ NSString * _docsPath = nil;
 - (IBAction) stringValueDidChange:(id)sender {
 	NSString * key;
 	if(sender == emailField) {
-		key = @"user";
+		key = keyUser;
 	} else if (sender == passwordField) {
-		key = @"password";
+		key = keyPassword;
 	} else if (sender == ipaperPasswordField) {
-		key = @"ipaperPassword";
+		key = keyIpaperPassword;
 	} else if (sender == ipaperEmailField) {
-		key = @"ipaperUser";
+		key = keyIpaperUser;
 	} else {
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;
@@ -362,7 +379,7 @@ NSString * _docsPath = nil;
 - (IBAction) itemsPerFeedDidChange: (id) sender {
 	int itemsPerFeed = [self itemsPerFeedValue: sender];
 	[itemsPerFeedLabel setText: [NSString stringWithFormat: @"%d", itemsPerFeed]];
-	[self saveValue:[NSNumber numberWithInt:itemsPerFeed] forKey:@"num_items"];
+	[self saveValue:[NSNumber numberWithInt:itemsPerFeed] forKey:keyNumItems];
 	[sender setValue: itemsPerFeed];
 }
 

@@ -1,5 +1,6 @@
 0.6.2:
 	- Allow multiple links per-item to be saved to instapaper
+	- Save state of "Rotation Lock" option between launches
 
 0.6.1:
 	- Retry broken images on next sync
