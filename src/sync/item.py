@@ -137,14 +137,19 @@ class Item:
 		for f in glob.glob(app_globals.OPTIONS['output_path'] + '/*.' + self.safe_google_id + '.*'):
 			rm_rf(f)
 		rm_rf(self.resources_path)
-
+	
+	def get_instpapaer_urls(self):
+		return set(self.instapaper_url.split('|'))
+	instapaper_urls = property(get_instpapaer_urls)
+	
 	def save_to_web(self):
 		if not self.is_dirty:
 			return
 		
 		# instapaper URL
 		if self.instapaper_url and len(self.instapaper_url) > 0:
-			app_globals.INSTAPAPER.add_url(self.instapaper_url)
+			app_globals.INSTAPAPER.add_urls(self.instapaper_urls)
+			self.instapaper_url = ''
 		
 		# read status
 		if self.is_read:

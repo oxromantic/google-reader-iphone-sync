@@ -60,4 +60,12 @@ class InstapaperTest(TestCase):
 		app_globals.OPTIONS['ipaper_password'] = None
 		mock_on(urllib2).urlopen.is_expected.no_times()
 		self.ip.add_url('http://localhost/', 'the title')
+	
+	def test_should_add_multiple_urls(self):
+		add_url = mock_on(self.ip).add_url
+		add_url.is_expected.twice()
+		add_url.is_expected.with_('a')
+		add_url.is_expected.with_('b')
+		
+		self.ip.add_urls(['a','b'])
 		

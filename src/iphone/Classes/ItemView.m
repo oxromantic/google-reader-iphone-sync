@@ -168,7 +168,6 @@
 }
 
 - (IBAction) instapaperSyncForCurrentItem:(id) sender {
-	[TCHelpers alertCalled:@"Save to instapaper" saying:@"The next link you tap will be saved to instapaper"];
 	if([[[[[UIApplication sharedApplication] delegate] settings] ipaperEmail] length] == 0) {
 		[TCHelpers alertCalled:@"Warning:" saying:@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync"];
 	}

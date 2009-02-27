@@ -1,3 +1,6 @@
+0.6.2:
+	- Allow multiple links per-item to be saved to instapaper
+
 0.6.1:
 	- Retry broken images on next sync
 	- Bug fixes for instapaper and UI

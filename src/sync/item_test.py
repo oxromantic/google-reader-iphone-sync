@@ -6,6 +6,8 @@ import test_helper
 from lib.mock import Mock
 import unittest
 
+import mocktest as mt
+
 sample_item = {
 	'author': u'pizzaburger',
 	'categories': {u'user/-/label/03-comics---imagery': u'03-comics---imagery',
@@ -32,7 +34,7 @@ def item_with(**kwargs):
 	item.update(kwargs)
 	return item
 
-class ItemTest(unittest.TestCase):
+class ItemTest(mt.TestCase):
 
 	def setUp(self):
 		self.output_folder = test_helper.init_output_folder()
@@ -90,6 +92,16 @@ class ItemTest(unittest.TestCase):
 	def test_strip_unicode_from_basename(self):
 		item = Item(item_with_title('caf&eacute;&#39;s'), 'feed-name')
 		self.assertTrue(' cafs .||' in item.basename)
+	
+	def test_should_sync_unique_instapaper_urls(self):
+		ipaper = mt.mock_wrapper()
+		app_globals.INSTAPAPER = ipaper.mock
+		ipaper.expects('add_urls').with_(set(['url1', 'url2']))
+		
+		item = Item(item_with_title('blah'))
+		item.instapaper_url = 'url1|url2|url2'
+		item.is_dirty = True
+		item.save_to_web()
 		
 	def test_insert_media_items(self):
 		global process

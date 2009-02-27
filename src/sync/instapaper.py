@@ -19,6 +19,9 @@ class Ipaper(object):
 	def missing(self, obj):
 		return (not isinstance(obj, str)) or len(obj) == 0
 	
+	def add_urls(self, urls):
+		map(self.add_url, urls)
+	
 	def add_url(self, url, title = None):
 		self._setup()
 		if self.missing(self.user) or not isinstance(self.password, str):
