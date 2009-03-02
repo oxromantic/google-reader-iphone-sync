@@ -112,4 +112,4 @@ class ItemTest(mt.TestCase):
 		process.download_images = Mock()
 		item.download_images()
 		self.assertEqual(process.insert_enclosure_images.call_args[1]['url_list'], media)
-		
+	

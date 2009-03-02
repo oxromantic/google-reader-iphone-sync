@@ -37,6 +37,7 @@ class VersionDBTest(unittest.TestCase):
 		self.db.close()
 		self.db = None
 		
+		
 	def tables(self):
 		return map(first, self.db.execute('select name from sqlite_master where type = \'table\'').fetchall())
 	
@@ -157,7 +158,7 @@ class DBTest(unittest.TestCase):
 		
 		# simulate getting of the new items again:
 		for item_id in google_ids(new_items):
-			self.db.is_read(item_id)
+			self.db.update_content_for_item(self.db.get(item_id))
 		
 		self.assertEqual(sorted(google_ids(self.db.get_items_list())), sorted(google_ids(all_items)))
 
@@ -166,19 +167,13 @@ class DBTest(unittest.TestCase):
 		
 		self.assertEqual(sorted(google_ids(self.db.get_items_list())), sorted(google_ids(new_items)))
 	
-	def test_is_read(self):
-		assert self.db.is_read('sample_id') == None
-		self.db.add_item(fake_item())
-		assert self.db.is_read('sample_id') == False
-		self.db.sql('update items set is_read = 1 where google_id = "sample_id"')
-		assert self.db.is_read('sample_id') == True
-	
 	def test_updating_item_contents(self):
-		assert self.db.is_read('sample_id') == None
+		assert self.db.get('sample_id') == None
 		item = fake_item()
 		self.db.add_item(fake_item())
 		item = fake_item(content='content2', tag_name='tagname2')
 		self.db.update_content_for_item(item)
+		self.assertEqual(1 , len(self.db.get_items_list('is_stale = 0 and google_id = \'sample_id\'')))
 		item = list(self.db.get_items('google_id = "sample_id"'))[0]
 		self.assertEqual(item.content, 'content2')
 		self.assertEqual(item.tag_name, 'tagname2')

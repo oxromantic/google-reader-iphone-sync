@@ -142,7 +142,7 @@ def process_item(item, item_thread_pool = None):
 			if db_item.had_errors:
 				debug("reprocessing erroneous item: %s" % (item.title,))
 				db_item.redownload_images()
-			db_item.update()
+		db_item.update()
 		increment_subtask()
 	else:
 		try:

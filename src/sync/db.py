@@ -134,7 +134,7 @@ class DB:
 			[getattr(item, attr) for attr in self.cols])
 	
 	def update_content_for_item(self, item):
-		self.sql("update items set content=?, tag_name=? where google_id=?", (item.content, item.tag_name, item.google_id))
+		self.sql("update items set content=?, tag_name=?, is_stale=? where google_id=?", (item.content, item.tag_name, False, item.google_id))
 	
 	def remove_item(self, item):
 		google_id = item.google_id
@@ -189,20 +189,6 @@ class DB:
 		self.db.close()
 		self.db = None
 
-	def is_read(self, google_id, mark_as_fresh = True):
-		"""
-		check if an item is marked as read in the DB.
-		If the id is not in the database, returns None
-		"""
-		cursor = self.sql('select is_read from items where google_id = ?', (google_id,))
-		try:
-			is_read = cursor.next()[0] == 1 # truth is 1 in sqlite's mind
-			if mark_as_fresh:
-				self.mark_item_as_fresh(google_id)
-			return is_read
-		except StopIteration:
-			return None
-		
 	def sync_to_google(self):
 		puts("Syncing with google...")
 		status("SUBTASK_TOTAL", self.get_item_count('is_dirty = 1'))
@@ -224,9 +210,6 @@ class DB:
 	def prepare_for_download(self):
 		self.sql('update items set is_stale = ?', (True,))
 	
-	def mark_item_as_fresh(self, item_id):
-		self.sql('update items set is_stale = ? where google_id = ?', (False, item_id))
-		
 	def cleanup_stale_items(self):
 		self.sql('delete from items where is_stale = ?', (True,))
 	

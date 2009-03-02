@@ -18,7 +18,6 @@ class FeedItem(object):
 			# self.original_id = feed_item['original_id']
 			# self.media = try_lookup(feed_item, 'media')
 			# self.is_dirty = False
-			# self.is_stale = False
 		return """
 			<html>
 				<head>
