@@ -34,10 +34,11 @@ OPTIONS = {
 }
 
 STATS = {
-	'items':  0,
-	'failed': 0,
-	'new':    0,
-	'read':   0,
+	'items':       0,
+	'failed':      0,
+	'new':         0,
+	'read':        0,
+	'reprocessed': 0,
 }
 
 # These ones get set to useful values in main.py

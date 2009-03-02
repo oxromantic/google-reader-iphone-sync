@@ -129,10 +129,13 @@ def process_item(item, item_thread_pool = None):
 		app_globals.STATS['read'] += 1
 		danger("About to delete item")
 		item.delete()
+		increment_subtask()
+		return
 
 	if db_item is not None:
 		# we aready know about it - update any necessary info
 		if db_item.had_errors or db_item.tag_name != item.tag_name:
+			app_globals.STATS['reprocessed'] += 1
 			print "setting %s tag name to %s" % (db_item, item.tag_name)
 			db_item.tag_name = item.tag_name
 			print "set it to %s" % (db_item.tag_name,)
@@ -186,6 +189,8 @@ def download_new_items():
 	info("%s items marked as read" % app_globals.STATS['read'])
 	if app_globals.STATS['failed'] > 0:
 		puts("%s items failed to parse" % app_globals.STATS['failed'])
+	if app_globals.STATS['reprocessed'] > 0:
+		puts("%s items reprocessed because of previously failed image downloads" % (app_globals.STATS['reprocessed']))
 
 def setup(opts=None):
 	"""Parse options. If none given, opts is set to sys.argv"""
