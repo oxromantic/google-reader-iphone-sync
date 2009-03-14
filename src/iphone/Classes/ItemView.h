@@ -3,8 +3,8 @@
 
 @interface ItemView : UIWebView {
 	IBOutlet id appDelegate;
-	IBOutlet id titleDisplay;
-
+	IBOutlet id windowView;
+	
 	IBOutlet id buttonPrev;
 	IBOutlet id buttonNext;
 	IBOutlet id buttonStar;

@@ -1,6 +1,12 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+enum {
+	openLinksInAskMeIndex = 0,
+	openLinksInSafariIndex = 1,
+	openLinksInGrisIndex = 2
+} openLinksIndexEnum;
+
 @interface ApplicationSettings : NSObject {
 	NSString * docsPath;
 	NSMutableDictionary * plistData;
@@ -25,9 +31,9 @@
 	
 	IBOutlet id showReadItemsToggle;
 	IBOutlet id rotationLockToggle;
-	IBOutlet id openLinksInSafariToggle;
 	IBOutlet id navBarOnTopToggle;
 	IBOutlet id newestItemsFirstToggle;
+	IBOutlet id openLinksInSegmentControl;
 	BOOL rotationLock;
 	
 	IBOutlet id feedList;
@@ -46,9 +52,12 @@
 - (IBAction) itemsPerFeedDidChange: (id) sender;
 - (IBAction) stringValueDidChange:(id)sender;
 - (IBAction) switchValueDidChange:(id) sender;
+- (IBAction) segmentValueDidChange:(id) sender;
 
 - (IBAction) activatePasswordField:(id)sender;
 - (IBAction) deactivateBothFields:(id)sender;
 - (IBAction) textFieldDidEndEditing:(UITextField *)sender;
 - (IBAction) deactivateTagListField:(id) sender;
+- (int) openLinksInSelectedIndex;
+
 @end

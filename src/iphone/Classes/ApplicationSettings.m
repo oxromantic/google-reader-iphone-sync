@@ -18,9 +18,15 @@ NSString * keyLastItemID = @"lastItemID";
 NSString * keyLastItemTag = @"lastItemTag";
 NSString * keyNavBarOnTop = @"navBarOnTop";
 NSString * keyRotationLock = @"rotationLock";
-NSString * keyOpenInSafari = @"openInSafari";
+NSString * keyOpenLinksIn = @"openLinksIn";
 NSString * keyShowReadItems = @"showReadItems";
 NSString * keyNewestFirst = @"newestFirst";
+
+NSString * openLinksInAskMeValue = @"ask";
+NSString * openLinksInSafariValue = @"safari";
+NSString * openLinksInGrisValue = @"gris";
+NSArray * openLinksInSegmentValues;
+NSArray * deprecatedProperties;
 
 @implementation ApplicationSettings
 - (NSString *) docsPath {
@@ -85,7 +91,14 @@ NSString * keyNewestFirst = @"newestFirst";
 	}
 	dbg(@"Loaded plist data", plistData);
 	dbg_s(@"%@", plistData);
+	[self removeDeprecatedProperties];
 	[self loadFeedList];
+}
+
+- (void) removeDeprecatedProperties {
+	for(NSString * deprecatedProperty in deprecatedProperties) {
+		[plistData removeObjectForKey: deprecatedProperty];
+	}
 }
 
 - (void) reloadFeedList {
@@ -134,6 +147,9 @@ NSString * keyNewestFirst = @"newestFirst";
 - (id) init {
 	self = [super init];
 	plistName = @"config.plist";
+	if(openLinksInSegmentValues == nil) openLinksInSegmentValues = [[NSArray alloc] initWithObjects: openLinksInAskMeValue, openLinksInSafariValue, openLinksInGrisValue, nil];
+	if(deprecatedProperties == nil) deprecatedProperties = [[NSArray alloc] initWithObjects: @"openInSafari", nil];
+
 	[self docsPath];
 	[self load];
 	return self;
@@ -216,7 +232,7 @@ NSString * keyNewestFirst = @"newestFirst";
 	[itemsPerFeedLabel setText:[NSString stringWithFormat:@"%d", [self itemsPerFeed]]];
 	[showReadItemsToggle setOn: [self showReadItems]];
 	[navBarOnTopToggle setOn: [self navBarOnTop]];
-	[openLinksInSafariToggle setOn:[self openLinksInSafari]];
+	[openLinksInSegmentControl setSelectedSegmentIndex: [self openLinksInSelectedIndex]];
 	[newestItemsFirstToggle setOn: [self sortNewestItemsFirst]];
 	[rotationLockToggle setOn: [self rotationLock]];
 	[feedList setSelectedFeeds: [self tagList]];
@@ -243,12 +259,21 @@ NSString * keyNewestFirst = @"newestFirst";
 }
 
 - (BOOL) navBarOnTop       { return [self boolFromKey:keyNavBarOnTop]; }
-- (BOOL) openLinksInSafari { return [self boolFromKey:keyOpenInSafari]; }
 - (BOOL) showReadItems     { return [self boolFromKey:keyShowReadItems]; }
 - (BOOL) sortNewestItemsFirst{ return [self boolFromKey:keyNewestFirst]; }
 - (BOOL) rotationLock      { return [self boolFromKey:keyRotationLock]; }
 - (NSString *) ipaperEmail       { return [plistData valueForKey:keyIpaperUser]; }
 - (NSString *) ipaperPassword    { return [plistData valueForKey:keyIpaperPassword]; }
+
+// meta-properties (possible values of openLinksIn)
+- (int) openLinksInSelectedIndex {
+	NSString * value = [plistData valueForKey:keyOpenLinksIn];
+	NSUInteger index = [openLinksInSegmentValues indexOfObject: value];
+	if (index == NSNotFound) {
+		index = 0; // default
+	}
+	return index;
+}
 
 - (NSString *) email       { return [plistData valueForKey:keyUser]; }
 - (NSString *) password    { return [plistData valueForKey:keyPassword]; }
@@ -272,6 +297,7 @@ NSString * keyNewestFirst = @"newestFirst";
 #pragma mark SETTING values
 - (void) saveValue:(id) val forKey:(NSString *) key {
 	[plistData setValue:val forKey:key];
+	dbg_s(@"setting value %@ for key %@", val, key);
 	[self save];
 }
 
@@ -279,10 +305,10 @@ NSString * keyNewestFirst = @"newestFirst";
 	[self saveValue: [NSNumber numberWithBool: val] forKey:key];
 }
 
-- (void) setNavBarOnTop:(BOOL) newVal       { [self setBool:newVal forKey:keyNavBarOnTop];  }
-- (void) setOpenLinksInSafari:(BOOL) newVal { [self setBool:newVal forKey:keyOpenInSafari];  }
-- (void) setReadItems:(BOOL) newVal         { [self setBool:newVal forKey:keyShowReadItems]; }
-- (void) setRotationLock:(BOOL) newVal      { [self setBool:newVal forKey:keyRotationLock]; }
+- (void) setNavBarOnTop:(BOOL) newVal        { [self setBool:newVal forKey:keyNavBarOnTop];  }
+- (void) setReadItems:(BOOL) newVal          { [self setBool:newVal forKey:keyShowReadItems]; }
+- (void) setRotationLock:(BOOL) newVal       { [self setBool:newVal forKey:keyRotationLock]; }
+- (void) setOpenLinksIn: (NSString *) newVal { [self saveValue: newVal forKey:keyOpenLinksIn]; }
 - (void) setSortNewestItemsFirst:(BOOL) newVal {
 	[self setBool:newVal forKey:keyNewestFirst];
 	[[self globalAppDelegate] refreshItemLists];
@@ -317,7 +343,6 @@ NSString * keyNewestFirst = @"newestFirst";
 		NSLog(@"unknown item sent ApplicationSettings stringValueDidChange: %@", sender);
 		return;
 	}
-	dbg_s(@"setting plist value '%@' to '%@'", key, [sender text]);
 	[self saveValue: [sender text] forKey:key];
 }
 
@@ -327,8 +352,6 @@ NSString * keyNewestFirst = @"newestFirst";
 		[self setReadItems: newValue];
 	} else if(sender == rotationLockToggle) {
 		[self setRotationLock: newValue];
-	} else if(sender == openLinksInSafariToggle) {
-		[self setOpenLinksInSafari: newValue];
 	} else if(sender == newestItemsFirstToggle) {
 		[self setSortNewestItemsFirst: newValue];
 	} else if(sender == navBarOnTopToggle) {
@@ -336,6 +359,10 @@ NSString * keyNewestFirst = @"newestFirst";
 	} else {
 		dbg(@"unknown sender sent switchValueDidChange to ApplicationSettings");
 	}
+}
+
+- (IBAction) segmentValueDidChange:(id) sender {
+	[self setOpenLinksIn: [openLinksInSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
 }
 
 // general handler for text view & text fields

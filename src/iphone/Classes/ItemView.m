@@ -152,7 +152,7 @@
 			@"Email this item",
 			@"Instapaper (read later)",
 			nil] autorelease];
-	[actionSheet showInView: self];
+	[actionSheet showInView: windowView];
 }
 
 - (IBAction) actionSheet: (id) sender clickedButtonAtIndex: (NSInteger) index {

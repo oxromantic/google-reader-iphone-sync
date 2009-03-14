@@ -1,4 +1,5 @@
 #import "ItemViewDelegate.h"
+#import "ApplicationSettings.h"
 #import "TCHelpers.h"
 
 
@@ -15,23 +16,82 @@
 	waitingForInstapaperLinkClick = nil;
 }
 
+- (IBAction) actionSheet: (id) sender clickedButtonAtIndex: (NSInteger) index {
+	dbg(@"clicked %d", index);
+	switch(index) {
+		case 0: [self openInSafari: pendingRequest];     break;
+		case 1: [self forceOpenInGris: pendingRequest];  break;
+		case 2: [self saveToInstapaper: pendingRequest]; break;
+	}
+}
+
+- (void) openInSafari:(NSURLRequest *) req {
+	[[self globalApp] openURL: [req URL]];
+	[self clearPendingRequest];
+}
+
+- (void) saveToInstapaper:(NSURLRequest *) req {
+	dbg(@"saving url for instapaper: %@", [[req URL] absoluteString]);
+	[waitingForInstapaperLinkClick setIpaperURL: [[req URL] absoluteString]];
+	waitingForInstapaperLinkClick = nil;
+	[TCHelpers alertCalled:@"Instapaper" saying:@"Link will be saved on next sync."];
+	[self clearPendingRequest];
+}
+
+- (void) clearPendingRequest {
+	[pendingRequest release];
+	pendingRequest = nil;
+}
+
+- (void) forceOpenInGris:(NSURLRequest *) res {
+	[webView loadRequest: pendingRequest];
+	[self clearPendingRequest];
+}
+
+- (void) promptForWhereToOpenLink: (NSURLRequest *) req {
+	dbg(@"asking...");
+	pendingRequest = [req retain];
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Open link with:"
+		delegate: self
+		cancelButtonTitle: @"Cancel"
+		destructiveButtonTitle: nil
+		otherButtonTitles:
+			@"Safari",
+			@"GRiS (open here)",
+			@"Instapaper (read later)",
+			nil] autorelease];
+	[actionSheet showInView: viewerView];
+}
+
 - (BOOL) webView:(id) view shouldStartLoadWithRequest:(NSURLRequest *) request navigationType:(UIWebViewNavigationType) type
 {
-	bool dealtWith = NO;
 	if(type == UIWebViewNavigationTypeLinkClicked) {
 		if(waitingForInstapaperLinkClick) {
-			dbg(@"saving url for instapaper: %@", [[request URL] absoluteString]);
-			[waitingForInstapaperLinkClick setIpaperURL: [[request URL] absoluteString]];
-			dealtWith = YES;
-			[TCHelpers alertCalled:@"Instapaper" saying:@"Link will be saved on next sync."];
-		}
-		waitingForInstapaperLinkClick = nil;
-		if (dealtWith) return NO;
-		
-		if([[self globalAppSettings] openLinksInSafari]) {
-			dbg(@"opening url in safari: %@", [request URL]);
-			[[self globalApp] openURL: [request URL]];
+			[self saveToInstapaper: request];
 			return NO;
+		}
+		
+		if (pendingRequest != nil) {
+			return YES;
+		}
+		
+		switch((int)([[self globalAppSettings] openLinksInSelectedIndex])) {
+			case openLinksInAskMeIndex:
+				[self promptForWhereToOpenLink: request];
+				return NO;
+			break;
+			
+			case openLinksInSafariIndex:
+				[self openInSafari: request];
+				return NO;
+			break;
+			
+			case openLinksInGrisIndex:
+				return YES;
+			break;
+			
+			default: dbg(@"unknown \"open with\" type: %d", (int)([[self globalAppSettings] openLinksInSelectedIndex])); break;
+			
 		}
 	}
 	return YES;
