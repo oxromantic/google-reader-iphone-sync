@@ -94,8 +94,8 @@ class ItemTest(mt.TestCase):
 		self.assertTrue(' cafs .||' in item.basename)
 	
 	def test_should_sync_unique_instapaper_urls(self):
-		ipaper = mt.mock_wrapper()
-		app_globals.INSTAPAPER = ipaper.mock
+		ipaper = mt.mock()
+		app_globals.INSTAPAPER = ipaper.raw
 		ipaper.expects('add_urls').with_(set(['url1', 'url2']))
 		
 		item = Item(item_with_title('blah'))

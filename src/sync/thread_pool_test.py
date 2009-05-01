@@ -67,18 +67,18 @@ class ThreadPoolTest(TestCase):
 		self.assert_uses_a_lock_for(lambda: self.pool.collect_all())
 		
 	def test_sucessful_callback_on_next_collect(self):
-		success = mock_wrapper()
-		self.pool.spawn(self.action(), on_success = success.mock)
+		success = mock()
+		self.pool.spawn(self.action(), on_success = success.raw)
 		self.wait_for_action()
 		self.assertFalse(success.called)
 		self.pool.collect()
 		self.assertTrue(success.called.once())
 
 	def test_standard_error_callback(self):
-		success = mock_wrapper().named('success')
-		fail = mock_wrapper().named('fail')
+		success = mock().named('success')
+		fail = mock().named('fail')
 		
-		self.pool.spawn(self.action(lambda: self.raise_(ValueError)), on_success = success.mock, on_error = fail.mock)
+		self.pool.spawn(self.action(lambda: self.raise_(ValueError)), on_success = success.raw, on_error = fail.raw)
 		self.wait_for_action()
 		self.pool.collect()
 		
@@ -86,27 +86,27 @@ class ThreadPoolTest(TestCase):
 		self.assertTrue(success.called.no_times())
 
 	def test_should_log_standard_error_when_no_error_callback_given(self):
-		success = mock_wrapper().named('success')
+		success = mock().named('success')
 		self.error_logged = False
 		def errd(e):
 			self.error_logged = True
 
 		mock_on(thread_pool).log_error.with_action(lambda desc, e: errd(e)).is_expected.once()
 		
-		self.pool.spawn(self.action(lambda: self.raise_(ValueError)), on_success = success.mock)
+		self.pool.spawn(self.action(lambda: self.raise_(ValueError)), on_success = success.raw)
 		self.wait_for_action()
 		self.pool.collect()
 		
 		self.assertTrue(success.called.no_times())
 	
 	def test_should_not_catch_nonstandard_errors(self):
-		success = mock_wrapper().named('success')
-		fail = mock_wrapper().named('fail')
+		success = mock().named('success')
+		fail = mock().named('fail')
 		
 		class Dummy(Exception):
 			pass
 
-		self.pool.spawn(self.action(lambda: self.raise_(Dummy)), on_success = success.mock, on_error = fail.mock)
+		self.pool.spawn(self.action(lambda: self.raise_(Dummy)), on_success = success.raw, on_error = fail.raw)
 		self.wait_for_action()
 		self.pool.collect()
 		
