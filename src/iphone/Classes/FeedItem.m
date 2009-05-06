@@ -133,6 +133,7 @@
 					</h1>                                                                                   \n\
 					<div class='via'>                                                                       \n\
 						%@                                                 <!-- feed_name -->               \n\
+						%@                                                 <!-- position_info -->           \n\
 					</div>                                                                                  \n\
 				</div>                                                                                      \n\
 				<div class='content'><p>                                                                    \n\
@@ -141,7 +142,6 @@
 				<div class='post-info footer'>                                                              \n\
 					<div class='date'>                                                                      \n\
 						<b>%@</b> in <b>%@</b>                             <!-- date, tag_name -->          \n\
-						%@                                                 <!-- position_info -->           \n\
 					</div>                                                                                  \n\
 					<div>                                                                                   \n\
 						(<i>%@</i>)                                        <!-- domain -->                  \n\
@@ -149,7 +149,7 @@
 				</div>                                                                                      \n\
 			</body>                                                                                         \n\
 		</html>",
-		url, title, [self truncateString: feed_name toMaxLength: 84], content, [self dateStr:YES], tag_name, position_info, [self domainName]] autorelease];
+		url, title, [self truncateString: feed_name toMaxLength: 84], position_info, content, [self dateStr:YES], tag_name, [self domainName]] autorelease];
 }
 
 - (void) userDidScrollPast {
