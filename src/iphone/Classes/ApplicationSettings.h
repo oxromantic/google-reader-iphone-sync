@@ -2,9 +2,10 @@
 #import <Foundation/Foundation.h>
 
 enum {
-	openLinksInAskMeIndex = 0,
-	openLinksInSafariIndex = 1,
-	openLinksInGrisIndex = 2
+	openLinksInAskMeIndex = 0
+	, openLinksInSafariIndex = 1
+	, openLinksInGrisIndex = 2
+	, openLinksInInstapaperIndex = 3
 } openLinksIndexEnum;
 
 @interface ApplicationSettings : NSObject {

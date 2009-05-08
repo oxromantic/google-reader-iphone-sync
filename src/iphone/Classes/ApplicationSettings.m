@@ -25,6 +25,7 @@ NSString * keyNewestFirst = @"newestFirst";
 NSString * openLinksInAskMeValue = @"ask";
 NSString * openLinksInSafariValue = @"safari";
 NSString * openLinksInGrisValue = @"gris";
+NSString * openLinksInInstapaperValue = @"instapaper";
 NSArray * openLinksInSegmentValues;
 NSArray * deprecatedProperties;
 
@@ -147,7 +148,7 @@ NSArray * deprecatedProperties;
 - (id) init {
 	self = [super init];
 	plistName = @"config.plist";
-	if(openLinksInSegmentValues == nil) openLinksInSegmentValues = [[NSArray alloc] initWithObjects: openLinksInAskMeValue, openLinksInSafariValue, openLinksInGrisValue, nil];
+	if(openLinksInSegmentValues == nil) openLinksInSegmentValues = [[NSArray alloc] initWithObjects: openLinksInAskMeValue, openLinksInSafariValue, openLinksInGrisValue, openLinksInInstapaperValue, nil];
 	if(deprecatedProperties == nil) deprecatedProperties = [[NSArray alloc] initWithObjects: @"openInSafari", nil];
 
 	[self docsPath];

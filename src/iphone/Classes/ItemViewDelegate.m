@@ -90,6 +90,11 @@
 				return YES;
 			break;
 			
+			case openLinksInInstapaperIndex:
+				[self saveToInstapaper:request];
+				return NO;
+			break;
+			
 			default: dbg(@"unknown \"open with\" type: %d", (int)([[self globalAppSettings] openLinksInSelectedIndex])); break;
 			
 		}
