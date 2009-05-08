@@ -1,3 +1,6 @@
+0.6.6:
+	- minor visual tweaks
+
 0.6.1:
 	- prompt (by default) how to open links. This can be overridden in
 	  settings to be always gris or always safari. The "ask" option
