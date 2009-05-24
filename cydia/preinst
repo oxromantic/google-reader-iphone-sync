@@ -3,6 +3,6 @@
 # copy user settings to /tmp, in case this is part of a clean / reinstall
 if [ -d '/var/mobile/GRiS' ]; then
 	rm -rf /tmp/GRiS
-	mv /var/mobile/GRiS /tmp/GRiS
+	mv /var/mobile/GRiS /tmp/GRiS || echo "no ~/GRiS folder found"
 	exit 0
 fi

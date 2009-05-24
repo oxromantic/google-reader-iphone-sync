@@ -3,5 +3,5 @@
 if [ "$1" = 'remove' -o "$1" == 'purge' ]; then
 	echo "removing /tmp/GRiS"
 	rm -rf /tmp/GRiS
-	mv /var/mobile/GRiS /tmp/
+	mv /var/mobile/GRiS /tmp/ || echo "no ~/GRiS folder found"
 fi
