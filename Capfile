@@ -82,6 +82,46 @@ task :build do
 	local "xcodebuild -project src/iphone/GRiS.xcodeproj -configuration #{ENV['build'] || "Release"}"
 end
 
+IPHONE_ROOT = "src/iphone"
+EN = "English"
+SP = "Spanish"
+
+IB = "ib"
+NS = "Localizable"
+
+namespace :iphone do
+	def lang name=EN
+		"#{name}.lproj"
+	end
+	
+	def strings_file language=EN, type=IB
+		"#{lang(language)}/#{type}.strings"
+	end
+	
+	def ib_file language=EN
+		"#{lang language}/MainWindow.xib"
+	end
+		
+	desc 'generate EN strings files'
+	task :strings do
+		local "cd #{IPHONE_ROOT} && ibtool --generate-strings-file #{strings_file EN} #{ib_file EN}"
+		local "cd #{IPHONE_ROOT} && genstrings -o #{lang EN} Classes/*"
+		puts "generated: #{IPHONE_ROOT}/#{strings_file EN, IB}"
+		puts "generated: #{IPHONE_ROOT}/#{strings_file EN, NS}"
+	end
+	
+	desc 'make $lang localised nib'
+	task :makenib do
+		l = ENV['lang']
+		raise "please set \"lang\"" if l.nil?
+		local "cd #{IPHONE_ROOT} && ibtool --strings-file=#{strings_file l} --write #{ib_file l} #{ib_file EN}"
+	end
+
+	task :clean do
+		local "rm -rf #{build_dir}"
+	end
+end
+
 namespace :package do
 	desc "create a cydia package"
 	task :default do
@@ -164,10 +204,7 @@ namespace :package do
 		build_repository
 
 	end
-
-	task :clean do
-		local "rm -rf #{build_dir}"
-	end
+	
 end
 
 # ----------- helpers -------------
