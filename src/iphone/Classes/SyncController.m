@@ -23,7 +23,37 @@
 
 typedef enum { Default, FeedList, Status, Singleton } SyncType;
 
+NSDictionary * STATUS_LINES;
+
 @implementation SyncController
+
+NSDictionary * status_lines() {
+	if(!STATUS_LINES) {
+		STATUS_LINES = [[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Authorizing", _lang(@"Authorizing",""),
+			@"Pushing status", _lang(@"Pushing status",""),
+			@"Cleaning up old resources", _lang(@"Cleaning up old resources",""),
+			@"Downloading tag", _lang(@"Downloading tag",""),
+			nil] retain];
+	}
+	return STATUS_LINES;
+}
+
+- (NSString *) translateStartOfString:(NSString *) status_line {
+	NSBundle * bundle = [NSBundle bundleForClass:[self class]];
+	NSString * translatable;
+	NSString * translated;
+	NSDictionary * _status_lines = status_lines();
+	for (id key in _status_lines) { 
+		translatable = [_status_lines objectForKey:key];
+		if([status_line hasPrefix: translatable]) {
+			translated = [bundle localizedStringForKey:translatable value:translatable table:nil];
+			status_line = [status_line stringByReplacingOccurrencesOfString: translatable withString: translated];
+			break;
+		}
+	} 
+	return status_line;
+}
 
 NSString * escape_single_quotes(NSString * str) {
 	return [str stringByReplacingOccurrencesOfString:@"'" withString:@"'\"'\"'"];
@@ -92,7 +122,7 @@ NSString * escape_single_quotes(NSString * str) {
 	[window addSubview: syncStatusView];
 	[syncStatusView setAlpha: 1.0];
 	[syncStatusView setFrame: [window frame]];
-	[status_currentTask setText: @"Loading..."];
+	[self setStatusTextWithoutTranslation: _lang(@"Loading...","")];
 	[status_mainProgress setProgress: 0.0];
 	[status_taskProgress setProgress: 0.0];
 	[status_taskProgress setHidden:NO];
@@ -124,7 +154,7 @@ NSString * escape_single_quotes(NSString * str) {
 - (BOOL) backgroundShellShouldBegin: (id) bgshell {
 	BOOL ret = [self forceInternetConnection];
 	if(!ret) {
-		last_output_line = @"No internet connection found";
+		last_output_line = _lang(@"No internet connection found","");
 	}
 	return ret;
 }
@@ -181,8 +211,8 @@ NSString * escape_single_quotes(NSString * str) {
 	if(pid > 0) {
 		sync_pid = pid;
 		[[[[UIAlertView alloc]
-			initWithTitle:@"GRiS Sync" message: @"There is already a sync running. It is either stuck, or a scheduled sync.\nStop it?"
-			delegate:self cancelButtonTitle:@"Cancel (quit)" otherButtonTitles:@"Stop sync", nil]
+			initWithTitle:_lang(@"GRiS Sync","") message: _lang(@"There is already a sync running. It is either stuck, or a scheduled sync.\nStop it?","")
+			delegate:self cancelButtonTitle:_lang(@"Cancel (quit)","") otherButtonTitles:_lang(@"Stop sync",""), nil]
 				autorelease] show];
 	}
 }
@@ -208,7 +238,7 @@ NSString * escape_single_quotes(NSString * str) {
 		return;
 	}
 	NSLog(@"cancelling thread...");
-	last_output_line = @"Cancelled.";
+	last_output_line = _lang(@"Cancelled.","");
 	[syncThread cancel];
 	[cancelButton setHidden:YES];
 }
@@ -270,13 +300,21 @@ NSString * escape_single_quotes(NSString * str) {
 
 #pragma mark delegate callbacks
 - (void) backgroundShell:(id)shell didFinishWithSuccess:(BOOL) success {
-	[status_currentTask setText:last_output_line];
+	[self setStatusText:last_output_line];
 	[syncThread release];
 	syncThread = nil;
 	[self showSyncFinished];
 	if([last_output_line hasPrefix:@"Sync complete."]) {
 		[self hideSyncView:self];
 	}
+}
+
+- (void) setStatusText: (NSString *) status_line {
+	[status_currentTask setText: [self translateStartOfString: status_line]];
+}
+
+- (void) setStatusTextWithoutTranslation: (NSString *) status_line {
+	[status_currentTask setText: status_line];
 }
 
 - (void) backgroundShell:(id)shell didProduceOutput:(NSString *) line {
@@ -295,7 +333,7 @@ NSString * escape_single_quotes(NSString * str) {
 				} else if([type isEqualToString:@"TASK_PROGRESS"]){
 					// new sub-task, with optional description
 					if(numStatusComponents > 3) {
-						[status_currentTask setText: [statusComponents objectAtIndex:3]];
+						[self setText: [statusComponents objectAtIndex:3]];
 					}
 					[status_mainProgress setProgress: ([[statusComponents objectAtIndex:2] floatValue] / (float)totalTasks )];
 					[status_taskProgress setProgress: 0.0];

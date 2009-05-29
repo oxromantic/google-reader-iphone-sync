@@ -12,6 +12,8 @@
 	#define dbg_s( ... ) {}
 #endif
 
+#define _lang(s,desc) NSLocalizedString(s, desc)
+
 @interface TCHelpers : NSObject {
 }
 + (BOOL) ensureDirectoryExists:(NSString *)path;

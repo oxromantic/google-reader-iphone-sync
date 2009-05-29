@@ -12,3 +12,5 @@ src/iphone/GRiS.xcodeproj/*.tm_build_errors
 src/iphone/GRiS.tmproj
 src/iphone/build/
 src/iphone/Icon.png
+*.xib
+!English.lproj/*.xib

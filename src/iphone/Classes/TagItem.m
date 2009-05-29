@@ -23,7 +23,9 @@
 
 - (NSString *) descriptionText {
 	if(count < 0) return @"";
-	return [NSString stringWithFormat: @"%d item%s", count, PLURAL(count)];
+	NSString * item_s = _lang(@"item","");
+	NSString * items_s = _lang(@"items","");
+	return [NSString stringWithFormat: @"%d %@", count, PLURAL(count, item_s, items_s)];
 }
 
 - (void) refreshCount {

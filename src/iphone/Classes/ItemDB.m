@@ -17,7 +17,7 @@
 
 @implementation ItemDB
 
-NSString * all_items_tag = @"All Items";
+#define all_items_tag _lang(@"All Items","")
 
 #define db_ok [self dbHadError]
 #define if_error if([self dbHadError])

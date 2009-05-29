@@ -1,7 +1,7 @@
 #import "TCHelpers.h"
 #import <UIKit/UIKit.h>
 
-char * PLURAL(int objects) { return objects == 1 ? "" : "s"; }
+char * PLURAL(int objects, NSString * singular, NSString * pluralised) { return objects == 1 ? singular : pluralised; }
 
 @implementation TCHelpers
 + (BOOL) ensureDirectoryExists:(NSString *)path {
@@ -24,7 +24,7 @@ char * PLURAL(int objects) { return objects == 1 ? "" : "s"; }
 
 + (void) alertCalled: (NSString *) title saying: (NSString *) msg {
 	[[[[UIAlertView alloc]
-		initWithTitle:title message: msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil]
+		initWithTitle:title message: msg delegate:nil cancelButtonTitle:nil otherButtonTitles:_lang(@"OK",""), nil]
 			autorelease] show];
 }
 

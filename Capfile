@@ -105,7 +105,8 @@ namespace :iphone do
 	desc 'generate EN strings files'
 	task :strings do
 		local "cd #{IPHONE_ROOT} && ibtool --generate-strings-file #{strings_file EN} #{ib_file EN}"
-		local "cd #{IPHONE_ROOT} && genstrings -o #{lang EN} Classes/*"
+		find_cmd = "find Classes -not -iname 'TCHelp*.h' -and -iregex '.*\.[mh]' -and -maxdepth 1"
+		local "cd #{IPHONE_ROOT} && #{find_cmd} -print0 | xargs -0 genstrings -o #{lang EN} -s _lang"
 		puts "generated: #{IPHONE_ROOT}/#{strings_file EN, IB}"
 		puts "generated: #{IPHONE_ROOT}/#{strings_file EN, NS}"
 	end

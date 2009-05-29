@@ -104,22 +104,27 @@
 	// bah.. nstimeinterval is just a float of the number of seconds!
 	int hours = timePassed / (60 * 60);
 	int days = hours / 24;
-	char * pastOrFuture;
+	NSString * pastOrFuture;
 	if(!longFormat) {
-		pastOrFuture = "";
+		pastOrFuture = @"";
 	} else {
-		pastOrFuture = (hours < 0) ? " in the future" : " ago";
+		pastOrFuture = (hours < 0) ? _lang(@"in the future","") : _lang(@"ago", "as in, \"7 hours ago\"");
 	}
+	NSString * hour_s = _lang(@"hour","");
+	NSString * hours_s = _lang(@"hours","");
+	NSString * day_s = _lang(@"day","");
+	NSString * days_s = _lang(@"days","");
 	
 	if(abs(days) < 1){
-		dateStr = [NSString stringWithFormat: @"%d hour%s%s", hours, PLURAL(hours), pastOrFuture];
+		dateStr = [NSString stringWithFormat: @"%d %@ %@", hours, PLURAL(hours, hour_s, hours_s), pastOrFuture];
 	} else {
-		dateStr = [NSString stringWithFormat: @"%d day%s%s", days, PLURAL(days), pastOrFuture];
+		dateStr = [NSString stringWithFormat: @"%d %@ %@", days, PLURAL(days, day_s, days_s), pastOrFuture];
 	}
 	return dateStr;
 }
 
 - (NSString *) htmlForPosition:(NSString *)position_info {
+	NSString * in_s = _lang(@"in", "as in, \"posted 7 hours ago _in_ this feed name\"");
 	return [[NSString stringWithFormat:
 		@"<html>                                                                                            \n\
 			<head>                                                                                          \n\
@@ -141,7 +146,7 @@
 				</div>                                                                                      \n\
 				<div class='post-info footer'>                                                              \n\
 					<div class='date'>                                                                      \n\
-						<b>%@</b> in <b>%@</b>                             <!-- date, tag_name -->          \n\
+						<b>%@</b> %@ <b>%@</b>                             <!-- date, in_s, tag_name -->    \n\
 					</div>                                                                                  \n\
 					<div>                                                                                   \n\
 						(<i>%@</i>)                                        <!-- domain -->                  \n\
@@ -149,7 +154,12 @@
 				</div>                                                                                      \n\
 			</body>                                                                                         \n\
 		</html>",
-		url, title, [self truncateString: feed_name toMaxLength: 84], position_info, content, [self dateStr:YES], tag_name, [self domainName]] autorelease];
+		url, title,
+		[self truncateString: feed_name toMaxLength: 84],
+		position_info,
+		content,
+		[self dateStr:YES], in_s, tag_name,
+		[self domainName]] autorelease];
 }
 
 - (void) userDidScrollPast {
@@ -169,7 +179,6 @@
 - (void) setIpaperURL: (NSString *) linkUrl {
 	is_dirty = YES;
 	NSString * new_string;
-	// [linkUrl retain];
 
 	// ensure the url dividing character does not appear unescaped in the URL:
 	linkUrl = [linkUrl stringByReplacingOccurrencesOfString:@"|" withString: @"%7C"];

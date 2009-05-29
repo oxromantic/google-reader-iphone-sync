@@ -34,7 +34,7 @@
 	dbg(@"saving url for instapaper: %@", [[req URL] absoluteString]);
 	[waitingForInstapaperLinkClick setIpaperURL: [[req URL] absoluteString]];
 	waitingForInstapaperLinkClick = nil;
-	[TCHelpers alertCalled:@"Instapaper" saying:@"Link will be saved on next sync."];
+	[TCHelpers alertCalled:@"Instapaper" saying:_lang(@"Link will be saved on next sync.","")];
 	[self clearPendingRequest];
 }
 
@@ -50,15 +50,17 @@
 
 - (void) promptForWhereToOpenLink: (NSURLRequest *) req {
 	dbg(@"asking...");
+	NSString * open_here = _lang(@"open here","");
+	NSString * read_later = _lang(@"read later","");
 	pendingRequest = [req retain];
-	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Open link with:"
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:_lang(@"Open link with:","")
 		delegate: self
-		cancelButtonTitle: @"Cancel"
+		cancelButtonTitle: _lang(@"Cancel","")
 		destructiveButtonTitle: nil
 		otherButtonTitles:
-			@"Safari",
-			@"GRiS (open here)",
-			@"Instapaper (read later)",
+			_lang(@"Safari",""),
+			[NSString stringWithFormat: @"GRiS (%s)", open_here],
+			[NSString stringWithFormat: @"Instapaper (%s)", read_later],
 			nil] autorelease];
 	[actionSheet showInView: viewerView];
 }

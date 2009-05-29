@@ -144,13 +144,13 @@
 }
 
 - (IBAction) moreActions:(id) sender {
-	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:@"Send a link:"
+	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:_lang(@"Send a link:","")
 		delegate: self
-		cancelButtonTitle: @"Cancel"
+		cancelButtonTitle: _lang(@"Cancel","")
 		destructiveButtonTitle: nil // is it a title or a number? the documentation is confused...
 		otherButtonTitles:
-			@"Email this item",
-			@"Instapaper (read later)",
+			_lang(@"Email this item",""),
+			_lang(@"Instapaper (read later)",""),
 			nil] autorelease];
 	[actionSheet showInView: windowView];
 }
@@ -169,14 +169,14 @@
 
 - (IBAction) instapaperSyncForCurrentItem:(id) sender {
 	if([[[[[UIApplication sharedApplication] delegate] settings] ipaperEmail] length] == 0) {
-		[TCHelpers alertCalled:@"Warning:" saying:@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync"];
+		[TCHelpers alertCalled:_lang(@"Warning:","") saying:_lang(@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync","")];
 	}
 	[[self delegate] setWaitingForInstapaperLinkClick:currentItem];
 }
 
 - (IBAction) emailCurrentItem:(id) sender {
 	NSString * emailURL = [NSString stringWithFormat:@"mailto:?subject=%@&body=%@",
-		[@"A link for you!" stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
+		[_lang(@"A link for you!","") stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
 		[[currentItem url]  stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]
 	];
 	dbg(@"email url: %@ app=%@", emailURL, [UIApplication sharedApplication]);

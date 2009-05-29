@@ -93,7 +93,7 @@
 		[optionsUnderlayView removeFromSuperview];
 		[optionsView removeFromSuperview];
 		[self refreshItemLists];
-		[optionsButton setTitle: @"Options"];
+		[optionsButton setTitle: _lang(@"Options","")];
 	} else {
 		[currentView addSubview: optionsUnderlayView];
 		[optionsUnderlayView fitToSuperview];
@@ -101,7 +101,7 @@
 		[optionsView fitToSuperviewWidth];
 		[optionsView setHidden: NO];
 		[optionsView animateFadeIn];
-		[optionsButton setTitle: @"Done"];
+		[optionsButton setTitle: _lang(@"Done","")];
 	}
 }
 - (id) currentListController {

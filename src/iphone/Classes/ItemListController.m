@@ -11,7 +11,7 @@
 - (id) title {
 	NSString * title = [delegate tag];
 	if(!title) {
-		title = @"[no tag]";
+		title = [NSString stringWithFormat: @"[%s]", _lang(@"no tag","")];
 	}
 	return title;
 }
@@ -61,13 +61,15 @@
 - (IBAction) markItemsAsUnread: (id) sender { [self markAllItemsWithReadState: NO];  }
 
 - (void) markItemsWithReadState: (BOOL) read {
+	NSString * read_s = _lang(@"read","");
+	NSString * unread_s = _lang(@"unread","");
 	alertWasForMarkingAsRead = read;
 	markAsReadAlert = [[UIAlertView alloc]
-		initWithTitle: [NSString stringWithFormat: @"Mark as %@",read ? @"read":@"unread"]
-		message: [NSString stringWithFormat:@"Do you really want to mark all these items as %@?", read ? @"read":@"unread"]
+		initWithTitle: [NSString stringWithFormat: _lang(@"Mark as %@",""), read ? read_s : unread_s]
+		message: [NSString stringWithFormat: _lang(@"Do you really want to mark all these items as %@?",""), read ? read_s : unread_s]
 		delegate: self
-		cancelButtonTitle: @"Cancel"
-		otherButtonTitles: @"OK", nil];
+		cancelButtonTitle: _lang(@"Cancel","")
+		otherButtonTitles: _lang(@"OK",""), nil];
 	[markAsReadAlert show];
 }
 

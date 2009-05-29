@@ -216,7 +216,7 @@
 		if(tag == nil && [itemSet count] > 1) {
 			// add the "All Items" tag
 			itemSet = [NSMutableArray arrayWithArray: itemSet];
-			[itemSet insertObject: [[[TagItem alloc] initWithTag: @"All Items" count: [db itemCountForTag:nil] db:db] autorelease] atIndex: 0];
+			[itemSet insertObject: [[[TagItem alloc] initWithTag: _lang(@"All Items","") count: [db itemCountForTag:nil] db:db] autorelease] atIndex: 0];
 		}
 		[itemSet retain];
 	}
