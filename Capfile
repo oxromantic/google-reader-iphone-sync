@@ -105,6 +105,7 @@ namespace :iphone do
 	end
 	
 	def lang name=EN
+		raise "Unknown language: #{name}" unless (LANGS + [EN]).include? name 
 		"#{name}.lproj"
 	end
 	
@@ -142,7 +143,7 @@ namespace :iphone do
 	task :translate do
 		l = ENV['lang']
 		raise "please set \"lang\"" if l.nil?
-		translate_(lang)
+		translate_(l)
 	end
 
 	task :clean do
