@@ -74,22 +74,36 @@ build_dir = ".GRiS.pkg-build"
 app = "GRiS"
 app_dir = "#{build_dir}/#{app}"
 
-desc "build the native iPhone app"
-task :build do
-	icon_suffix = 'test'
-	icon_suffix = 'release' if $deploy_branches.include? $branch
-	system("cp src/iphone/Icon_#{icon_suffix}.png src/iphone/Icon.png") or puts "Couldn't copy Icon_#{icon_suffix}.png\n" + "-" * 80
-	local "xcodebuild -project src/iphone/GRiS.xcodeproj -configuration #{ENV['build'] || "Release"}"
-end
 
 IPHONE_ROOT = "src/iphone"
 EN = "English"
 SP = "Spanish"
+LANGS = [SP]
 
 IB = "ib"
 NS = "Localizable"
 
+desc "iphone:build"
+task :build do
+	iphone.build
+end
+
 namespace :iphone do
+	desc "build the native iPhone app"
+	task :build do
+		build_langs
+		icon_suffix = 'test'
+		icon_suffix = 'release' if $deploy_branches.include? $branch
+		system("cp src/iphone/Icon_#{icon_suffix}.png src/iphone/Icon.png") or puts "Couldn't copy Icon_#{icon_suffix}.png\n" + "-" * 80
+		local "xcodebuild -project src/iphone/GRiS.xcodeproj -configuration #{ENV['build'] || "Release"}"
+	end
+	
+	task :build_langs do
+		LANGS.each do |l|
+			translate_(l)
+		end
+	end
+	
 	def lang name=EN
 		"#{name}.lproj"
 	end
@@ -111,11 +125,24 @@ namespace :iphone do
 		puts "generated: #{IPHONE_ROOT}/#{strings_file EN, NS}"
 	end
 	
-	desc 'make $lang localised nib'
-	task :makenib do
+	def translate_(l)
+		[IB, NS].each do |type|
+			path = "#{IPHONE_ROOT}/#{strings_file(l, type)}"
+			eng_path = "#{IPHONE_ROOT}/#{strings_file(EN, type)}"
+			unless File.exist? path
+				local "cp #{eng_path} #{path}"
+				print "created: #{path}"
+			end
+		end
+		local "cd #{IPHONE_ROOT} && ibtool --strings-file=#{strings_file l} --write #{ib_file l} #{ib_file EN}"
+
+	end
+	
+	desc 'make $lang resources'
+	task :translate do
 		l = ENV['lang']
 		raise "please set \"lang\"" if l.nil?
-		local "cd #{IPHONE_ROOT} && ibtool --strings-file=#{strings_file l} --write #{ib_file l} #{ib_file EN}"
+		translate_(lang)
 	end
 
 	task :clean do
@@ -126,7 +153,7 @@ end
 namespace :package do
 	desc "create a cydia package"
 	task :default do
-		build
+		top.iphone.build
 		do_package
 	end
 
