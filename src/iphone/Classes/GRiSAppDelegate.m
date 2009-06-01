@@ -23,6 +23,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	dbg(@"application finished launching");
+	dbg(@"Locale: %@", [[NSLocale currentLocale] localeIdentifier]);
 	[syncController ensureSingleton];
 	[window setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
 	
