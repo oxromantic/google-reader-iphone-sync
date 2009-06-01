@@ -34,6 +34,7 @@ NSDictionary * status_lines() {
 			@"Pushing status", _lang(@"Pushing status",""),
 			@"Cleaning up old resources", _lang(@"Cleaning up old resources",""),
 			@"Downloading tag", _lang(@"Downloading tag",""),
+			@"Sync complete.", _lang(@"Sync Complete.",""),
 			nil] retain];
 	}
 	return STATUS_LINES;
@@ -333,7 +334,7 @@ NSString * escape_single_quotes(NSString * str) {
 				} else if([type isEqualToString:@"TASK_PROGRESS"]){
 					// new sub-task, with optional description
 					if(numStatusComponents > 3) {
-						[self setText: [statusComponents objectAtIndex:3]];
+						[self setStatusText: [statusComponents objectAtIndex:3]];
 					}
 					[status_mainProgress setProgress: ([[statusComponents objectAtIndex:2] floatValue] / (float)totalTasks )];
 					[status_taskProgress setProgress: 0.0];
