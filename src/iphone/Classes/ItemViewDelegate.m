@@ -59,8 +59,8 @@
 		destructiveButtonTitle: nil
 		otherButtonTitles:
 			_lang(@"Safari",""),
-			[NSString stringWithFormat: @"GRiS (%s)", open_here],
-			[NSString stringWithFormat: @"Instapaper (%s)", read_later],
+			[NSString stringWithFormat: @"GRiS (%@)", open_here],
+			[NSString stringWithFormat: @"Instapaper (%@)", read_later],
 			nil] autorelease];
 	[actionSheet showInView: viewerView];
 }
