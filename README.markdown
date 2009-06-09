@@ -8,7 +8,7 @@ GRis (Google Reader iPhone Sync) is an RSS feed reader for the iPhone. There are
 * ... and it's entirely open source (the best kind of free).
 
 ## Using it:
-The best way to install is via my cydia repository at [gfxmonk.sysprosoft.com/cydia/](http://gfxmonk.sysprosoft.com/cydia/)
+The best way to install is via my cydia repository at [gfxmonk.net/cydia/](http://gfxmonk.net/cydia/)
 
 If you want to distribute a modified package, you *must* edit the `cydia/control` file so that it won't clash with official versions. You should also probably change the icon, so people don't get confused.
 

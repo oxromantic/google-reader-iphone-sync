@@ -1,3 +1,9 @@
+0.6.8:
+	- Spanish! And localization in general, paving the way for more
+	  languages. Thanks to Daniel Martinez for the Spanish translation.
+	  If anyone can provide translations to additional languages,
+	  please get in touch.
+	
 0.6.7:
 	- added "always open in instapaper" option for link clicks
 
