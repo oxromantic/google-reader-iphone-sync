@@ -21,6 +21,7 @@ NSString * keyRotationLock = @"rotationLock";
 NSString * keyOpenLinksIn = @"openLinksIn";
 NSString * keyShowReadItems = @"showReadItems";
 NSString * keyNewestFirst = @"newestFirst";
+NSString * keyMarkAsReadWhenGoingBackwards = @"markAsReadWhenGoingBackwards";
 
 NSString * openLinksInAskMeValue = @"ask";
 NSString * openLinksInSafariValue = @"safari";
@@ -294,7 +295,8 @@ NSArray * deprecatedProperties;
 
 - (NSString *) getLastViewedItem { return [plistData valueForKey:keyLastItemID]; }
 - (NSString *) getLastViewedTag { return [plistData valueForKey:keyLastItemTag]; }
-	
+- (BOOL) markAsReadWhenGoingBackwards { return [self boolFromKey: keyMarkAsReadWhenGoingBackwards]; }
+
 #pragma mark SETTING values
 - (void) saveValue:(id) val forKey:(NSString *) key {
 	[plistData setValue:val forKey:key];

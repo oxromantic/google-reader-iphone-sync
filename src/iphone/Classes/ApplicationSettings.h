@@ -59,6 +59,7 @@ enum {
 - (IBAction) deactivateBothFields:(id)sender;
 - (IBAction) textFieldDidEndEditing:(UITextField *)sender;
 - (IBAction) deactivateTagListField:(id) sender;
+- (BOOL) markAsReadWhenGoingBackwards;
 - (int) openLinksInSelectedIndex;
 
 @end

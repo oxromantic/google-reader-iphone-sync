@@ -93,6 +93,9 @@
 }
 
 - (IBAction) goBack{
+	if([[appDelegate settings] markAsReadWhenGoingBackwards]) {
+		[currentItem userDidScrollPast];
+	}
 	[self loadItemAtIndex:currentItemIndex - 1];
 }
 
