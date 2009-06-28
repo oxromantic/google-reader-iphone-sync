@@ -31,6 +31,7 @@ OPTIONS = {
 	'password':         PLACEHOLDER,
 	'ipaper_user':      PLACEHOLDER,
 	'ipaper_password':  PLACEHOLDER,
+	'url_save_service': 'instapaper', # can also be 'pagefeed'
 }
 
 STATS = {

@@ -1,22 +1,38 @@
-import os
 import urllib
 import urllib2
-import cookielib
+
+from output import *
+
+import app_globals
+from lib.app_engine_auth import AppEngineAuth
 
 # BASE_URI = 'http://localhost:8082/'
 BASE_URI = 'http://pagefeed.appspot.com/'
 APP_NAME = "pagefeed-1.0"
 
 class PageFeed(object):
-	def __init__(self, email, password):
-		self.email = email
-		auth = AppEngineLogin(email, password)
-		self.auth_key = auth.login(APP_NAME, BASE_URI)
+	def __init__(self, email=None, password=None):
+		self.email = email or app_globals.OPTIONS['user']
+		self.password = password or app_globals.OPTIONS['password']
+		self.auth_key = None
+	
+	def _setup():
+		if self.auth_key is None:
+			debug("authorising to app engine")
+			auth = AppEngineAuth(email, password)
+			self.auth_key = auth.login(APP_NAME, BASE_URI)
+	
+	def add_urls(self, urls):
+		map(self.add, urls)
 
 	def add(self, url):
+		self._setup()
+		debug("adding url to pagefeed: %s" % (url,))
 		self._post('page/', params={'url':url})
 	
 	def delete(self, url):
+		self._setup()
+		debug("deleting url from pagefeed: %s" % (url,))
 		self._post('page/del/', params={'url':url})
 
 	# ------------------------------

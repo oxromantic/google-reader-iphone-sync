@@ -143,10 +143,11 @@ class Item:
 	instapaper_urls = property(get_instpapaer_urls)
 	
 	def save_to_web(self):
+		print "saving item..."
 		if not self.is_dirty:
 			return
 		
-		# instapaper URL
+		# instapaper / pagefeed URLs
 		if self.instapaper_url and len(self.instapaper_url) > 0:
 			app_globals.INSTAPAPER.add_urls(self.instapaper_urls)
 			self.instapaper_url = ''

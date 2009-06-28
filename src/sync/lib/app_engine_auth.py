@@ -8,7 +8,7 @@ AUTH_TYPE = "HOSTED_OR_GOOGLE"
 # adapted from:
 # http://stackoverflow.com/questions/101742/how-do-you-access-an-authenticated-google-app-engine-service-from-a-non-web-pyt
 
-class AppEngineLogin(object):
+class AppEngineAuth(object):
 	def __init__(self, email, password, auth_uri=AUTH_URI, auth_type=AUTH_TYPE):
 		self.email = email
 		self.password = password
@@ -47,9 +47,8 @@ class AppEngineLogin(object):
 		serv_req = urllib2.Request(full_serv_uri)
 		serv_resp = urllib2.urlopen(serv_req)
 		serv_resp_body = serv_resp.read()
-		print serv_resp_body
 		return self.key
 	
 	def logout(self, app_uri):
-		pass
+		raise StandardError("not yet implemented")
 
