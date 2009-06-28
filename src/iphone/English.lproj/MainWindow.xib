@@ -8,10 +8,10 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="309"/>
 			<integer value="615"/>
 			<integer value="223"/>
 			<integer value="575"/>
+			<integer value="309"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2365,6 +2365,14 @@ dGluZ3MiKQ</string>
 					</object>
 					<int key="connectionID">664</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">itemView</string>
+						<reference key="source" ref="811035549"/>
+						<reference key="destination" ref="735352380"/>
+					</object>
+					<int key="connectionID">665</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -3397,7 +3405,7 @@ dGluZ3MiKQ</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">664</int>
+			<int key="maxID">665</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3728,6 +3736,7 @@ dGluZ3MiKQ</string>
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>itemView</string>
 							<string>spinner</string>
 							<string>viewerView</string>
 							<string>waitingForInstapaperLinkClick</string>
@@ -3735,6 +3744,7 @@ dGluZ3MiKQ</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>ItemView</string>
 							<string>id</string>
 							<string>UIView</string>
 							<string>id</string>
@@ -3864,7 +3874,7 @@ dGluZ3MiKQ</string>
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">GRiS.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../GRiS.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

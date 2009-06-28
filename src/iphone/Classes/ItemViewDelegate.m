@@ -32,8 +32,13 @@
 
 - (void) saveToInstapaper:(NSURLRequest *) req {
 	dbg(@"saving url for instapaper: %@", [[req URL] absoluteString]);
+	if(!waitingForInstapaperLinkClick) {
+		[self setWaitingForInstapaperLinkClick:[itemView currentItem]];
+	}
+	dbg(@"%@", waitingForInstapaperLinkClick);
+	
 	[waitingForInstapaperLinkClick setIpaperURL: [[req URL] absoluteString]];
-	waitingForInstapaperLinkClick = nil;
+	[self setWaitingForInstapaperLinkClick: nil];
 	[TCHelpers alertCalled:@"Instapaper" saying:_lang(@"Link will be saved on next sync.","")];
 	[self clearPendingRequest];
 }

@@ -16,10 +16,10 @@ class PageFeed(object):
 		self.password = password or app_globals.OPTIONS['password']
 		self.auth_key = None
 	
-	def _setup():
+	def _setup(self):
 		if self.auth_key is None:
 			debug("authorising to app engine")
-			auth = AppEngineAuth(email, password)
+			auth = AppEngineAuth(self.email, self.password)
 			self.auth_key = auth.login(APP_NAME, BASE_URI)
 	
 	def add_urls(self, urls):

@@ -42,6 +42,13 @@
 - (BOOL) hasChildren { return NO; }
 
 - (void) save {
+	dbg(@"saving item \"%@\" (%@, %@, %@, %@, %@)", title,
+		is_read ? @"read":@"unread",
+		is_starred ? @"starred":@"unstarred",
+		is_shared ? @"shared":@"unshared",
+		is_dirty ? @"dirty":@"up-to-date",
+		ipaper_url ? @"has saved links":@"no saved links");
+	
 	[source_db updateItem:self];
 }
 
