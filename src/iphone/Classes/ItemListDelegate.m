@@ -258,6 +258,10 @@
 	// and a delete button appears. like magic!
 }
 
+-(void) tableView:(UITableView*) tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath*) path {
+	return _lang(@"hide");
+}
+
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *) indexPath {
 	id item = [self itemAtIndexPath: indexPath];
 	if([item hasChildren] || [item is_read]) {
@@ -267,8 +271,6 @@
 }
 
 - (void) tableView:(UITableView *)tv commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	//FIXME: when deleting rows, the other ones jump around strangely
-	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// delete the item
 		id item = [self itemAtIndexPath: indexPath];
