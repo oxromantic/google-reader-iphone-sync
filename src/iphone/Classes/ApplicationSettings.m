@@ -1,10 +1,9 @@
 #import "ApplicationSettings.h"
 #import "TCHelpers.h"
 
-#define CONTENT_HEIGHT 380
-#define IPAPER_OFFSET 260
-
 NSString * _docsPath = nil;
+
+NSInteger URL_SAVE_OFFSET = 390;
 
 // these keys should not be changed without good reason - it'll break
 // configs saved with an earlier version of the app:
@@ -26,8 +25,14 @@ NSString * keyMarkAsReadWhenGoingBackwards = @"markAsReadWhenGoingBackwards";
 NSString * openLinksInAskMeValue = @"ask";
 NSString * openLinksInSafariValue = @"safari";
 NSString * openLinksInGrisValue = @"gris";
-NSString * openLinksInInstapaperValue = @"instapaper";
+NSString * openLinksInInstapaperValue = @"instapaper"; //TODO: migrate
 NSArray * openLinksInSegmentValues;
+
+NSString * keyUrlSaveService = @"urlSaveService";
+NSString * urlSaveInstapaperValue = @"instapaper";
+NSString * urlSavePageFeedvalue = @"pagefeed";
+NSArray * urlSaveServiceSegmentValues;
+
 NSArray * deprecatedProperties;
 
 @implementation ApplicationSettings
@@ -150,6 +155,7 @@ NSArray * deprecatedProperties;
 	self = [super init];
 	plistName = @"config.plist";
 	if(openLinksInSegmentValues == nil) openLinksInSegmentValues = [[NSArray alloc] initWithObjects: openLinksInAskMeValue, openLinksInSafariValue, openLinksInGrisValue, openLinksInInstapaperValue, nil];
+	if(urlSaveServiceSegmentValues == nil) urlSaveServiceSegmentValues = [[NSArray alloc] initWithObjects: urlSaveInstapaperValue, urlSavePageFeedvalue, nil];
 	if(deprecatedProperties == nil) deprecatedProperties = [[NSArray alloc] initWithObjects: @"openInSafari", nil];
 
 	[self docsPath];
@@ -159,7 +165,6 @@ NSArray * deprecatedProperties;
 
 - (void) awakeFromNib {
 	[smallText setFont: [UIFont systemFontOfSize: 14.0]];
-	[mainScrollView setContentSize: CGSizeMake(320, CONTENT_HEIGHT)];
 	[self setUIElements];
 	[super awakeFromNib];
 }
@@ -218,7 +223,7 @@ NSArray * deprecatedProperties;
 
 - (int) getOffsetForTextFieldEditing: (id) field {
 	if(field == ipaperEmailField || field == ipaperPasswordField) {
-		return IPAPER_OFFSET;
+		return URL_SAVE_OFFSET;
 	} else {
 		return -1;
 	}
@@ -235,6 +240,7 @@ NSArray * deprecatedProperties;
 	[showReadItemsToggle setOn: [self showReadItems]];
 	[navBarOnTopToggle setOn: [self navBarOnTop]];
 	[openLinksInSegmentControl setSelectedSegmentIndex: [self openLinksInSelectedIndex]];
+	[urlSaveServiceSegmentControl setSelectedSegmentIndex: [self urlSaveServiceSelectedIndex]];
 	[newestItemsFirstToggle setOn: [self sortNewestItemsFirst]];
 	[rotationLockToggle setOn: [self rotationLock]];
 	[feedList setSelectedFeeds: [self tagList]];
@@ -267,10 +273,28 @@ NSArray * deprecatedProperties;
 - (NSString *) ipaperEmail       { return [plistData valueForKey:keyIpaperUser]; }
 - (NSString *) ipaperPassword    { return [plistData valueForKey:keyIpaperPassword]; }
 
+- (BOOL) missingInstapaperDetails {
+	BOOL using_ipaper = [self urlSaveServiceSelectedIndex] == urlSaveInstapaperIndex;
+	BOOL no_user = [[self ipaperEmail] length] == 0;
+	dbg(@"no user? %s", no_user ? "yes!": "no...");
+	dbg(@"using ipaper? %s", using_ipaper ? "yes!": "no...");
+	dbg(@"missing details? %s", using_ipaper && no_user ? "yes!": "no...");
+	return using_ipaper && no_user;
+}
+
 // meta-properties (possible values of openLinksIn)
 - (int) openLinksInSelectedIndex {
 	NSString * value = [plistData valueForKey:keyOpenLinksIn];
 	NSUInteger index = [openLinksInSegmentValues indexOfObject: value];
+	if (index == NSNotFound) {
+		index = 0; // default
+	}
+	return index;
+}
+
+- (int) urlSaveServiceSelectedIndex {
+	NSString * value = [plistData valueForKey:keyUrlSaveService];
+	NSUInteger index = [urlSaveServiceSegmentValues indexOfObject: value];
 	if (index == NSNotFound) {
 		index = 0; // default
 	}
@@ -312,6 +336,7 @@ NSArray * deprecatedProperties;
 - (void) setReadItems:(BOOL) newVal          { [self setBool:newVal forKey:keyShowReadItems]; }
 - (void) setRotationLock:(BOOL) newVal       { [self setBool:newVal forKey:keyRotationLock]; }
 - (void) setOpenLinksIn: (NSString *) newVal { [self saveValue: newVal forKey:keyOpenLinksIn]; }
+- (void) setUrlSaveService: (NSString *) newVal { [self saveValue: newVal forKey:keyUrlSaveService]; }
 - (void) setSortNewestItemsFirst:(BOOL) newVal {
 	[self setBool:newVal forKey:keyNewestFirst];
 	[[self globalAppDelegate] refreshItemLists];
@@ -365,7 +390,13 @@ NSArray * deprecatedProperties;
 }
 
 - (IBAction) segmentValueDidChange:(id) sender {
-	[self setOpenLinksIn: [openLinksInSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
+	if(sender == openLinksInSegmentControl) {
+		[self setOpenLinksIn: [openLinksInSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
+	} else if(sender == urlSaveServiceSegmentControl) {
+		[self setUrlSaveService: [urlSaveServiceSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
+	} else {
+		dbg(@"unknown sender to segmentValueDidChange: %@", sender);
+	}
 }
 
 // general handler for text view & text fields

@@ -186,7 +186,7 @@
 - (void) setIpaperURL: (NSString *) linkUrl {
 	is_dirty = YES;
 	NSString * new_string;
-
+	
 	// ensure the url dividing character does not appear unescaped in the URL:
 	linkUrl = [linkUrl stringByReplacingOccurrencesOfString:@"|" withString: @"%7C"];
 	if([ipaper_url length] > 0) {

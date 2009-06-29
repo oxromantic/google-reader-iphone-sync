@@ -39,7 +39,12 @@
 	
 	[waitingForInstapaperLinkClick setIpaperURL: [[req URL] absoluteString]];
 	[self setWaitingForInstapaperLinkClick: nil];
-	[TCHelpers alertCalled:@"Instapaper" saying:_lang(@"Link will be saved on next sync.","")];
+
+	if([[[[UIApplication sharedApplication] delegate] settings] missingInstapaperDetails]) {
+		[TCHelpers alertCalled:_lang(@"Warning:","") saying:_lang(@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before your next sync","")];
+	} else {
+		[TCHelpers alertCalled:_lang(@"Read later", "") saying:_lang(@"Link will be saved on next sync.","")];
+	}
 	[self clearPendingRequest];
 }
 
@@ -55,8 +60,6 @@
 
 - (void) promptForWhereToOpenLink: (NSURLRequest *) req {
 	dbg(@"asking...");
-	NSString * open_here = _lang(@"open here","");
-	NSString * read_later = _lang(@"read later","");
 	pendingRequest = [req retain];
 	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:_lang(@"Open link with:","")
 		delegate: self
@@ -64,8 +67,8 @@
 		destructiveButtonTitle: nil
 		otherButtonTitles:
 			_lang(@"Safari",""),
-			[NSString stringWithFormat: @"GRiS (%@)", open_here],
-			[NSString stringWithFormat: @"Instapaper (%@)", read_later],
+			_lang(@"Open here",""),
+			_lang(@"Save for later",""),
 			nil] autorelease];
 	[actionSheet showInView: viewerView];
 }

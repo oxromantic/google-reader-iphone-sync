@@ -8,6 +8,11 @@ enum {
 	, openLinksInInstapaperIndex = 3
 } openLinksIndexEnum;
 
+enum {
+	urlSaveInstapaperIndex = 0
+	, urlSavePageFeedIndex = 1
+} urlSaveIndexEnum;
+
 @interface ApplicationSettings : NSObject {
 	NSString * docsPath;
 	NSMutableDictionary * plistData;
@@ -36,6 +41,10 @@ enum {
 	IBOutlet id newestItemsFirstToggle;
 	IBOutlet id openLinksInSegmentControl;
 	BOOL rotationLock;
+	
+	IBOutlet id urlSaveServiceSegmentControl;
+	IBOutlet id urlSaveInstapaperView;
+	IBOutlet id urlSavePageFeedView;
 	
 	IBOutlet id feedList;
 	IBOutlet id noFeedsView;
