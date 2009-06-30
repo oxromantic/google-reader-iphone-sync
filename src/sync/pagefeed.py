@@ -42,8 +42,12 @@ class PageFeed(object):
 		return self._load(req)
 	
 	def _load(self, request):
-		response = urllib2.urlopen(request)
-		return response.read()
+		try:
+			response = urllib2.urlopen(request)
+			return response.read()
+		except urllib2.HTTPError, e:
+			puts("The request failed (%s): \n%s" (e.code, e.read()))
+			raise
 
 	def _data(self, params):
 		params = params.copy()
