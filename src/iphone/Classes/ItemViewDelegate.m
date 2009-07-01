@@ -25,6 +25,10 @@
 	}
 }
 
+- (IBAction) actionSheet:(id) sender didDismissWithButtonIndex: (NSInteger) index {
+	[self clearPendingRequest];
+}
+
 - (void) openInSafari:(NSURLRequest *) req {
 	[[self globalApp] openURL: [req URL]];
 	[self clearPendingRequest];
