@@ -75,7 +75,7 @@ class ThreadPool:
 	def _wait_for_any_thread_to_finish(self):
 		initial_count = self._count
 		global_count = self._global_count
-		silence_threshold = 30
+		silence_threshold = 45
 		sleeps = 0
 		
 		# print "WAITING..."
