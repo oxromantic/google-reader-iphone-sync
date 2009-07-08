@@ -7,6 +7,7 @@ import urllib
 import app_globals
 from misc import *
 from output import *
+import thread_pool
 
 # processing modules
 from lib.BeautifulSoup import BeautifulSoup
@@ -89,10 +90,15 @@ class Item:
 	def process(self):
 		debug("item %s -> process()" % self.title)
 		self.soup_setup()
-
+		thread_pool.ping()
+		
 		# process
+		debug("item %s -> insert_alt_text()" % self.title)
 		process.insert_alt_text(self.soup)
+		thread_pool.ping()
+		
 		self.download_images(need_soup = False)
+		thread_pool.ping()
 		
 		# save changes back as content
 		self.soup_teardown()
@@ -116,6 +122,7 @@ class Item:
 			if not success:
 				self.had_errors = True
 		
+		debug("item %s -> download_images()" % (self.title,))
 		success = process.download_images(self.soup,
 			dest_folder = self.resources_path,
 			href_prefix = app_globals.CONFIG['resources_path'] + '/' + self.safe_google_id + '/',

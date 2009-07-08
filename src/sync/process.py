@@ -1,9 +1,10 @@
-import threading
+import thread_pool
 import urllib2, re, os
 
 from lib.BeautifulSoup import BeautifulSoup, Tag
 from misc import *
 from output import *
+import app_globals
 
 # don't bother downloading images smaller than this
 MIN_IMAGE_BYTES = 512
@@ -143,7 +144,7 @@ def download_images(soup, dest_folder, href_prefix, base_href = None):
 	for img in images:
 		debug("processing image %s of %s" % (img_num, len(images)))
 		img_num += 1
-		if img['src'].startswith('_resources'):
+		if img['src'].startswith(app_globals.CONFIG['resources_path']):
 			continue
 		href = absolute_url(img['src'], base_href)
 		
@@ -157,10 +158,7 @@ def download_images(soup, dest_folder, href_prefix, base_href = None):
 			success = False
 		
 		# since this is a long running process; let the thread know we're still alive
-		try:
-			threading.currentThread().ping()
-		except AttributeError, e:
-			debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),), e)
+		thread_pool.ping()
 	
 	return success
 

@@ -138,7 +138,6 @@ def process_item(item, item_thread_pool = None):
 			app_globals.STATS['reprocessed'] += 1
 			print "setting %s tag name to %s" % (db_item, item.tag_name)
 			db_item.tag_name = item.tag_name
-			print "set it to %s" % (db_item.tag_name,)
 			if db_item.had_errors:
 				debug("reprocessing erroneous item: %s" % (item.title,))
 				db_item.redownload_images()
