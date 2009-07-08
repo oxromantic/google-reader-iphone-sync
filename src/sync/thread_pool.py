@@ -96,7 +96,7 @@ class ThreadPool:
 			new = []
 			for th in self._threads:
 				if th.start_time + silence_threshold > now:
-					# print "thread %s has been running for %s seconds" % (th.name, int(now - th.start_time))
+					print "thread %s has been running for %s seconds" % (th.name, int(now - th.start_time))
 					new.append(th)
 				else:
 					old.append(th)
