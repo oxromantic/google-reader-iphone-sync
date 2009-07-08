@@ -46,7 +46,7 @@ class PageFeed(object):
 			response = urllib2.urlopen(request)
 			return response.read()
 		except urllib2.HTTPError, e:
-			puts("The request failed (%s): \n%s" (e.code, e.read()))
+			puts("The request failed (response code: %s)" (e.code))
 			raise
 
 	def _data(self, params):
