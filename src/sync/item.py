@@ -38,16 +38,16 @@ class Item:
 			except (KeyError, TypeError):
 				self.feed_name = tag_name
 			self.tag_name = tag_name
-			self.title = strip_html_tags(feed_item['title'])
+			self.title = strip_html_tags(utf8(feed_item['title']))
 			self.title = unicode(BeautifulSoup(self.title, convertEntities = BeautifulSoup.HTML_ENTITIES))
 			self.google_id = feed_item['google_id']
 			self.date = time.strftime('%Y%m%d%H%M%S', time.localtime(float(feed_item['updated'])))
 			self.is_read = 'read' in feed_item['categories']
 			self.is_starred = 'starred' in feed_item['categories']
 			self.is_shared = 'broadcast' in feed_item['categories']
-			self.url = feed_item['link']
-			self.content = feed_item['content']
-			self.original_id = feed_item['original_id']
+			self.url = utf8(feed_item['link'])
+			self.content = utf8(feed_item['content'])
+			self.original_id = utf8(feed_item['original_id'])
 			self.media = try_lookup(feed_item, 'media')
 			self.instapaper_url = ""
 			self.is_dirty = False
