@@ -6,6 +6,7 @@ config.plist
 *.app
 *.sqlite
 GRiS.pkg-build
+Screenshots
 src/iphone/GRiS.xcodeproj/*.mode1v3
 src/iphone/GRiS.xcodeproj/*.pbxuser
 src/iphone/GRiS.xcodeproj/*.tm_build_errors
