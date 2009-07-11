@@ -7,6 +7,7 @@ CONFIG = {
 	'pickle_file': '.entries.pickle',
 	'test_output_dir': 'test_entries',
 	'resources_path': '_resources',
+	'pagefeed_feed_url_prefix': 'feed/http://pagefeed.appspot.com/feed/',
 }
 
 OPTIONS = {

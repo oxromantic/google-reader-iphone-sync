@@ -102,7 +102,15 @@ class ItemTest(mt.TestCase):
 		item.instapaper_url = 'url1|url2|url2'
 		item.is_dirty = True
 		item.save_to_web()
-		
+	
+	@pending
+	def test_should_delete_unneeded_pagefeed_items(self):
+		pass
+	
+	@pending
+	def test_should_not_delete_needed_pagefeed_items(self):
+		pass
+	
 	def test_insert_media_items(self):
 		global process
 		media = ['http://example.com/image.jpg']
