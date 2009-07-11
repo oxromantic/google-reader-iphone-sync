@@ -33,7 +33,13 @@ class PageFeed(object):
 	def delete(self, url):
 		self._setup()
 		debug("deleting url from pagefeed: %s" % (url,))
-		self._post('page/del/', params={'url':url})
+		try:
+			self._post('page/del/', params={'url':url})
+		except urllib2.HTTPError, e:
+			if e.code == 404:
+				info("couldn't delete - no such URL")
+			else:
+				raise
 
 	# ------------------------------
 
@@ -46,7 +52,7 @@ class PageFeed(object):
 			response = urllib2.urlopen(request)
 			return response.read()
 		except urllib2.HTTPError, e:
-			puts("The request failed (response code: %s)" (e.code))
+			puts("The request failed (response code: %s)" % (e.code,))
 			raise
 
 	def _data(self, params):
