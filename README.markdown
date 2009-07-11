@@ -16,16 +16,19 @@ See [saurik's tutorial](http://www.saurik.com/id/7) for instructions on creating
 
 ## Running / building / installing:
 To build and run on the iPhone simulator, you'll need
+
 * The iPhone SDK
 * Python (I use 2.5.1)
 * [nose](http://code.google.com/p/python-nose/)
 
 To install on a device, you'll need (for your mac):
+
 * Ruby
 * [capistrano](http://www.capify.org/)
 * dpkg binaries (specifically dpkg-deb and dpkg-scanpackages. These come with fink, and presumably all other apt ports)
 
 ...and the device will need to have:
+
 * Cydia
 * OpenSSH
 * Link Identity Editor
@@ -39,6 +42,7 @@ the python package is a dependency of GRiS, so it'll be installed if you do not 
 Run `cap -T` to see what you can do.
 
 Most of the time, you'll want to run one of:
+
 * `cap nose` - run the tests
 * `cap package:install` - build package and install it on your device
 
