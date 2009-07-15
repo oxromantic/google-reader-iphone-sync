@@ -152,7 +152,7 @@ class Item:
 	instapaper_urls = property(get_instpapaer_urls)
 	
 	def save_to_web(self):
-		print "saving item..."
+		debug("saving item...")
 		if not self.is_dirty:
 			return
 		
@@ -178,14 +178,17 @@ class Item:
 
 	def still_needed(self):
 		is_unread = not self.is_read
-		return is_unread or self.is_starred or self.is_shared
+		needed = is_unread or self.is_starred or self.is_shared
+		if needed:
+			debug("URL %s is still needed" % (self.url,))
+		return needed
 	
 	def any_source_is_pagefeed(self, sources):
 		source_is_pagefeed = lambda source: source.startswith(app_globals.CONFIG['pagefeed_feed_url_prefix'])
 		return any(map(source_is_pagefeed, sources))
 	
 	def delete_from_web_if_required(self):
-		if self.still_needed() or not self.is_pagefeed:
+		if (not self.is_pagefeed) or self.still_needed():
 			return
 		
 		try:
