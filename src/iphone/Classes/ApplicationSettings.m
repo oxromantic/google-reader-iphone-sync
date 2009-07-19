@@ -32,6 +32,7 @@ NSString * keyUrlSaveService = @"urlSaveService";
 NSString * urlSaveInstapaperValue = @"instapaper";
 NSString * urlSavePageFeedvalue = @"pagefeed";
 NSArray * urlSaveServiceSegmentValues;
+NSArray * urlSaveServiceViews;
 
 NSArray * deprecatedProperties;
 
@@ -164,6 +165,8 @@ NSArray * deprecatedProperties;
 }
 
 - (void) awakeFromNib {
+	if(urlSaveServiceViews == nil) urlSaveServiceViews = [[NSArray alloc] initWithObjects: urlSaveInstapaperView, urlSavePageFeedView, nil];
+
 	[smallText setFont: [UIFont systemFontOfSize: 14.0]];
 	[self setUIElements];
 	[super awakeFromNib];
@@ -243,6 +246,7 @@ NSArray * deprecatedProperties;
 	[urlSaveServiceSegmentControl setSelectedSegmentIndex: [self urlSaveServiceSelectedIndex]];
 	[newestItemsFirstToggle setOn: [self sortNewestItemsFirst]];
 	[rotationLockToggle setOn: [self rotationLock]];
+	[self setUrlSaveServiceView];
 	[feedList setSelectedFeeds: [self tagList]];
 	[feedList setFeedList: possibleTags];
 	for(id view in [feedsPlaceholderView subviews]) {
@@ -253,6 +257,31 @@ NSArray * deprecatedProperties;
 	CGSize frameSize = [feedsPlaceholderView bounds].size;
 	CGRect frame = CGRectMake(0,0, frameSize.width, frameSize.height);
 	[subview setFrame: frame];
+}
+
+- (void) setUrlSaveServiceView: (UIView *) newView {
+	if(newView == urlSaveView) return;
+	UIView * oldView = urlSaveView;
+	urlSaveView = newView;
+	if(oldView == nil) {
+		[self _fadeInUrlSaveView];
+	} else {
+		[oldView animateFadeOutThenTell:self withSelector:@selector(_fadeInUrlSaveView)];
+	}
+}
+
+- (void) setUrlSaveServiceView {
+	[self setUrlSaveServiceView: [urlSaveServiceViews objectAtIndex: [self urlSaveServiceSelectedIndex]]];
+}
+
+- (void) _fadeInUrlSaveView {
+	NSArray * views = [urlSaveViewContainer subviews];
+	if([views count] > 0) {
+		[[views objectAtIndex: 0] removeFromSuperview];
+	}
+	[urlSaveViewContainer addSubview: urlSaveView];
+	[urlSaveViewContainer setNeedsLayout];
+	[urlSaveView animateFadeIn];
 }
 
 #pragma mark GETTING values
@@ -336,7 +365,10 @@ NSArray * deprecatedProperties;
 - (void) setReadItems:(BOOL) newVal          { [self setBool:newVal forKey:keyShowReadItems]; }
 - (void) setRotationLock:(BOOL) newVal       { [self setBool:newVal forKey:keyRotationLock]; }
 - (void) setOpenLinksIn: (NSString *) newVal { [self saveValue: newVal forKey:keyOpenLinksIn]; }
-- (void) setUrlSaveService: (NSString *) newVal { [self saveValue: newVal forKey:keyUrlSaveService]; }
+- (void) setUrlSaveService: (NSString *) newVal {
+	[self saveValue: newVal forKey:keyUrlSaveService];
+}
+
 - (void) setSortNewestItemsFirst:(BOOL) newVal {
 	[self setBool:newVal forKey:keyNewestFirst];
 	[[self globalAppDelegate] refreshItemLists];
@@ -394,6 +426,7 @@ NSArray * deprecatedProperties;
 		[self setOpenLinksIn: [openLinksInSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
 	} else if(sender == urlSaveServiceSegmentControl) {
 		[self setUrlSaveService: [urlSaveServiceSegmentValues objectAtIndex: [sender selectedSegmentIndex]]];
+		[self setUrlSaveServiceView];
 	} else {
 		dbg(@"unknown sender to segmentValueDidChange: %@", sender);
 	}
@@ -442,6 +475,11 @@ NSArray * deprecatedProperties;
 	[itemsPerFeedLabel setText: [NSString stringWithFormat: @"%d", itemsPerFeed]];
 	[self saveValue:[NSNumber numberWithInt:itemsPerFeed] forKey:keyNumItems];
 	[sender setValue: itemsPerFeed];
+}
+
+- (IBAction) launchPageFeedUrl:(id) sender {
+	NSURL * url = [NSURL URLWithString: @"http://pagefeed.appspot.com/about/"];
+	[[UIApplication sharedApplication] openURL: url];
 }
 
 // TODO: hook up a "clear instapaper" button

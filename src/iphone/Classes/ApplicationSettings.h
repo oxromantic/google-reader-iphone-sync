@@ -45,6 +45,8 @@ enum {
 	IBOutlet id urlSaveServiceSegmentControl;
 	IBOutlet id urlSaveInstapaperView;
 	IBOutlet id urlSavePageFeedView;
+	UIView * urlSaveView;
+	IBOutlet UIView * urlSaveViewContainer;
 	
 	IBOutlet id feedList;
 	IBOutlet id noFeedsView;
@@ -68,6 +70,7 @@ enum {
 - (IBAction) deactivateBothFields:(id)sender;
 - (IBAction) textFieldDidEndEditing:(UITextField *)sender;
 - (IBAction) deactivateTagListField:(id) sender;
+- (IBAction) launchPageFeedUrl:(id) sender;
 - (BOOL) markAsReadWhenGoingBackwards;
 - (int) openLinksInSelectedIndex;
 
