@@ -110,13 +110,14 @@
 	NSTimeInterval timePassed = [now timeIntervalSinceDate:then];
 	// bah.. nstimeinterval is just a float of the number of seconds!
 	int hours = timePassed / (60 * 60);
-	int days = hours / 24;
 	NSString * pastOrFuture;
 	if(!longFormat) {
 		pastOrFuture = @"";
 	} else {
 		pastOrFuture = (hours < 0) ? _lang(@"in the future","") : _lang(@"ago", "as in, \"7 hours ago\"");
+		hours = abs(hours); // "-6 hours in the future" sounds a bit stupid
 	}
+	int days = hours / 24;
 	NSString * hour_s = _lang(@"hour","");
 	NSString * hours_s = _lang(@"hours","");
 	NSString * day_s = _lang(@"day","");
