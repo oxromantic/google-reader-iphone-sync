@@ -1,6 +1,7 @@
 #import "ItemView.h"
 #import "ItemDirList.h"
 #import "TCHelpers.h"
+#import "ApplicationSettings.h"
 
 @implementation ItemView
 - (void) awakeFromNib {
@@ -74,6 +75,10 @@
 	}
 }
 
+- (id) currentItem {
+	return currentItem;
+}
+
 - (void) deactivate {
 	[self setAllItems: nil];
 	[self blacken];
@@ -118,7 +123,7 @@
 	 [currentHTML release];
 	 */
 	currentHTML = newHTML;
-	dbg_s(@"HTML is: %@", newHTML);
+	// dbg_s(@"HTML is: %@", newHTML);
 	[self loadHTMLString:currentHTML baseURL: [NSURL fileURLWithPath: [[appDelegate settings] docsPath]]];
 }
 
@@ -153,7 +158,7 @@
 		destructiveButtonTitle: nil // is it a title or a number? the documentation is confused...
 		otherButtonTitles:
 			_lang(@"Email this item",""),
-			_lang(@"Instapaper (read later)",""),
+			_lang(@"Read later",""),
 			nil] autorelease];
 	[actionSheet showInView: windowView];
 }
@@ -171,9 +176,6 @@
 }
 
 - (IBAction) instapaperSyncForCurrentItem:(id) sender {
-	if([[[[[UIApplication sharedApplication] delegate] settings] ipaperEmail] length] == 0) {
-		[TCHelpers alertCalled:_lang(@"Warning:","") saying:_lang(@"No links will be saved unless you fill in your instapaper login details (in the settings tab) before you sync","")];
-	}
 	[[self delegate] setWaitingForInstapaperLinkClick:currentItem];
 }
 

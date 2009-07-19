@@ -1,6 +1,12 @@
 import thread, time, threading
 from output import *
 
+def ping():
+	try:
+		threading.currentThread().ping()
+	except AttributeError, e:
+		debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),), e)
+
 # threaded decorator
 # relies on the decorated method's instance having an initialised _lock variable
 def locking(process):
@@ -31,6 +37,7 @@ class ThreadAction(threading.Thread):
 		self._killed = True
 	
 	def ping(self):
+		debug("PING! [%s]" % (self.name,))
 		self.start_time = time.time()
 	
 	def run(self):
@@ -55,7 +62,7 @@ class ThreadAction(threading.Thread):
 	
 
 class ThreadPool:
-	_max_count = 10
+	_max_count = 6
 	_threads = []
 	_global_count = 0
 	_action_buffer = []
@@ -75,7 +82,7 @@ class ThreadPool:
 	def _wait_for_any_thread_to_finish(self):
 		initial_count = self._count
 		global_count = self._global_count
-		silence_threshold = 30
+		silence_threshold = 60
 		sleeps = 0
 		
 		# print "WAITING..."
@@ -96,7 +103,6 @@ class ThreadPool:
 			new = []
 			for th in self._threads:
 				if th.start_time + silence_threshold > now:
-					# print "thread %s has been running for %s seconds" % (th.name, int(now - th.start_time))
 					new.append(th)
 				else:
 					old.append(th)
@@ -106,7 +112,7 @@ class ThreadPool:
 			# print "cycle.."
 			old_threads, new_threads = partition_threads()
 			if len(old_threads) > 0:
-				debug("%s threads have been running over %s seconds" % (len(old_threads), silence_threshold))
+				debug("%s threads have been running over %s seconds: %r" % (len(old_threads), silence_threshold, map(lambda x: x.name, old_threads)))
 				for thread_ in old_threads:
 					thread_.kill()
 				debug("%s threads killed" % (len(old_threads),))

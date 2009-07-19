@@ -30,6 +30,7 @@
 		2287C18F0E9A13EA005AB6A3 /* active_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18C0E9A13EA005AB6A3 /* active_share.png */; };
 		2287C1900E9A13EA005AB6A3 /* hover_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18D0E9A13EA005AB6A3 /* hover_share.png */; };
 		2287C1910E9A13EA005AB6A3 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18E0E9A13EA005AB6A3 /* share.png */; };
+		2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291CEDE0FF8E09F00C1DABA /* TCScrollView.m */; };
 		22976FD30E610459001B44DA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22976FD20E610459001B44DA /* CoreFoundation.framework */; };
 		22976FD90E610488001B44DA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22976FD80E610488001B44DA /* CFNetwork.framework */; };
 		22A120640E84D2A3000647C2 /* ItemViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A120630E84D2A3000647C2 /* ItemViewDelegate.m */; };
@@ -116,6 +117,8 @@
 		2287C18C0E9A13EA005AB6A3 /* active_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = active_share.png; path = button_images/active_share.png; sourceTree = "<group>"; };
 		2287C18D0E9A13EA005AB6A3 /* hover_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hover_share.png; path = button_images/hover_share.png; sourceTree = "<group>"; };
 		2287C18E0E9A13EA005AB6A3 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = share.png; path = button_images/share.png; sourceTree = "<group>"; };
+		2291CEDD0FF8E09F00C1DABA /* TCScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCScrollView.h; sourceTree = "<group>"; };
+		2291CEDE0FF8E09F00C1DABA /* TCScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCScrollView.m; sourceTree = "<group>"; };
 		22976FD20E610459001B44DA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		22976FD80E610488001B44DA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		22A120620E84D2A3000647C2 /* ItemViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemViewDelegate.h; sourceTree = "<group>"; };
@@ -296,6 +299,8 @@
 				22F0658D0E7B4FE20021E97A /* TCHelpers.m */,
 				22DB0D480E45C8BE008CD8C7 /* BackgroundShell.h */,
 				22DB0D490E45C8BE008CD8C7 /* BackgroundShell.m */,
+				2291CEDD0FF8E09F00C1DABA /* TCScrollView.h */,
+				2291CEDE0FF8E09F00C1DABA /* TCScrollView.m */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -484,6 +489,7 @@
 				22A120640E84D2A3000647C2 /* ItemViewDelegate.m in Sources */,
 				22A120670E84D394000647C2 /* TCObjectExtensions.m in Sources */,
 				222C79FC0EFF9C9900870274 /* TCViewExtensions.m in Sources */,
+				2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

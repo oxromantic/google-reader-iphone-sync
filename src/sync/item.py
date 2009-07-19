@@ -7,6 +7,7 @@ import urllib
 import app_globals
 from misc import *
 from output import *
+import thread_pool
 
 # processing modules
 from lib.BeautifulSoup import BeautifulSoup
@@ -48,6 +49,7 @@ class Item:
 			self.content = utf8(feed_item['content'])
 			self.original_id = utf8(feed_item['original_id'])
 			self.media = try_lookup(feed_item, 'media')
+			self.is_pagefeed = self.any_source_is_pagefeed(map(utf8, feed_item['sources']))
 			self.instapaper_url = ""
 			self.is_dirty = False
 			self.is_stale = False
@@ -70,6 +72,7 @@ class Item:
 		return urllib.quote(unsafe_google_id, safe='')
 
 	def get_basename(self):
+		"""A filesystem-safe key, unique to this item"""
 		return utf8(
 			self.date + ' ' +
 			filter(lambda x: x not in '"\':#!+/$\\?*', ascii(self.title))[:120] + ' .||' +
@@ -89,10 +92,15 @@ class Item:
 	def process(self):
 		debug("item %s -> process()" % self.title)
 		self.soup_setup()
-
+		thread_pool.ping()
+		
 		# process
+		debug("item %s -> insert_alt_text()" % self.title)
 		process.insert_alt_text(self.soup)
+		thread_pool.ping()
+		
 		self.download_images(need_soup = False)
+		thread_pool.ping()
 		
 		# save changes back as content
 		self.soup_teardown()
@@ -116,6 +124,7 @@ class Item:
 			if not success:
 				self.had_errors = True
 		
+		debug("item %s -> download_images()" % (self.title,))
 		success = process.download_images(self.soup,
 			dest_folder = self.resources_path,
 			href_prefix = app_globals.CONFIG['resources_path'] + '/' + self.safe_google_id + '/',
@@ -143,10 +152,11 @@ class Item:
 	instapaper_urls = property(get_instpapaer_urls)
 	
 	def save_to_web(self):
+		debug("saving item...")
 		if not self.is_dirty:
 			return
 		
-		# instapaper URL
+		# instapaper / pagefeed URLs
 		if self.instapaper_url and len(self.instapaper_url) > 0:
 			app_globals.INSTAPAPER.add_urls(self.instapaper_urls)
 			self.instapaper_url = ''
@@ -162,8 +172,30 @@ class Item:
 		# share
 		if self.is_shared:
 			self._google_do(app_globals.READER.add_public)
-
+		
+		self.delete_from_web_if_required()
 		self.is_dirty = False
+
+	def still_needed(self):
+		is_unread = not self.is_read
+		needed = is_unread or self.is_starred or self.is_shared
+		if needed:
+			debug("URL %s is still needed" % (self.url,))
+		return needed
+	
+	def any_source_is_pagefeed(self, sources):
+		source_is_pagefeed = lambda source: source.startswith(app_globals.CONFIG['pagefeed_feed_url_prefix'])
+		return any(map(source_is_pagefeed, sources))
+	
+	def delete_from_web_if_required(self):
+		if (not self.is_pagefeed) or self.still_needed():
+			return
+		
+		try:
+			app_globals.INSTAPAPER.delete(url=self.url)
+		except AttributeError:
+			debug("url save mechanism has no delete function")
+			return
 
 	def _google_do(self, action):
 		return action(self.google_id)

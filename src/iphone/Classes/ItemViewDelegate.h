@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-
+#import "ItemView.h"
 
 @interface ItemViewDelegate : NSObject {
 	IBOutlet id spinner;
@@ -7,6 +7,7 @@
 	NSURLRequest * pendingRequest;
 	IBOutlet UIWebView * webView;
 	IBOutlet UIView * viewerView;
+	IBOutlet ItemView * itemView;
 }
 
 @end

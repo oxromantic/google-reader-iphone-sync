@@ -259,7 +259,7 @@
 }
 
 -(void) tableView:(UITableView*) tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath*) path {
-	return _lang(@"hide");
+	return _lang(@"hide", "");
 }
 
 - (UITableViewCellEditingStyle) tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *) indexPath {

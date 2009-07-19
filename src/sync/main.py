@@ -14,7 +14,7 @@ from lib.GoogleReader import GoogleReader, CONST
 import app_globals
 import template
 from reader import Reader
-from instapaper import Ipaper
+import url_save
 from thread_pool import ThreadPool
 
 TASK_PROGRESS = 0
@@ -59,7 +59,7 @@ def execute():
 	ensure_dir_exists(app_globals.OPTIONS['output_path'])
 	ensure_dir_exists(app_globals.OPTIONS['output_path'] + '/' + app_globals.CONFIG['resources_path'])
 	
-	app_globals.INSTAPAPER = Ipaper()
+	app_globals.INSTAPAPER = url_save.get_active_service()
 	
 	app_globals.READER = Reader()
 	app_globals.READER.save_tag_list()
@@ -138,7 +138,6 @@ def process_item(item, item_thread_pool = None):
 			app_globals.STATS['reprocessed'] += 1
 			print "setting %s tag name to %s" % (db_item, item.tag_name)
 			db_item.tag_name = item.tag_name
-			print "set it to %s" % (db_item.tag_name,)
 			if db_item.had_errors:
 				debug("reprocessing erroneous item: %s" % (item.title,))
 				db_item.redownload_images()

@@ -99,8 +99,15 @@ namespace :iphone do
 	end
 	
 	task :build_langs do
+		strings
 		LANGS.each do |l|
-			translate_(l)
+			begin
+				translate_(l)
+			rescue RuntimeError => e
+				puts "ERROR: #{l} could not be translated!\n#{e.inspect}"
+				puts 'okay?'
+				$stdin.gets
+			end
 		end
 	end
 	
@@ -136,7 +143,6 @@ namespace :iphone do
 			end
 		end
 		local "cd #{IPHONE_ROOT} && ibtool --strings-file=#{strings_file l} --write #{ib_file l} #{ib_file EN}"
-
 	end
 	
 	desc 'make $lang resources'

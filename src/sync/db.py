@@ -23,6 +23,7 @@ schema_history = [
 	'ALTER TABLE items ADD COLUMN tag_name BOOLEAN default ""',
 	'ALTER TABLE items ADD COLUMN is_shared BOOLEAN default 0',
 	'ALTER TABLE items ADD COLUMN instapaper_url TEXT default ""',
+	'ALTER TABLE items ADD COLUMN is_pagefeed BOOLEAN default 0',
 	]
 
 class VersionDB:
@@ -83,6 +84,7 @@ class DB:
 				('tag_name', 'TEXT'),
 				('is_shared', 'BOOLEAN'),
 				('instapaper_url', 'TEXT'),
+				('is_pagefeed', 'BOOLEAN'),
 			],
 			'indexes' : [ ('item_id_index', 'items(google_id)') ]
 		}

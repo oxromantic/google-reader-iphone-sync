@@ -103,6 +103,36 @@ class ItemTest(mt.TestCase):
 		item.is_dirty = True
 		item.save_to_web()
 		
+	def test_should_indicate_if_item_came_from_pagefeed(self):
+		pagefeed_item = Item(item_with(sources=['feed1', 'feed/http://pagefeed.appspot.com/feed/whatever']))
+		non_pagefeed_item = Item(item_with(sources=['feed1', 'feed/http://somewhere_else.appspot.com/feed/whatever']))
+		self.assertTrue(pagefeed_item.is_pagefeed)
+		self.assertFalse(non_pagefeed_item.is_pagefeed)
+	
+	def test_should_delete_unneeded_pagefeed_items(self):
+		ipaper = mt.mock()
+		app_globals.INSTAPAPER = ipaper.raw
+		mt.mock_on(app_globals.READER).set_read
+		ipaper.expects('delete').with_(url='url')
+		
+		item = Item(item_with(link='url'))
+		item.is_pagefeed = True
+		item.is_dirty = True
+		item.is_read = True
+		item.save_to_web()
+	
+	def test_should_not_delete_needed_pagefeed_items(self):
+		ipaper = mt.mock()
+		app_globals.INSTAPAPER = ipaper.raw
+		mt.mock_on(app_globals.READER).add_star
+		ipaper.method('delete').returning('OK').is_not_expected
+		
+		item = Item(item_with(url='url'))
+		item.is_pagefeed = True
+		item.is_starred = True
+		item.is_dirty = True
+		item.save_to_web()
+	
 	def test_insert_media_items(self):
 		global process
 		media = ['http://example.com/image.jpg']
