@@ -8,9 +8,10 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="671"/>
 			<integer value="666"/>
-			<integer value="673"/>
 			<integer value="670"/>
+			<integer value="265"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -366,7 +367,7 @@
 				<object class="IBUIViewController" key="IBUISelectedViewController" id="696082747">
 					<string key="IBUITitle">Settings</string>
 					<object class="IBUIView" key="IBUIView" id="168269009">
-						<nil key="NSNextResponder"/>
+						<reference key="NSNextResponder"/>
 						<int key="NSvFlags">274</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -380,6 +381,7 @@
 									<bytes key="NSWhite">MSAwAA</bytes>
 									<reference key="NSCustomColorSpace" ref="947182492"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 							</object>
 							<object class="IBUINavigationBar" id="399974314">
@@ -399,6 +401,7 @@
 							</object>
 						</object>
 						<string key="NSFrameSize">{320, 411}</string>
+						<reference key="NSSuperview"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC43NzA0MDgxNSAwLjc3MDQwODE1IDAuNzcwNDA4MTUAA</bytes>
@@ -411,6 +414,7 @@
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">toolbar_settings.png</string>
 						</object>
+						<reference key="IBUITabBar"/>
 					</object>
 					<reference key="IBUIParentViewController" ref="583309009"/>
 				</object>
@@ -424,6 +428,7 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">toolbar_items.png</string>
 							</object>
+							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="583309009"/>
 						<object class="IBUINavigationBar" key="IBUINavigationBar" id="347059909">
@@ -669,6 +674,7 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">toolbar_sync.png</string>
 							</object>
+							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="583309009"/>
 					</object>
@@ -724,6 +730,7 @@
 								<string key="NSClassName">NSImage</string>
 								<string key="NSResourceName">toolbar_feeds.png</string>
 							</object>
+							<reference key="IBUITabBar"/>
 						</object>
 						<reference key="IBUIParentViewController" ref="583309009"/>
 					</object>
@@ -1231,7 +1238,7 @@ dGluZ3MiKQ</string>
 					</object>
 					<object class="IBUILabel" id="851705130">
 						<reference key="NSNextResponder" ref="330412162"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{93, 49}, {80, 21}}</string>
 						<reference key="NSSuperview" ref="330412162"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -1585,11 +1592,7 @@ dGluZ3MiKQ</string>
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{0, 389}, {320, 111}}</string>
 						<reference key="NSSuperview" ref="156845387"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="947182492"/>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="411286507"/>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 					</object>
 				</object>
@@ -3160,8 +3163,8 @@ dGluZ3MiKQ</string>
 						<reference key="object" ref="168269009"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="177908997"/>
 							<reference ref="399974314"/>
+							<reference ref="177908997"/>
 						</object>
 						<reference key="parent" ref="696082747"/>
 					</object>
@@ -3209,9 +3212,9 @@ dGluZ3MiKQ</string>
 							<reference ref="761052311"/>
 							<reference ref="675623624"/>
 							<reference ref="542320330"/>
-							<reference ref="509177631"/>
 							<reference ref="962943900"/>
 							<reference ref="677052907"/>
+							<reference ref="509177631"/>
 						</object>
 						<reference key="parent" ref="957960031"/>
 						<string key="objectName">settings content view</string>
@@ -3287,20 +3290,14 @@ dGluZ3MiKQ</string>
 						<reference key="parent" ref="156845387"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">681</int>
-						<reference key="object" ref="677052907"/>
-						<reference key="parent" ref="156845387"/>
-						<string key="objectName">url save container</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">670</int>
 						<reference key="object" ref="330412162"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="935753647"/>
-							<reference ref="851705130"/>
 							<reference ref="81103830"/>
 							<reference ref="784048987"/>
+							<reference ref="851705130"/>
 						</object>
 						<reference key="parent" ref="957960031"/>
 						<string key="objectName">instapaper settings</string>
@@ -3351,6 +3348,12 @@ dGluZ3MiKQ</string>
 						<int key="objectID">674</int>
 						<reference key="object" ref="129813222"/>
 						<reference key="parent" ref="995350864"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">681</int>
+						<reference key="object" ref="677052907"/>
+						<reference key="parent" ref="156845387"/>
+						<string key="objectName">url save container</string>
 					</object>
 				</object>
 			</object>
@@ -3630,7 +3633,7 @@ dGluZ3MiKQ</string>
 					<string>{{21, 876}, {325, 96}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>StripedView</string>
-					<string>{{356, 893}, {325, 38}}</string>
+					<string>{{355, 893}, {325, 38}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
