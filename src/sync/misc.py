@@ -46,7 +46,6 @@ def try_shell(cmd):
 	"""
 	Execute a shell command. if it returns a non-zero (error) status, raise an exception
 
-		>>> app_globals.OPTIONS['verbosity'] = 0
 		>>> try_shell('[ 0 = 0 ]')
 		>>> try_shell('[ 0 = 1 ]')
 		Traceback (most recent call last):

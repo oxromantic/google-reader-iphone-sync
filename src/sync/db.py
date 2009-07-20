@@ -230,6 +230,8 @@ class DB:
 
 if __name__ == '__main__':
 	print "running DB migration..."
-	app_globals.OPTIONS['verbosity'] = lvl_debug
+	app_globals.OPTIONS['loglevel'] = 'DEBUG'
 	app_globals.OPTIONS['output_path'] = '.'
-	DB().close()
+	config.init_logging()
+	db = DB()
+	db.close()

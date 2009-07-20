@@ -20,7 +20,7 @@ import app_globals
 
 required_keys = ['user','password']
 
-bootstrap_options = ('qvc:so', ['verbose','quiet','config=','show-status','output-path=', 'logging=','logdir='])
+bootstrap_options = ('c:so', ['config=','show-status','output-path=', 'logging=','logdir=','loglevel='])
 main_options = ("n:Co:dth", [
 		'num-items=',
 		'cautious',
@@ -48,10 +48,6 @@ def bootstrap(argv = None):
 	argv = unicode_argv(argv)
 	(opts, argv) = getopt(argv, *all_options)
 	for (key,val) in opts:
-		if key == '--verbose' or key == '-v':
-			set_opt('verbosity', app_globals.OPTIONS['verbosity'] + 1)
-		elif key == '--quiet' or key == '-q':
-			set_opt('verbosity', app_globals.OPTIONS['verbosity'] - 1)
 		elif key == '--config' or key == '-c':
 			set_opt('user_config_file', val)
 		elif key == '--show-status' or key == '-s':
@@ -62,6 +58,8 @@ def bootstrap(argv = None):
 			set_opt('logging', val)
 		elif key == '--logdir':
 			set_opt('logdir', val)
+		elif key == '--loglevel':
+			set_opt('loglevel', val)
 
 
 def defaults(*args):
@@ -71,8 +69,6 @@ def parse_options(argv = None):
 	"""
 Usage:
   -n, --num-items=[val]  set the number of items to download (per feed)
-  -v, --verbose          increase verbosity
-  -q, --quiet            decrease verbosity
   -c, --config=[file]    load config from file (must be in yaml format)
   -d, --no-download      don't download new items, just tell google reader about read items
   -t, --test             run in test mode (don't notify google reader of anything)
@@ -89,13 +85,14 @@ Usage:
                          (the default is to fail to start if another sync process is running)
   --logdir=[log_dir]     logging base directory
   --logging=[log_conf]   override log configuration file
+  --loglevel=[log_conf]  set the console output log level
 """
 	tag_list = []
 	argv = unicode_argv(argv)
 
 	(opts, argv) = getopt(argv, *all_options)
 	for (key,val) in opts:
-		if key in ['-q','--quiet','-v','--verbose', '-c','--config','-s','--show-status']:
+		if key in ['-c','--config','-s','--show-status', '--logging', '--logdir', '--loglevel']:
 			# already processed
 			pass
 		
@@ -174,7 +171,11 @@ def set_opt(key, val, disguise = False):
 def init_logging():
 	logdir = app_globals.OPTIONS['logdir']
 	ensure_dir_exists(logdir)
-	logging.config.fileConfig(app_globals.OPTIONS['logging'], {'logdir':logdir})
+	env = {
+		'logdir':logdir,
+		'loglevel': app_globals.OPTIONS['loglevel'].upper(),
+	}
+	logging.config.fileConfig(app_globals.OPTIONS['logging'], env)
 
 def load(filename = None):
 	"""

@@ -81,7 +81,6 @@ class ReportProcessTest(GetPidTest):
 	def setUp(self):
 		super(self.__class__, self).setUp()
 		print dir(output)
-		app_globals.OPTIONS['verbosity'] = output.lvl_quiet
 		self._stdout = sys.stdout
 		sys.stdout = Mock()
 	
@@ -152,4 +151,4 @@ class SingularProcessTest(GetPidTest):
 		proctl.get_running_pid = self.fail
 		self.assertRaises(SystemExit, proctl.ensure_singleton_process)
 		self.assertEqual(read_file(self.filename), '1234')
-		
+

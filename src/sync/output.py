@@ -1,50 +1,18 @@
 import app_globals
 import time, threading
 import sys, os, time, traceback
-
-lvl_default = 2
-
-lvl_debug = 4
-lvl_verbose = 3
-lvl_info = 2
-lvl_quiet = 1
-lvl_silent = 0
-
-logfile = None
+import logging
+from logging import info, debug, warning, error
 
 def ascii(s): return s.encode('ascii','ignore') if isinstance(s, unicode) else str(s)
 def utf8(s):  return s.encode('utf-8','ignore') if isinstance(s, unicode) else str(s)
 
-def whereami_str():
-	time_str = time.strftime('%H:%M:%S')
-	thread_str = threading.currentThread().getName()
-	return "[%s %s] " % (thread_str, time_str)
+# no longer supported:
+# puts, info, debug, debug_verbose
+# log_error(?)
 
-def puts_array(s, level=lvl_quiet):
-	global logfile
-	output_str = " ".join(map(ascii, s))
-	if level >= lvl_verbose:
-		output_str = whereami_str() + output_str
-	if logfile is not None and (level < lvl_debug):
-		print >> logfile, output_str
-	if app_globals.OPTIONS.get('verbosity', lvl_debug) < level: return
-	print output_str
-	if app_globals.OPTIONS.get('flush_output', lvl_debug):
-		sys.stdout.flush()
-
-def puts(*s):
-	puts_array(s, level=lvl_quiet)
-
-def info(*s):
-	puts_array(s, level=lvl_info)
-
-def debug(*s):
-	puts_array([' > '] + list(s), level=lvl_verbose)
-
-def debug_verbose(*s):
-	puts_array([' >>> '] + list(s), level=lvl_debug)
-	
 def log_error(description, exception):
+	raise Unsupported()
 	debug("-" * 50)
 	debug("EXCEPTION LOG:", description)
 	traceback.print_exc(file=logfile)
@@ -53,8 +21,7 @@ def log_error(description, exception):
 def status(*s):
 	"""output a machine-readable status message"""
 	if app_globals.OPTIONS['show_status']:
-		puts("STAT:%s" % ":".join([utf8(x) for x in s]))
-	
+		info("STAT:%s" % ":".join(map(utf8, s)))
 
 subtask_progress = 0
 def new_subtask(length):
@@ -72,26 +39,18 @@ def increment_subtask():
 def line(level = info):
 	level('-' * 50)
 
-def log_end():
-	global logfile
-	if logfile is not None:
-		logfile.close()
-
 def log_start():
-	global logfile
-	logfile = open(os.path.join(app_globals.OPTIONS['output_path'], 'sync.log'), 'w')
 	debug("Log started at %s." % (time.ctime(),))
+	debug("app version: %s" % (_get_version(),))
+
+def _get_version():
 	try:
 		vfile = file(os.path.join(app_globals.OPTIONS['output_path'], 'VERSION'), 'r')
 		version = vfile.readline()
 		vfile.close()
-		debug("app version: %s" % (version,))
+		return version
 	except IOError,e:
-		log_error("Failed to find app version", e)
+		warning("Failed to read app version: %s" % (e,))
 
-def in_debug_mode():
-	return app_globals.OPTIONS['verbosity'] >= lvl_debug
 
-def backtrace():
-	import traceback, sys
-	print ''.join(traceback.format_stack(sys._getframe()))
+

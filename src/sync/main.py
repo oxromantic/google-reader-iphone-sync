@@ -31,7 +31,6 @@ def handle_signal(signum, stack):
 def cleanup():
 	if app_globals.DATABASE is not None:
 		app_globals.DATABASE.close()
-	log_end()
 	
 def init_signals():
 	signal.signal(signal.SIGINT, handle_signal)
@@ -113,8 +112,6 @@ def error_reporter_for_item(item):
 			tb = sys.exc_info()[2]
 		puts(" ** FAILED **: " + str(exception))
 		log_error("Failed processing item: %s" % repr(item), exception)
-		if in_debug_mode():
-			raise exception, None, tb
 		app_globals.STATS['failed'] += 1
 	return error_report
 

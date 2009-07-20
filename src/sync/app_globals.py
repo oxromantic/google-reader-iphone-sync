@@ -21,7 +21,6 @@ OPTIONS = {
 	'screen_height':    480,
 	'template_only':    False,
 	'flush_output':     False,
-	'verbosity':        2,     # should be output.lvl_default, but that makes for circular dependencies
 	'tag_list_only':    False,
 	'report_pid':       False,
 	'newest_first':     False,
@@ -35,6 +34,7 @@ OPTIONS = {
 	'url_save_service': 'instapaper', # can also be 'pagefeed'
 	'logging':          'logging.conf',
 	'logdir':           'log',
+	'loglevel':         'info',
 }
 
 STATS = {
