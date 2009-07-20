@@ -196,6 +196,7 @@ def setup(opts=None):
 	if opts is None:
 		opts = sys.argv[1:]
 	config.bootstrap(opts)
+	config.init_logging()
 	config.load()
 	config.parse_options(opts)
 	ensure_dir_exists(app_globals.OPTIONS['output_path'])

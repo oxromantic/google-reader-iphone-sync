@@ -9,6 +9,8 @@ from getopt import getopt
 import sys
 import re
 import lib
+import logging
+import logging.config
 
 # local imports
 from misc import *
@@ -18,7 +20,7 @@ import app_globals
 
 required_keys = ['user','password']
 
-bootstrap_options = ('qvc:so', ['verbose','quiet','config=','show-status','output-path='])
+bootstrap_options = ('qvc:so', ['verbose','quiet','config=','show-status','output-path=', 'logging=','logdir='])
 main_options = ("n:Co:dth", [
 		'num-items=',
 		'cautious',
@@ -56,6 +58,10 @@ def bootstrap(argv = None):
 			set_opt('show_status', True)
 		elif key == '-o' or key == '--output-path':
 			set_opt('output_path', val)
+		elif key == '--logging':
+			set_opt('logging', val)
+		elif key == '--logdir':
+			set_opt('logdir', val)
 
 
 def defaults(*args):
@@ -81,6 +87,8 @@ Usage:
   --report-pid           report any existing sync PID
   --aggressive           KILL any other running sync process
                          (the default is to fail to start if another sync process is running)
+  --logdir=[log_dir]     logging base directory
+  --logging=[log_conf]   override log configuration file
 """
 	tag_list = []
 	argv = unicode_argv(argv)
@@ -162,6 +170,11 @@ def set_opt(key, val, disguise = False):
 		return False
 	app_globals.OPTIONS[key] = val
 	return True
+
+def init_logging():
+	logdir = app_globals.OPTIONS['logdir']
+	ensure_dir_exists(logdir)
+	logging.config.fileConfig(app_globals.OPTIONS['logging'], {'logdir':logdir})
 
 def load(filename = None):
 	"""
