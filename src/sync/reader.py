@@ -11,7 +11,7 @@ class Reader:
 	def __init__(self, user=None, password=None):
 		if app_globals.OPTIONS['test']:
 			from lib.mock import Mock
-			debug("WARNING: using a mock google reader object")
+			warning("using a mock google reader object")
 			self.gr = Mock()
 		else:
 			self.gr = GoogleReader()
@@ -29,8 +29,8 @@ class Reader:
 			if not self.gr.login():
 				raise RuntimeError("Login failed")
 		except StandardError, e:
-			debug("error logging in: %s" % (e,))
-			raise RuntimeError("Login failed")
+			error("error logging in: %s" % (e,))
+			raise RuntimeError("Login failed (check your connection?)")
 		
 	def get_tag_list(self):
 		if self._tag_list is None:

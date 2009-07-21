@@ -48,7 +48,7 @@ def bootstrap(argv = None):
 	argv = unicode_argv(argv)
 	(opts, argv) = getopt(argv, *all_options)
 	for (key,val) in opts:
-		elif key == '--config' or key == '-c':
+		if key == '--config' or key == '-c':
 			set_opt('user_config_file', val)
 		elif key == '--show-status' or key == '-s':
 			set_opt('show_status', True)
@@ -186,7 +186,7 @@ def load(filename = None):
 		if not (os.path.isfile(filename) or os.path.isabs(filename)):
 			filename = os.path.join(app_globals.OPTIONS['output_path'], filename)
 
-	info("Loading configuration from %s" % filename)
+	debug("Loading configuration from %s" % filename)
 	
 	try:
 		extension = filename.split('.')[-1].lower()
@@ -195,7 +195,7 @@ def load(filename = None):
 		elif extension == 'plist':
 			config_hash = load_plist(filename)
 		else:
-			info("unknown filetype: %s" % (extension,))
+			warning("unknown filetype: %s" % (extension,))
 			config_hash = {}
 
 		if config_hash is not None:
@@ -203,14 +203,14 @@ def load(filename = None):
 				set_opt(key, val)
 
 	except IOError, e:
-		info("Config file %s not loaded: %s" % (filename,e))
+		warning("Can't load %s: %s" % (filename,e))
 
 def load_yaml(filename):
 	try:
 		import yaml
 		return do_with_file(filename, 'r', yaml.load)
 	except ImportError, e:
-		info("YAML library failed to load: %s" % (e, ))
+		warning("YAML library failed to load: %s" % (e, ))
 
 def load_plist(filename):
 	import plistlib
@@ -220,8 +220,7 @@ def load_plist(filename):
 def check():
 	for k in required_keys:
 		if not k in app_globals.OPTIONS or app_globals.OPTIONS[k] is app_globals.PLACEHOLDER:
-			print repr(app_globals.OPTIONS)
-			raise Exception("Required setting \"%s\" is not set." % (k,))
+			raise RuntimeError("Required setting \"%s\" is not set." % (k,))
 
 if __name__ == '__main__':
 	import doctest

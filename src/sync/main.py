@@ -37,7 +37,7 @@ def init_signals():
 	signal.signal(signal.SIGTERM, handle_signal)
 
 def save_db_state():
-	puts("saving database state...")
+	info("saving database state...")
 	app_globals.DATABASE.close()
 	app_globals.DATABASE = DB()
 
@@ -96,11 +96,10 @@ def download_feed(feed, feed_tag):
 
 		if entry is None:
 			app_globals.STATS['failed'] += 1
-			puts(" ** FAILED **")
+			error(" ** FAILED **")
 			debug("(entry is None)")
 			continue
 		
-		debug_verbose(entry.__repr__())
 		item = Item(entry, feed_tag)
 		process_item(item, item_thread_pool)
 		item_thread_pool.collect()
@@ -108,10 +107,7 @@ def download_feed(feed, feed_tag):
 
 def error_reporter_for_item(item):
 	def error_report(exception, tb = None):
-		if tb is None:
-			tb = sys.exc_info()[2]
-		puts(" ** FAILED **: " + str(exception))
-		log_error("Failed processing item: %s" % repr(item), exception)
+		error(" ** FAILED **: ", exc_info=True)
 		app_globals.STATS['failed'] += 1
 	return error_report
 
@@ -122,7 +118,7 @@ def process_item(item, item_thread_pool = None):
 	item_is_read = item.is_read or (db_item is not None and db_item.is_read)
 	if item_is_read:
 		# item has been read either online or offline
-		puts("READ: " + name)
+		debug("READ: " + name)
 		app_globals.STATS['read'] += 1
 		danger("About to delete item")
 		item.delete()
@@ -133,7 +129,7 @@ def process_item(item, item_thread_pool = None):
 		# we aready know about it - update any necessary info
 		if db_item.had_errors or db_item.tag_name != item.tag_name:
 			app_globals.STATS['reprocessed'] += 1
-			print "setting %s tag name to %s" % (db_item, item.tag_name)
+			debug("setting %s tag name to %s" % (db_item, item.tag_name))
 			db_item.tag_name = item.tag_name
 			if db_item.had_errors:
 				debug("reprocessing erroneous item: %s" % (item.title,))
@@ -142,7 +138,7 @@ def process_item(item, item_thread_pool = None):
 		increment_subtask()
 	else:
 		try:
-			puts("NEW: " + item.title)
+			info("NEW: " + item.title)
 			danger("About to output item")
 			app_globals.STATS['new'] += 1
 			if item_thread_pool is None:
@@ -175,7 +171,7 @@ def download_new_items():
 		save_db_state()
 		_feed_tag = "All Items" if feed_tag is None else feed_tag
 		new_task("Downloading tag \"%s\"" % (_feed_tag,))
-		puts("Fetching maximum %s items from feed %s" % (app_globals.OPTIONS['num_items'], _feed_tag))
+		info("Fetching maximum %s items from feed %s" % (app_globals.OPTIONS['num_items'], _feed_tag))
 		feed = app_globals.READER.get_tag_feed(feed_tag, oldest_first = not app_globals.OPTIONS['newest_first'])
 		download_feed(feed, _feed_tag)
 		
@@ -183,10 +179,10 @@ def download_new_items():
 	
 	info("%s NEW items" % app_globals.STATS['new'])
 	info("%s items marked as read" % app_globals.STATS['read'])
-	if app_globals.STATS['failed'] > 0:
-		puts("%s items failed to parse" % app_globals.STATS['failed'])
 	if app_globals.STATS['reprocessed'] > 0:
-		puts("%s items reprocessed because of previously failed image downloads" % (app_globals.STATS['reprocessed']))
+		info("%s items reprocessed because of previously failed image downloads" % (app_globals.STATS['reprocessed']))
+	if app_globals.STATS['failed'] > 0:
+		warning("%s items failed to parse" % app_globals.STATS['failed'])
 
 def setup(opts=None):
 	"""Parse options. If none given, opts is set to sys.argv"""
@@ -211,7 +207,7 @@ def main():
 	"""
 	setup()
 	execute()
-	puts("Sync complete. cleaning up")
+	info("Sync complete. cleaning up")
 	cleanup()
 	print "Sync complete."
 	return 0
@@ -221,6 +217,8 @@ if __name__ == '__main__':
 	try:
 		exitstatus = main()
 	except StandardError, e:
-		log_error('unhandled error in main()', e)
-		raise
+		debug('unhandled error in main()', exc_info=True)
+		error("ERROR: %s" % (e,))
+		exitstatus = 2
 	sys.exit(exitstatus)
+

@@ -258,7 +258,7 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 			debug("not an image type: %s" % (mime_type,))
 			filetype = None
 	except StandardError, e:
-		debug("error: %s" % (e,))
+		debug("download error: %s" % (e,))
 		filetype = None
 	
 	try:

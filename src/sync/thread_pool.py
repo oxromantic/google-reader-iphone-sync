@@ -48,7 +48,7 @@ class ThreadAction(threading.Thread):
 		try:
 			self.func(*self.args, **self.kwargs)
 		except StandardError, e:
-			print "error! %s " % e
+			error("thread error! %s " % e)
 			if self._killed: return
 			if self.on_error is not None:
 				self.on_error(e)
@@ -89,7 +89,7 @@ class ThreadPool:
 		initial_threads = list(self._threads) # take a copy
 		
 		if self._count == 0:
-			print "no threads running!"
+			debug("no threads running!")
 			return
 
 		def threads_unchanged():
@@ -112,10 +112,10 @@ class ThreadPool:
 			# print "cycle.."
 			old_threads, new_threads = partition_threads()
 			if len(old_threads) > 0:
-				debug("%s threads have been running over %s seconds: %r" % (len(old_threads), silence_threshold, map(lambda x: x.name, old_threads)))
+				error("%s threads have been running over %s seconds: %r" % (len(old_threads), silence_threshold, map(lambda x: x.name, old_threads)))
 				for thread_ in old_threads:
 					thread_.kill()
-				debug("%s threads killed" % (len(old_threads),))
+				error("%s threads killed" % (len(old_threads),))
 				self._threads = new_threads
 				break
 
@@ -138,14 +138,14 @@ class ThreadPool:
 		action.on_error = lambda e: self._thread_error(action, on_error, e)
 		action.on_success = lambda: self._thread_finished(action, on_success)
 		self._threads.append(action)
-		print "starting"
+		debug("starting new thread")
 		action.start()
 	
 	@locking
 	def _thread_error(self, thread, callback, e):
 		self._locked_thread_finished(thread)
 		if callback is None:
-			log_error("thread raised an exception and ended", e)
+			error("thread raised an exception and ended: %s", e)
 		else:
 			callback(e)
 		
@@ -155,7 +155,6 @@ class ThreadPool:
 		self._locked_thread_finished(thread)
 	
 	def _locked_thread_finished(self, thread):
-		print "removing %s from %s" % (thread, self._threads)
 		self._threads.remove(thread)
 		debug("thread finished - there remain %s threads" % (self._count,))
 	

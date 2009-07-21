@@ -46,7 +46,7 @@ class VersionDB:
 			info("Your database is at version %s, the latest is version %s. Upgrading" % (version, len(schema_history)))
 			print unapplied_schema_steps
 			for step in unapplied_schema_steps:
-				info("Appling the following query to your database:\n%s" % (step,))
+				debug("Appling the following query to your database:\n%s" % (step,))
 				db.execute(step)
 				version += 1
 				db.execute('update db_version set version = ?', (version,))
@@ -60,7 +60,7 @@ class DB:
 		if app_globals.OPTIONS['test']:
 			filename = os.path.dirname(filename) + 'test_' + os.path.basename(filename)
 		self.filename = filename = os.path.join(app_globals.OPTIONS['output_path'], os.path.basename(filename))
-		debug("db @ %s" % filename)
+		debug("loading db: %s" % filename)
 		self.db = sqlite.connect(filename)
 
 		# commit immediately after statements.
@@ -99,14 +99,11 @@ class DB:
 		self.db = sqlite.connect(self.filename)
 
 	def sql(self, stmt, data = None):
-		debug_verbose("SQL statement: %s" % stmt)
+		args = [stmt]
 		if data is not None:
-			debug_verbose("    data: %r" % (data,))
-			result = self.db.execute(stmt, data)
-		else:
-			result = self.db.execute(stmt)
+			args.append(data)
 
-		return result
+		return self.db.execute(*args)
 	
 	def get(self, google_id, default=None):
 		items = list(self.get_items('google_id = ?', (google_id,)))
@@ -192,7 +189,7 @@ class DB:
 		self.db = None
 
 	def sync_to_google(self):
-		puts("Syncing with google...")
+		info("Syncing with google...")
 		status("SUBTASK_TOTAL", self.get_item_count('is_dirty = 1'))
 		item_number = 0
 		for item in self.get_items('is_dirty = 1'):
@@ -223,7 +220,7 @@ class DB:
 
 		current_but_read = current_keys.difference(unread_keys)
 		if len(current_but_read) > 0:
-			puts("Cleaning up %s old resource directories" % len(current_but_read))
+			info("Cleaning up %s old resource directories" % len(current_but_read))
 			danger("remove %s old resource directories" % len(current_but_read))
 			for key in current_but_read:
 				rm_rf(res_prefix + key)

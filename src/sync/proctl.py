@@ -21,7 +21,7 @@ def report_pid():
 		else:
 			print pid
 	except StandardError, e:
-		log_error("Error getting running pid", e)
+		exception("Error getting running pid")
 		print none
 
 def get_pids_matching(pattern):
@@ -31,9 +31,9 @@ def get_pids_matching(pattern):
 		if(os.uname()[-1] == 'i386'):
 			status, output = (0, '') # lets just pretend it worked, and everything is fine
 		else:
-			puts("Error fetching running pids: %s" % (output,))
-			puts(" - This is known to happen on the iphone simulator.")
-			puts(" - if you see it on a real device, please file a bug report")
+			warning("Error fetching running pids: %s" % (output,))
+			warning(" - This is known to happen on the iphone simulator.")
+			warning(" - if you see it on a real device, please file a bug report")
 	if status != 0:
 		raise RuntimeError("could not execute pid-checking command. got status of %s, output:\n%s" % (status, output))
 	
@@ -52,7 +52,7 @@ def get_running_pid():
 	try:
 		pid = int(read_file(filename).strip())
 	except (IOError, ValueError), e:
-		log_error("Couldn't load PID file at %s" % (filename,), e)
+		exception("Couldn't load PID file at %s: %s" % (filename,e))
 		raise
 	
 	if pid == os.getpid():
@@ -86,7 +86,7 @@ def ensure_singleton_process():
 	
 	if pid is not None:
 		if not aggressive:
-			puts("There is already a sync process running, pid=%s" % (pid,))
+			error("There is already a sync process running, pid=%s" % (pid,))
 			sys.exit(2)
 		else:
 			try:
@@ -94,7 +94,7 @@ def ensure_singleton_process():
 				os.kill(pid, signal.SIGKILL)
 			except OSError, e:
 				msg = "couldn't kill pid %s - %s" % (pid,e)
-				puts(msg)
+				error(msg)
 				sys.exit(2)
 
 	# if we haven't exited by now, we're the new running pid!

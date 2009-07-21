@@ -2,22 +2,11 @@ import app_globals
 import time, threading
 import sys, os, time, traceback
 import logging
-from logging import info, debug, warning, error
+from logging import info, debug, warning, error, exception
 
 def ascii(s): return s.encode('ascii','ignore') if isinstance(s, unicode) else str(s)
 def utf8(s):  return s.encode('utf-8','ignore') if isinstance(s, unicode) else str(s)
 
-# no longer supported:
-# puts, info, debug, debug_verbose
-# log_error(?)
-
-def log_error(description, exception):
-	raise Unsupported()
-	debug("-" * 50)
-	debug("EXCEPTION LOG:", description)
-	traceback.print_exc(file=logfile)
-	debug("-" * 50, "\n\n")
-	
 def status(*s):
 	"""output a machine-readable status message"""
 	if app_globals.OPTIONS['show_status']:

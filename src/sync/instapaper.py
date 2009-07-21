@@ -25,7 +25,7 @@ class Ipaper(object):
 	def add_url(self, url, title = None):
 		self._setup()
 		if self.missing(self.user) or not isinstance(self.password, str):
-			info("WARNING: Instapaper url dropped: %s" % (url,))
+			warning("Instapaper url dropped: %s" % (url,))
 			return
 
 		debug("saving instapaper URL: %s" % (url,))

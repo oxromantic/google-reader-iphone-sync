@@ -37,7 +37,7 @@ class PageFeed(object):
 			self._post('page/del/', params={'url':url})
 		except urllib2.HTTPError, e:
 			if e.code == 404:
-				info("couldn't delete - no such URL")
+				info("couldn't delete %s from PageFeed - no such URL" % (url,))
 			else:
 				raise
 
@@ -52,7 +52,7 @@ class PageFeed(object):
 			response = urllib2.urlopen(request)
 			return response.read()
 		except urllib2.HTTPError, e:
-			puts("The request failed (response code: %s)" % (e.code,))
+			warning("PageFeed request failed (response code: %s)" % (e.code,))
 			raise
 
 	def _data(self, params):

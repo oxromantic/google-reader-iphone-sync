@@ -14,7 +14,7 @@ def danger(desc):
 		print "Aborted."
 		sys.exit(2)
 		raise Exception("We should never get here!")
-	debug("Continuing...")
+	print "Continuing..."
 
 def try_remove(elem, lst):
 	"""

@@ -91,7 +91,7 @@ class ThreadPoolTest(TestCase):
 		def errd(e):
 			self.error_logged = True
 
-		mock_on(thread_pool).log_error.with_action(lambda desc, e: errd(e)).is_expected.once()
+		mock_on(thread_pool).exception.with_action(lambda desc, e: errd(e)).is_expected.once()
 		
 		self.pool.spawn(self.action(lambda: self.raise_(ValueError)), on_success = success.raw)
 		self.wait_for_action()

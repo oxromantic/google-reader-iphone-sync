@@ -152,7 +152,6 @@ class Item:
 	instapaper_urls = property(get_instpapaer_urls)
 	
 	def save_to_web(self):
-		debug("saving item...")
 		if not self.is_dirty:
 			return
 		
@@ -179,8 +178,6 @@ class Item:
 	def still_needed(self):
 		is_unread = not self.is_read
 		needed = is_unread or self.is_starred or self.is_shared
-		if needed:
-			debug("URL %s is still needed" % (self.url,))
 		return needed
 	
 	def any_source_is_pagefeed(self, sources):
@@ -192,9 +189,10 @@ class Item:
 			return
 		
 		try:
+			debug("deleting saved url: %s" % (self.url,))
 			app_globals.INSTAPAPER.delete(url=self.url)
 		except AttributeError:
-			debug("url save mechanism has no delete function")
+			warning("url save mechanism has no delete function")
 			return
 
 	def _google_do(self, action):
