@@ -6,6 +6,7 @@
 	IBOutlet id topLevelWindow;
 	IBOutlet id navController;
 	BOOL isActive;
+	NSArray * rotationNotificationReceivers;
 }
 @property(readonly) id navController;
 - (void) activate;

@@ -3,6 +3,7 @@
 
 @implementation MainTabBarController
 @synthesize navController;
+
 - (void) activate {
 	dbg(@"%@ activating", self);
 	isActive = YES;
@@ -25,6 +26,9 @@
 }
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)previousOrientation {
+	for (id notify in rotationNotificationReceivers) {
+		[notify didRotateFromInterfaceOrientation: previousOrientation];
+	}
 	[[self tabBar] setHidden: !isActive];
 }
 
@@ -36,5 +40,10 @@
 - (void) deactivate {
 	[self setListScrollToTop:NO];
 	isActive = NO;
+}
+
+- (void) addInterestedView:(id) view {
+	if(rotationNotificationReceivers == nil) rotationNotificationReceivers = [[NSMutableArray alloc] init];
+	[rotationNotificationReceivers addObject: view];
 }
 @end

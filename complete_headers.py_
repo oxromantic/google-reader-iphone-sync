@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+"""
+Ensure all hader files have accurate method signatures.
+
+This process is very hacky, so check its work before you commit anything...
+"""
+
+import os
+import re
+
+from src.sync.misc import *
+
+lines_inserted = None
+
+def main():
+	global lines_inserted
+	dir_ = 'iphone-native/Classes'
+	files = os.listdir(dir_)
+	print files
+	files = filter(lambda f: (not os.path.isdir(f)) and f.endswith('.m'), files)
+	for file_ in files:
+		abs_file = "%s/%s" % (dir_, file_)
+		header = file_[:-2] + '.h'
+		abs_header = "%s/%s" % (dir_, header)
+
+		print '-' * 80
+		print "header: " + abs_header
+		print "file: " + abs_file
+		lines = read_file_lines(abs_file)
+		
+		regex = re.compile(' ?([-+] *\( *[^ ]+ *\).*){')
+		method_signatures = filter(lambda x: re.match(regex, x), lines)
+		method_signatures = map(lambda x: re.match(regex, x).group(1).rstrip() + ';', method_signatures)
+		# print '\n'.join(method_signatures)
+		
+		header_lines = read_file_lines(abs_header)
+		non_method_signatures = [x.rstrip('\n') for x in header_lines if not re.match(regex, x)]
+		
+		print '-' * 80
+		
+		lines_inserted = False
+		def insert_lines(line):
+			global lines_inserted
+			if line.strip() == '@end' and not lines_inserted:
+				return '\n'.join(method_signatures) + '\n\n' + line
+				lines_inserted = True
+			else:
+				return line
+				
+		final_header_lines = map(insert_lines, non_method_signatures)
+		header_file_contents = '\n'.join(final_header_lines)
+		print header_file_contents
+		write_file(abs_header, header_file_contents)
+
+
+
+if __name__ == '__main__':
+	main()

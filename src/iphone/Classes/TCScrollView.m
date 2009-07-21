@@ -6,12 +6,14 @@
 
 - (void) awakeFromNib {
 	[self insertSubview: contentView atIndex: 0];
-	[self setContentSize: [contentView bounds].size];
-	[contentView layoutIfNeeded];
+	[self _layout];
 }
 
-- (void) setContentView: (id) view {
-	contentView = view;
+- (void) setContentView: (id) view { contentView = view; }
+
+- (void) _layout {
+	[contentView layoutIfNeeded];
+	[self setContentSize: [contentView bounds].size];
 }
 
 @end
