@@ -6,6 +6,7 @@ import glob
 import os
 
 # local imports
+import config
 import app_globals
 from misc import *
 from output import *
