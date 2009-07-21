@@ -95,7 +95,7 @@ class ItemTest(mt.TestCase):
 	
 	def test_should_sync_unique_instapaper_urls(self):
 		ipaper = mt.mock()
-		app_globals.INSTAPAPER = ipaper.raw
+		app_globals.URLSAVE = ipaper.raw
 		ipaper.expects('add_urls').with_(set(['url1', 'url2']))
 		
 		item = Item(item_with_title('blah'))
@@ -111,7 +111,7 @@ class ItemTest(mt.TestCase):
 	
 	def test_should_delete_unneeded_pagefeed_items(self):
 		ipaper = mt.mock()
-		app_globals.INSTAPAPER = ipaper.raw
+		app_globals.URLSAVE = ipaper.raw
 		mt.mock_on(app_globals.READER).set_read
 		ipaper.expects('delete').with_(url='url')
 		
@@ -123,7 +123,7 @@ class ItemTest(mt.TestCase):
 	
 	def test_should_not_delete_needed_pagefeed_items(self):
 		ipaper = mt.mock()
-		app_globals.INSTAPAPER = ipaper.raw
+		app_globals.URLSAVE = ipaper.raw
 		mt.mock_on(app_globals.READER).add_star
 		ipaper.method('delete').returning('OK').is_not_expected
 		

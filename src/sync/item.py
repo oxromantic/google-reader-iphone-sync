@@ -157,7 +157,7 @@ class Item:
 		
 		# instapaper / pagefeed URLs
 		if self.instapaper_url and len(self.instapaper_url) > 0:
-			app_globals.INSTAPAPER.add_urls(self.instapaper_urls)
+			app_globals.URLSAVE.add_urls(self.instapaper_urls)
 			self.instapaper_url = ''
 		
 		# read status
@@ -190,7 +190,7 @@ class Item:
 		
 		try:
 			debug("deleting saved url: %s" % (self.url,))
-			app_globals.INSTAPAPER.delete(url=self.url)
+			app_globals.URLSAVE.delete(url=self.url)
 		except AttributeError:
 			warning("url save mechanism has no delete function")
 			return

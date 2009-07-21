@@ -58,7 +58,7 @@ def execute():
 	ensure_dir_exists(app_globals.OPTIONS['output_path'])
 	ensure_dir_exists(app_globals.OPTIONS['output_path'] + '/' + app_globals.CONFIG['resources_path'])
 	
-	app_globals.INSTAPAPER = url_save.get_active_service()
+	app_globals.URLSAVE = url_save.get_active_service()
 	
 	app_globals.READER = Reader()
 	app_globals.READER.save_tag_list()

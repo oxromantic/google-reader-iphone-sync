@@ -17,10 +17,6 @@ OPTIONS = {
 	'no_download':      False,
 	'cautious':         False,
 	'test':             False,
-	'screen_width':     320,
-	'screen_height':    480,
-	'template_only':    False,
-	'flush_output':     False,
 	'tag_list_only':    False,
 	'report_pid':       False,
 	'newest_first':     False,
@@ -49,4 +45,4 @@ STATS = {
 
 READER = None
 DATABASE = None
-INSTAPAPER = None
+URLSAVE = None
