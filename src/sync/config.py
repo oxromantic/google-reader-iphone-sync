@@ -11,6 +11,7 @@ import re
 import lib
 import logging
 import logging.config
+import ConfigParser
 
 # local imports
 from misc import *
@@ -34,7 +35,6 @@ main_options = ("n:Co:dth", [
 		'tag-list-only',
 		'newest-first',
 		'report-pid',
-		'flush-output',
 		])
 all_options = (bootstrap_options[0] + main_options[0],
                bootstrap_options[1] + main_options[1])
@@ -79,7 +79,6 @@ Usage:
   --user=[username]      set the username
   --password=[pass]      set password
   --tag=[tag_name]       add a tag to the list of tags to be downloaded. Can be used multiple times
-  --flush-output         flush stdout after printing each line
   --report-pid           report any existing sync PID
   --aggressive           KILL any other running sync process
                          (the default is to fail to start if another sync process is running)
@@ -175,7 +174,11 @@ def init_logging():
 		'logdir':logdir,
 		'loglevel': app_globals.OPTIONS['loglevel'].upper(),
 	}
-	logging.config.fileConfig(app_globals.OPTIONS['logging'], env)
+	try:
+		logging.config.fileConfig(app_globals.OPTIONS['logging'], env)
+	except ConfigParser.Error:
+		print "ERROR: logging setup FAILED with file: %s, env: %r" % (app_globals.OPTIONS['logging'],env)
+		raise
 
 def load(filename = None):
 	"""

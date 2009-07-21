@@ -1,5 +1,6 @@
 # These are some defaults and other globals.
 # anything in OPTIONS can be overrided / extended by config.py in reaction to command-line or config.yml input
+import os
 
 PLACEHOLDER = object()
 
@@ -28,7 +29,7 @@ OPTIONS = {
 	'ipaper_user':      PLACEHOLDER,
 	'ipaper_password':  PLACEHOLDER,
 	'url_save_service': 'instapaper', # can also be 'pagefeed'
-	'logging':          'logging.conf',
+	'logging':          os.path.join(os.path.dirname(__file__), 'logging.conf'),
 	'logdir':           'log',
 	'loglevel':         'info',
 }

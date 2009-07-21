@@ -10,7 +10,8 @@ def utf8(s):  return s.encode('utf-8','ignore') if isinstance(s, unicode) else s
 def status(*s):
 	"""output a machine-readable status message"""
 	if app_globals.OPTIONS['show_status']:
-		info("STAT:%s" % ":".join(map(utf8, s)))
+		print "STAT:%s" % ":".join(map(utf8, s))
+		sys.stdout.flush()
 
 subtask_progress = 0
 def new_subtask(length):

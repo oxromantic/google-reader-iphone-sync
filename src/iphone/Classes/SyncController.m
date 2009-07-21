@@ -71,7 +71,7 @@ NSString * escape_single_quotes(NSString * str) {
 			[extra_opts appendString: @" --no-download"];
 			break;
 		case Singleton:
-			[extra_opts appendString: @" --report-pid --quiet"];
+			[extra_opts appendString: @" --report-pid --loglevel=error"];
 			break;
 		
 	}
@@ -82,16 +82,11 @@ NSString * escape_single_quotes(NSString * str) {
 		dbg(@"NOT sorting newest first");
 	}
 	
-	#ifndef SIMULATOR
-		[extra_opts appendString: @" --quiet"];
-	#else
-		[extra_opts appendString: @" --verbose"];
-	#endif
-	
-	NSString * shellString = [NSString stringWithFormat:@"python '%@' --show-status --aggressive --flush-output --config='%@' --output-path='%@' %@ 2>&1",
+	NSString * shellString = [NSString stringWithFormat:@"python '%@' --show-status --aggressive --config='%@' --output-path='%@' --logdir='%@' %@ 2>&1",
 		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"sync/main.py"]),
 		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"config.plist"]),
 		escape_single_quotes([settings docsPath]),
+		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"log"]),
 		extra_opts];
 	
 	NSString * proxy = [self proxySettings];
