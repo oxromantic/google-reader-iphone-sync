@@ -123,6 +123,7 @@ NSString * escape_single_quotes(NSString * str) {
 	[status_taskProgress setProgress: 0.0];
 	[status_taskProgress setHidden:NO];
 	[status_mainProgress setHidden:NO];
+	[self disableSleep];
 	
 	// animate
 	[syncStatusView animateFadeIn];
@@ -228,7 +229,16 @@ NSString * escape_single_quotes(NSString * str) {
 	}
 }
 
+- (void) disableSleep {
+	[[UIApplication sharedApplication] setIdleTimerDisabled: YES];
+}
+
+- (void) enableSleep {
+	[[UIApplication sharedApplication] setIdleTimerDisabled: NO];
+}
+
 - (IBAction) cancelSync: (id) sender {
+	[self enableSleep];
 	if(!syncThread || [syncThread isFinished]) {
 		dbg(@"can't cancel sync - it's already finished!");
 		return;
@@ -300,6 +310,7 @@ NSString * escape_single_quotes(NSString * str) {
 	[syncThread release];
 	syncThread = nil;
 	[self showSyncFinished];
+	[self enableSleep];
 	if([last_output_line hasPrefix:@"Sync complete."]) {
 		[self hideSyncView:self];
 	}
