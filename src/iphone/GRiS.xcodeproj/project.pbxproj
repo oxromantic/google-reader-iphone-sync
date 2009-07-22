@@ -35,7 +35,6 @@
 		22976FD90E610488001B44DA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22976FD80E610488001B44DA /* CFNetwork.framework */; };
 		22A120640E84D2A3000647C2 /* ItemViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A120630E84D2A3000647C2 /* ItemViewDelegate.m */; };
 		22A120670E84D394000647C2 /* TCObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A120660E84D394000647C2 /* TCObjectExtensions.m */; };
-		22B1E8141015C66C00306AB0 /* TouchyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E8131015C66C00306AB0 /* TouchyView.m */; };
 		22BE16EA0EA08A2700CB7D3D /* emblem_shared.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BE16E90EA08A2700CB7D3D /* emblem_shared.png */; };
 		22BE16EC0EA08A3200CB7D3D /* emblem_shared_and_starred.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BE16EB0EA08A3200CB7D3D /* emblem_shared_and_starred.png */; };
 		22C6B5280E3DD33700B8F9A3 /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22C6B5260E3DD33700B8F9A3 /* BrowserViewController.m */; };
@@ -126,8 +125,6 @@
 		22A120630E84D2A3000647C2 /* ItemViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewDelegate.m; sourceTree = "<group>"; };
 		22A120650E84D394000647C2 /* TCObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCObjectExtensions.h; sourceTree = "<group>"; };
 		22A120660E84D394000647C2 /* TCObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCObjectExtensions.m; sourceTree = "<group>"; };
-		22B1E8121015C66C00306AB0 /* TouchyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchyView.h; sourceTree = "<group>"; };
-		22B1E8131015C66C00306AB0 /* TouchyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchyView.m; sourceTree = "<group>"; };
 		22BE16E90EA08A2700CB7D3D /* emblem_shared.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = emblem_shared.png; path = button_images/emblem_shared.png; sourceTree = "<group>"; };
 		22BE16EB0EA08A3200CB7D3D /* emblem_shared_and_starred.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = emblem_shared_and_starred.png; path = button_images/emblem_shared_and_starred.png; sourceTree = "<group>"; };
 		22C6B5260E3DD33700B8F9A3 /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
@@ -325,8 +322,6 @@
 				222CA6C50E568C0300146D8E /* StripedView.m */,
 				225D84990E43376A00BFE7D1 /* MainTabBarController.h */,
 				225D849A0E43376A00BFE7D1 /* MainTabBarController.m */,
-				22B1E8121015C66C00306AB0 /* TouchyView.h */,
-				22B1E8131015C66C00306AB0 /* TouchyView.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -495,7 +490,6 @@
 				22A120670E84D394000647C2 /* TCObjectExtensions.m in Sources */,
 				222C79FC0EFF9C9900870274 /* TCViewExtensions.m in Sources */,
 				2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */,
-				22B1E8141015C66C00306AB0 /* TouchyView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
