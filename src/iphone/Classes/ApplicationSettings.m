@@ -281,6 +281,7 @@ NSArray * deprecatedProperties;
 		[[views objectAtIndex: 0] removeFromSuperview];
 	}
 	[urlSaveViewContainer addSubview: urlSaveView];
+	[urlSaveView fitToSuperview];
 	[urlSaveViewContainer setNeedsLayout];
 	[urlSaveView animateFadeIn];
 }

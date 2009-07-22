@@ -236,7 +236,7 @@ NSString * escape_single_quotes(NSString * str) {
 - (IBAction) cancelSync: (id) sender {
 	[self enableSleep];
 	if(!syncThread || [syncThread isFinished]) {
-		dbg_s(@"can't cancel sync - it's already finished!");
+		dbg(@"can't cancel sync - it's already finished!");
 		return;
 	}
 	NSLog(@"cancelling thread...");
