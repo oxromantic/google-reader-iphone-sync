@@ -4,8 +4,6 @@
 
 @implementation GRiSAppDelegate
 
-@synthesize window;
-
 - (void) applicationWillTerminate:(id) sender {
 	dbg(@"terminating...");
 	[syncController cancelSync:self];
@@ -116,13 +114,6 @@
 	[self toggleOptions: self];
 }
 	
-
-- (void)dealloc {
-	[window release];
-	[browseController release];
-	[super dealloc];
-}
-
 - (void) loadFirstView {
 	NSString * itemID = [appSettings getLastViewedItem];
 	NSString * tag = [appSettings getLastViewedTag];

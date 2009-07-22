@@ -14,7 +14,7 @@
 	BackgroundShell * syncThread;
 	BOOL syncRunning;
 	int sync_pid;
-	IBOutlet id window;
+	IBOutlet id root;
 	
 	IBOutlet id itemsController;
 	IBOutlet id db;

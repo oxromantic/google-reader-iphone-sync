@@ -18,8 +18,6 @@
 	BOOL loading;
 }
 
-@property (nonatomic, retain) UIWindow *window;
-
 - (IBAction) toggleOptions: (id) sender;
 - (IBAction) showNavigation: (id) sender;
 - (IBAction) showViewer: (id) sender;

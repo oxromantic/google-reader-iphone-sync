@@ -5,7 +5,6 @@
 @synthesize navController;
 
 - (void) activate {
-	dbg(@"%@ activating", self);
 	isActive = YES;
 	[self setListScrollToTop:YES];
 	[[self itemList] redraw];
@@ -25,11 +24,14 @@
 	return ![[[[UIApplication sharedApplication] delegate] settings] rotationLock];
 }
 
+- (UIView *) rotatingFooterView {
+	return nil;
+}
+
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)previousOrientation {
 	for (id notify in rotationNotificationReceivers) {
 		[notify didRotateFromInterfaceOrientation: previousOrientation];
 	}
-	[[self tabBar] setHidden: !isActive];
 }
 
 - (void) setListScrollToTop:(BOOL) doScroll {
@@ -46,4 +48,10 @@
 	if(rotationNotificationReceivers == nil) rotationNotificationReceivers = [[NSMutableArray alloc] init];
 	[rotationNotificationReceivers addObject: view];
 }
+
+- (void) dealloc {
+	if(rotationNotificationReceivers != nil) [rotationNotificationReceivers release];
+	[super dealloc];
+}
+
 @end

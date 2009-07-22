@@ -6,7 +6,6 @@
 	IBOutlet id webView;
 	IBOutlet id navigationView;
 	IBOutlet id browseScreenView;
-	IBOutlet id topLevelWindow;
 }
 - (void) activate;
 - (void) deactivate;

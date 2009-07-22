@@ -115,9 +115,10 @@ NSString * escape_single_quotes(NSString * str) {
 	[okButton setHidden:YES];
 
 	[syncStatusView setHidden:NO];
-	[window addSubview: syncStatusView];
+	[[root view] addSubview: syncStatusView];
 	[syncStatusView setAlpha: 1.0];
-	[syncStatusView setFrame: [window frame]];
+	[syncStatusView fitToSuperview];
+	[[root view] layoutSubviews];
 	[self setStatusTextWithoutTranslation: _lang(@"Loading...","")];
 	[status_mainProgress setProgress: 0.0];
 	[status_taskProgress setProgress: 0.0];
