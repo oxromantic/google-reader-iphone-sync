@@ -17,7 +17,6 @@
 }
 
 - (IBAction) actionSheet: (id) sender clickedButtonAtIndex: (NSInteger) index {
-	dbg(@"clicked %d", index);
 	switch(index) {
 		case 0: [self openInSafari: pendingRequest];     break;
 		case 1: [self forceOpenInGris: pendingRequest];  break;
@@ -39,8 +38,6 @@
 	if(!waitingForInstapaperLinkClick) {
 		[self setWaitingForInstapaperLinkClick:[itemView currentItem]];
 	}
-	dbg(@"%@", waitingForInstapaperLinkClick);
-	
 	[waitingForInstapaperLinkClick setIpaperURL: [[req URL] absoluteString]];
 	[self setWaitingForInstapaperLinkClick: nil];
 
@@ -63,7 +60,6 @@
 }
 
 - (void) promptForWhereToOpenLink: (NSURLRequest *) req {
-	dbg(@"asking...");
 	pendingRequest = [req retain];
 	UIActionSheet * actionSheet = [[[UIActionSheet alloc] initWithTitle:_lang(@"Open link with:","")
 		delegate: self

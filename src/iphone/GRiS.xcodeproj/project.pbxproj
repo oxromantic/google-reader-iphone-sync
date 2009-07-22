@@ -62,7 +62,6 @@
 		22DB0D4B0E45C8BE008CD8C7 /* BackgroundShell.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB0D490E45C8BE008CD8C7 /* BackgroundShell.m */; };
 		22F0658E0E7B4FE20021E97A /* FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F065850E7B4FE20021E97A /* FeedItem.m */; };
 		22F0658F0E7B4FE20021E97A /* ItemDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F065870E7B4FE20021E97A /* ItemDB.m */; };
-		22F065900E7B4FE20021E97A /* ItemDirList.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F065890E7B4FE20021E97A /* ItemDirList.m */; };
 		22F065910E7B4FE20021E97A /* ItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0658B0E7B4FE20021E97A /* ItemView.m */; };
 		22F065920E7B4FE20021E97A /* TCHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0658D0E7B4FE20021E97A /* TCHelpers.m */; };
 		22F065DD0E7B53790021E97A /* TagItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F065DC0E7B53790021E97A /* TagItem.m */; };
@@ -160,8 +159,6 @@
 		22F065850E7B4FE20021E97A /* FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedItem.m; sourceTree = "<group>"; };
 		22F065860E7B4FE20021E97A /* ItemDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDB.h; sourceTree = "<group>"; };
 		22F065870E7B4FE20021E97A /* ItemDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDB.m; sourceTree = "<group>"; };
-		22F065880E7B4FE20021E97A /* ItemDirList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDirList.h; sourceTree = "<group>"; };
-		22F065890E7B4FE20021E97A /* ItemDirList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDirList.m; sourceTree = "<group>"; };
 		22F0658A0E7B4FE20021E97A /* ItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemView.h; sourceTree = "<group>"; };
 		22F0658B0E7B4FE20021E97A /* ItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemView.m; sourceTree = "<group>"; };
 		22F0658C0E7B4FE20021E97A /* TCHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCHelpers.h; sourceTree = "<group>"; };
@@ -267,10 +264,8 @@
 				225D84A40E433E2F00BFE7D1 /* FeedListDelegate.h */,
 				22F065860E7B4FE20021E97A /* ItemDB.h */,
 				22F065870E7B4FE20021E97A /* ItemDB.m */,
-				22F065880E7B4FE20021E97A /* ItemDirList.h */,
 				22425F330E43F02D00252E7A /* ItemListController.h */,
 				22425F340E43F02D00252E7A /* ItemListController.m */,
-				22F065890E7B4FE20021E97A /* ItemDirList.m */,
 				225D84A60E433E3800BFE7D1 /* ItemListDelegate.h */,
 				225D84A70E433E3800BFE7D1 /* ItemListDelegate.m */,
 				22F065840E7B4FE20021E97A /* FeedItem.h */,
@@ -475,7 +470,6 @@
 				226C545D0E7AAF950083D8FD /* ItemSet.m in Sources */,
 				22F0658E0E7B4FE20021E97A /* FeedItem.m in Sources */,
 				22F0658F0E7B4FE20021E97A /* ItemDB.m in Sources */,
-				22F065900E7B4FE20021E97A /* ItemDirList.m in Sources */,
 				22F065910E7B4FE20021E97A /* ItemView.m in Sources */,
 				22F065920E7B4FE20021E97A /* TCHelpers.m in Sources */,
 				22F065DD0E7B53790021E97A /* TagItem.m in Sources */,

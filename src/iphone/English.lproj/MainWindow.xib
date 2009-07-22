@@ -11,7 +11,6 @@
 			<integer value="242"/>
 			<integer value="670"/>
 			<integer value="350"/>
-			<integer value="688"/>
 			<integer value="671"/>
 			<integer value="681"/>
 			<integer value="227"/>
@@ -1615,9 +1614,6 @@ dGluZ3MiKQ</string>
 					<reference key="NSCustomColorSpace" ref="947182492"/>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-			</object>
-			<object class="IBUIViewController" id="76892728">
-				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -3358,11 +3354,6 @@ dGluZ3MiKQ</string>
 						<reference key="object" ref="292149748"/>
 						<reference key="parent" ref="957960031"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">688</int>
-						<reference key="object" ref="76892728"/>
-						<reference key="parent" ref="957960031"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3505,9 +3496,6 @@ dGluZ3MiKQ</string>
 					<string>681.IBPluginDependency</string>
 					<string>686.IBEditorWindowLastContentRect</string>
 					<string>686.IBPluginDependency</string>
-					<string>688.CustomClassName</string>
-					<string>688.IBEditorWindowLastContentRect</string>
-					<string>688.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3647,9 +3635,6 @@ dGluZ3MiKQ</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{0, 515}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>WindowController</string>
 					<string>{{0, 515}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>

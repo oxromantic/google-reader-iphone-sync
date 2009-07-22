@@ -97,7 +97,7 @@ NSArray * deprecatedProperties;
 		NSLog(@"FAILED loading plist");
 		plistData = [[NSMutableDictionary dictionary] retain];
 	}
-	dbg(@"Loaded plist data", plistData);
+	dbg_s(@"Loaded plist data", plistData);
 	dbg_s(@"%@", plistData);
 	[self removeDeprecatedProperties];
 	[self loadFeedList];
@@ -305,9 +305,6 @@ NSArray * deprecatedProperties;
 - (BOOL) missingInstapaperDetails {
 	BOOL using_ipaper = [self urlSaveServiceSelectedIndex] == urlSaveInstapaperIndex;
 	BOOL no_user = [[self ipaperEmail] length] == 0;
-	dbg(@"no user? %s", no_user ? "yes!": "no...");
-	dbg(@"using ipaper? %s", using_ipaper ? "yes!": "no...");
-	dbg(@"missing details? %s", using_ipaper && no_user ? "yes!": "no...");
 	return using_ipaper && no_user;
 }
 
@@ -455,7 +452,6 @@ NSArray * deprecatedProperties;
 	
 	scrollOffset = [self getOffsetForTextFieldEditing:sender];
 	if(scrollOffset != -1) {
-		dbg(@"Scrolling to: %d", scrollOffset);
 		[mainScrollView setContentOffset: CGPointMake(0, scrollOffset) animated:YES];
 	}
 }

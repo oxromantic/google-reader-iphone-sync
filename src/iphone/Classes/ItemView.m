@@ -1,5 +1,4 @@
 #import "ItemView.h"
-#import "ItemDirList.h"
 #import "TCHelpers.h"
 #import "ApplicationSettings.h"
 
@@ -105,7 +104,6 @@
 }
 
 - (void) loadItem: (FeedItem *) item withPositionDescription:(NSString *) position_description{
-	NSLog(@"loading item %@", item);
 	if(item == nil) {
 		[self loadHTMLString:@"<html><body><h1>No More</h1><p>..files for you!</p></body></html>"];
 	} else {
@@ -119,7 +117,6 @@
 	[newHTML retain];
 	/*
 	 // I would love to release the old html, but someone went and broke it - NSNotificationcentre, by the looks of various backtraces...
-	 NSLog(@"releasing html: %@", currentHTML);
 	 [currentHTML release];
 	 */
 	currentHTML = newHTML;
@@ -164,7 +161,6 @@
 }
 
 - (IBAction) actionSheet: (id) sender clickedButtonAtIndex: (NSInteger) index {
-	dbg(@"clicked %d", index);
 	switch(index) {
 		case 0:
 			[self emailCurrentItem: self];

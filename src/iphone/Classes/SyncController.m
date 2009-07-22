@@ -78,8 +78,6 @@ NSString * escape_single_quotes(NSString * str) {
 	
 	if( [[self globalAppSettings] sortNewestItemsFirst] ) {
 		[extra_opts appendString: @" --newest-first"];
-	} else {
-		dbg(@"NOT sorting newest first");
 	}
 	
 	NSString * shellString = [NSString stringWithFormat:@"python '%@' --show-status --aggressive --config='%@' --output-path='%@' --logdir='%@' %@ 2>&1",
@@ -160,15 +158,12 @@ NSString * escape_single_quotes(NSString * str) {
 - (BOOL) forceInternetConnection {
 	// grab google's home page; forcing an EDGE/3G connection to be made
 	// (python's urlopen seems not to trigger this, so we do it in obj-c land)
-	dbg(@"Forcing connection to google.com...");
 	NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString: @"http://www.google.com/"] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval: 20];
 	NSURLResponse * response;
 	NSData * data = [NSURLConnection sendSynchronousRequest: request returningResponse: &response error: nil];
 	BOOL success = (data != nil);
 	if(!success) {
-		dbg(@"connection failed");
-	} else {
-		dbg(@"..OK");
+		dbg(@"PING connection failed");
 	}
 	return success;
 }
@@ -178,19 +173,20 @@ NSString * escape_single_quotes(NSString * str) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
 	NSString * cmd = [self syncCommandString:Singleton];
-	dbg(@"Running command: %@", cmd);
+	dbg_s(@"Running command: %@", cmd);
 	FILE * output = popen([cmd cStringUsingEncoding: NSUTF8StringEncoding], "r");
 	char cline[500];
 	NSString * line;
 	int pid = 0;
 	while(fgets(cline, sizeof(cline) / sizeof(char), output) != NULL) {
 		line = [NSString stringWithCString: cline encoding: NSUTF8StringEncoding];
-		dbg(@"pid got line: %@", line);
 		line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
 		if([line length] > 0) {
 			if([line isEqualToString: @"None"]) {
 				pid = 0;
 				break;
+			} else {
+				dbg(@"pid got line: %@", line);
 			}
 			pid = [line intValue];
 		}
@@ -205,8 +201,8 @@ NSString * escape_single_quotes(NSString * str) {
 
 - (void) dealWithRunningSync:(NSNumber *) pid_ {
 	int pid = [pid_ intValue];
-	dbg(@"pid = %d", pid);
 	if(pid > 0) {
+		dbg(@"pid = %d", pid);
 		sync_pid = pid;
 		[[[[UIAlertView alloc]
 			initWithTitle:_lang(@"GRiS Sync","") message: _lang(@"There is already a sync running. It is either stuck, or a scheduled sync.\nStop it?","")
@@ -216,12 +212,10 @@ NSString * escape_single_quotes(NSString * str) {
 }
 
 - (void) ensureSingleton {
-	dbg(@"spawning singleton check thread");
 	[[[[NSThread alloc] initWithTarget:self selector: @selector(ensureSingletonWorkerAction:) object:nil] autorelease] start];
 }
 
 - (void) alertView:(id)view clickedButtonAtIndex: (int) index {
-	dbg(@"alert view clicked item at index: %d", index);
 	if(index == 1) { // kill it
 		kill(sync_pid, SIGKILL);
 	} else {
@@ -241,7 +235,7 @@ NSString * escape_single_quotes(NSString * str) {
 - (IBAction) cancelSync: (id) sender {
 	[self enableSleep];
 	if(!syncThread || [syncThread isFinished]) {
-		dbg(@"can't cancel sync - it's already finished!");
+		dbg_s(@"can't cancel sync - it's already finished!");
 		return;
 	}
 	NSLog(@"cancelling thread...");
@@ -257,17 +251,17 @@ NSString * escape_single_quotes(NSString * str) {
 
 - (NSString *) proxySettings {
 	NSString * settings = nil;
-	dbg(@"grabbing all proxy settings");
+	dbg_s(@"grabbing all proxy settings");
 	CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
 	NSURL * url = [NSURL URLWithString: @"http://google.com"];
 	NSArray * proxyConfigs = CFNetworkCopyProxiesForURL(url, proxySettings);
 	
-	dbg(@"proxies: %@", proxyConfigs);
 	if([proxyConfigs count] > 0) {
+		dbg_s(@"proxies: %@", proxyConfigs);
 		NSDictionary * bestProxy = [proxyConfigs objectAtIndex: 0];
 		NSString * proxyType = [bestProxy objectForKey:kCFProxyTypeKey];
 		if( proxyType && proxyType != kCFProxyTypeNone) {
-			dbg(@"best proxy found: %@ @ %d", bestProxy, bestProxy);
+			dbg_s(@"best proxy found: %@ @ %d", bestProxy, bestProxy);
 			NSString * host = [bestProxy valueForKey:kCFProxyHostNameKey];
 			NSString * port = [bestProxy valueForKey:kCFProxyPortNumberKey];
 			NSString * user = [bestProxy valueForKey:kCFProxyUsernameKey];

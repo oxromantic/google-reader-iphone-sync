@@ -277,12 +277,9 @@
 		[item setReadState: YES];
 		[self reloadItems];
 		id settings = [[[UIApplication sharedApplication] delegate] settings];
-		dbg(@"new items? %d", ([settings showReadItems]));
 		if(![settings showReadItems]) {
-			dbg(@"animating!");
 			[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		} else {
-			dbg(@"no animation for me!");
 			[tv reloadData];
 		}
     }

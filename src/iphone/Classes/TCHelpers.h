@@ -6,11 +6,11 @@
 	#define dbg NSLog /*( ... ) {}*/
 #endif
 
-#ifdef SIMULATOR
-	#define dbg_s NSLog
-#else
+// #ifdef SIMULATOR
+// 	#define dbg_s NSLog
+// #else
 	#define dbg_s( ... ) {}
-#endif
+// #endif
 
 #define _lang(s,desc) NSLocalizedString(s, desc)
 

@@ -12,7 +12,7 @@
 }
 
 - (void) applicationDidReceiveMemoryWarning: (id) app {
-	dbg(@"oh dear. we are out of memory...");
+	dbg(@"WARNING: out of memory warning received. GRiS will probably die horribly.");
 }
 
 - (BOOL) inItemViewMode { return inItemViewMode; }
@@ -20,8 +20,6 @@
 - (id) mainController { return mainController; }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	dbg(@"application finished launching");
-	dbg(@"Locale: %@", [[NSLocale currentLocale] localeIdentifier]);
 	[syncController ensureSingleton];
 	[window setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
 	
@@ -35,7 +33,6 @@
 }
 
 - (void)showNavigation: (id) sender {
-	dbg(@"Navigation!");
 	[self refreshItemLists];
 	[[browseController webView] showCurrentItemInItemList: [mainController itemList]];
 	[browseController deactivate];
@@ -71,7 +68,6 @@
 }
 
 - (void)showViewer: (id) sender {
-	dbg(@"Viewer!");
 	[mainController deactivate];
 	[self setViewToShowItem: YES];
 	[browseController activate];
@@ -117,8 +113,6 @@
 - (void) loadFirstView {
 	NSString * itemID = [appSettings getLastViewedItem];
 	NSString * tag = [appSettings getLastViewedTag];
-	dbg(@"last viewed item = %@", itemID);
-	dbg(@"last viewed tag = %@", tag);
 	[self showNavigation: self];
 	if(!(itemID == nil || [itemID length] == 0 || tag == nil || [tag length] == 0)) {
 		dbg(@"loading tag %@, item %@", tag, itemID);
