@@ -263,7 +263,7 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 	
 	try:
 		if int(headers['Content-Length']) < MIN_IMAGE_BYTES:
-			debug("not downloading image - it's only %s bytes long" % headers['Content-Length'])
+			debug("not downloading image - it's only %s bytes long" % (headers['Content-Length'],))
 			dl.close()
 			return None
 	except StandardError: pass
@@ -272,7 +272,7 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 		filetype = output_filename.split('.')[-1].lower()
 	
 	if filetype not in image_extensions:
-		debug("not downloading image of type: %s" % filetype)
+		debug("not downloading image of type: %s" % (filetype,))
 		dl.close()
 		return None
 	
@@ -282,9 +282,9 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 	if not allow_overwrite:
 		output_filename = unique_filename(output_filename, base_path=base_path)
 
-	debug("downloading file: " + url)
+	debug("downloading file: %s" % (url,))
 	contents = dl.read()
-	debug("downloaded file " + url)
+	debug("downloaded file: %s" % (url,))
 	dl.close()
 
 	if output_filename is not None:

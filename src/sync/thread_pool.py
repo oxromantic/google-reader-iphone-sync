@@ -5,7 +5,7 @@ def ping():
 	try:
 		threading.currentThread().ping()
 	except AttributeError, e:
-		debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),), e)
+		debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),))
 
 # threaded decorator
 # relies on the decorated method's instance having an initialised _lock variable
@@ -145,7 +145,7 @@ class ThreadPool:
 	def _thread_error(self, thread, callback, e):
 		self._locked_thread_finished(thread)
 		if callback is None:
-			error("thread raised an exception and ended: %s", e)
+			exception("thread raised an exception and ended: %s" % (e,))
 		else:
 			callback(e)
 		
