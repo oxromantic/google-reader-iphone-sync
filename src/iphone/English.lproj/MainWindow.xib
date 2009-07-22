@@ -12,7 +12,7 @@
 			<integer value="670"/>
 			<integer value="350"/>
 			<integer value="671"/>
-			<integer value="681"/>
+			<integer value="666"/>
 			<integer value="227"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -899,6 +899,28 @@
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">1.000000e+01</float>
+					</object>
+					<object class="IBUITextView" id="524085370">
+						<reference key="NSNextResponder" ref="281558437"/>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{12, 14}, {288, 264}}</string>
+						<reference key="NSSuperview" ref="281558437"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<int key="IBUIIndicatorStyle">2</int>
+						<bool key="IBUIDelaysContentTouches">NO</bool>
+						<bool key="IBUICanCancelContentTouches">NO</bool>
+						<float key="IBUIMinimumZoomScale">0.000000e+00</float>
+						<float key="IBUIMaximumZoomScale">0.000000e+00</float>
+						<bool key="IBUIBouncesZoom">NO</bool>
+						<bool key="IBUIEditable">NO</bool>
+						<string key="IBUIText">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Et harumd und lookum like Greek to me, dereud facilis est er expedit distinct. Nam liber te conscient to factor tum poen legum odioque civiuda</string>
+						<object class="NSColor" key="IBUITextColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MSAwLjYyAA</bytes>
+						</object>
+						<int key="IBUIMarginTop">0</int>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
@@ -2562,6 +2584,14 @@ dGluZ3MiKQ</string>
 					</object>
 					<int key="connectionID">695</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">syncOutput</string>
+						<reference key="source" ref="590635521"/>
+						<reference key="destination" ref="524085370"/>
+					</object>
+					<int key="connectionID">697</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2763,6 +2793,7 @@ dGluZ3MiKQ</string>
 							<reference ref="950850716"/>
 							<reference ref="52997037"/>
 							<reference ref="981390494"/>
+							<reference ref="524085370"/>
 						</object>
 						<reference key="parent" ref="957960031"/>
 						<string key="objectName">SyncingView</string>
@@ -3354,6 +3385,11 @@ dGluZ3MiKQ</string>
 						<reference key="object" ref="292149748"/>
 						<reference key="parent" ref="957960031"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">696</int>
+						<reference key="object" ref="524085370"/>
+						<reference key="parent" ref="281558437"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3496,6 +3532,7 @@ dGluZ3MiKQ</string>
 					<string>681.IBPluginDependency</string>
 					<string>686.IBEditorWindowLastContentRect</string>
 					<string>686.IBPluginDependency</string>
+					<string>696.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3556,7 +3593,7 @@ dGluZ3MiKQ</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{577, 375}, {320, 460}}</string>
+					<string>{{681, 321}, {320, 460}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -3637,6 +3674,7 @@ dGluZ3MiKQ</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{0, 515}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -3659,7 +3697,7 @@ dGluZ3MiKQ</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">695</int>
+			<int key="maxID">697</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4100,10 +4138,12 @@ dGluZ3MiKQ</string>
 							<string>status_currentTask</string>
 							<string>status_mainProgress</string>
 							<string>status_taskProgress</string>
+							<string>syncOutput</string>
 							<string>syncStatusView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

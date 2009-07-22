@@ -207,7 +207,6 @@ def main():
 	"""
 	setup()
 	execute()
-	info("Sync complete. cleaning up")
 	cleanup()
 	print "Sync complete."
 	return 0

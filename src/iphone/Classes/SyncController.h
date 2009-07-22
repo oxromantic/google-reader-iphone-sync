@@ -7,12 +7,15 @@
 	IBOutlet id notSyncingView;
 	IBOutlet id cancelButton;
 	IBOutlet id okButton;
+	IBOutlet id syncOutput;
 	IBOutlet id spinner;
 	IBOutlet id feedList;
 	IBOutlet id appSettings;
+	NSMutableArray * syncOutputBuffer;
 	
 	BackgroundShell * syncThread;
 	BOOL syncRunning;
+	BOOL developerMode;
 	int sync_pid;
 	IBOutlet id root;
 	

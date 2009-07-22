@@ -122,6 +122,7 @@ NSString * escape_single_quotes(NSString * str) {
 	[status_taskProgress setProgress: 0.0];
 	[status_taskProgress setHidden:NO];
 	[status_mainProgress setHidden:NO];
+	[self initSyncOutput];
 	[self disableSleep];
 	
 	// animate
@@ -247,6 +248,7 @@ NSString * escape_single_quotes(NSString * str) {
 - (void) syncViewIsGone{
 	[syncStatusView setHidden:YES];
 	[syncStatusView removeFromSuperview];
+	[self clearSyncBuffer];
 }
 
 - (NSString *) proxySettings {
@@ -306,7 +308,7 @@ NSString * escape_single_quotes(NSString * str) {
 	syncThread = nil;
 	[self showSyncFinished];
 	[self enableSleep];
-	if([last_output_line hasPrefix:@"Sync complete."]) {
+	if([last_output_line hasPrefix:@"Sync complete."] && (!developerMode)) {
 		[self hideSyncView:self];
 	}
 }
@@ -353,9 +355,46 @@ NSString * escape_single_quotes(NSString * str) {
 			}
 		}
 	} else {
+		[self addSyncOutput: line];
+		[self setLastOutputLine: line];
+	}
+}
+
+#define num_sync_lines 100
+
+- (void) setLastOutputLine: (NSString *) line {
 		[last_output_line release];
 		last_output_line = [line retain];
+}
+
+- (void) addSyncOutput:(NSString *) output {
+	if(!developerMode) return;
+	if([syncOutputBuffer count] >= num_sync_lines) {
+		[syncOutputBuffer removeObjectAtIndex:0];
 	}
+	[syncOutputBuffer addObject: output];
+	[syncOutput setText: [self syncOutputString]];
+	CGSize content = [syncOutput contentSize];
+	CGRect bottomLine = CGRectMake(0,content.height,1,1);
+	[syncOutput scrollRectToVisible:bottomLine animated:NO];
+}
+
+- (NSString *) syncOutputString {
+	return [syncOutputBuffer componentsJoinedByString: @""];
+}
+
+- (void) initSyncOutput {
+	developerMode = [appSettings developerMode];
+	[syncOutputBuffer release];
+	syncOutputBuffer = [[NSMutableArray alloc] init];
+	[syncOutput setText: @""];
+	[syncOutput setHidden: ![appSettings developerMode]];
+	[syncOutput setFont: [UIFont systemFontOfSize:11.0]];
+}
+
+- (void) clearSyncBuffer {
+	[syncOutputBuffer release];
+	syncOutputBuffer = nil;
 }
 
 @end

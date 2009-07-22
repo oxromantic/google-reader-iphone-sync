@@ -21,6 +21,7 @@ NSString * keyOpenLinksIn = @"openLinksIn";
 NSString * keyShowReadItems = @"showReadItems";
 NSString * keyNewestFirst = @"newestFirst";
 NSString * keyMarkAsReadWhenGoingBackwards = @"markAsReadWhenGoingBackwards";
+NSString * keyDeveloperMode = @"developerMode";
 
 NSString * openLinksInAskMeValue = @"ask";
 NSString * openLinksInSafariValue = @"safari";
@@ -299,6 +300,7 @@ NSArray * deprecatedProperties;
 - (BOOL) showReadItems     { return [self boolFromKey:keyShowReadItems]; }
 - (BOOL) sortNewestItemsFirst{ return [self boolFromKey:keyNewestFirst]; }
 - (BOOL) rotationLock      { return [self boolFromKey:keyRotationLock]; }
+- (BOOL) developerMode     { return [self boolFromKey:keyDeveloperMode]; }
 - (NSString *) ipaperEmail       { return [plistData valueForKey:keyIpaperUser]; }
 - (NSString *) ipaperPassword    { return [plistData valueForKey:keyIpaperPassword]; }
 
