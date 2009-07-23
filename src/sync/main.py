@@ -18,19 +18,26 @@ import url_save
 from thread_pool import ThreadPool
 
 TASK_PROGRESS = 0
+CANCELLED = False
+
 def new_task(description=""):
 	global TASK_PROGRESS
 	status("TASK_PROGRESS", TASK_PROGRESS, description)
 	TASK_PROGRESS += 1
 
 def handle_signal(signum, stack):
+	global CANCELLED
 	debug("Signal caught: %s" % (signum,))
 	status("TASK_PROGRESS", TASK_PROGRESS, "Cancelled")
+	CANCELLED = True
 	cleanup()
+	sys.exit(2)
 	
 def cleanup():
 	if app_globals.DATABASE is not None:
 		app_globals.DATABASE.close()
+	app_globals.URLSAVE = None
+	app_globals.READER = None
 	
 def init_signals():
 	signal.signal(signal.SIGINT, handle_signal)
@@ -217,7 +224,8 @@ if __name__ == '__main__':
 		exitstatus = main()
 	except StandardError, e:
 		debug('unhandled error in main()', exc_info=True)
-		error("ERROR: %s" % (e,))
+		if not CANCELLED:
+			error("ERROR: %s" % (e,))
 		exitstatus = 2
 	sys.exit(exitstatus)
 
