@@ -3,6 +3,7 @@
 
 @interface FeedListDelegate : UITableViewController {
 	IBOutlet id appSettings;
+	IBOutlet id syncController;
 	NSArray * feedList;
 	NSArray * selectedFeedList;
 	IBOutlet id cell;

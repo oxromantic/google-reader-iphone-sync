@@ -14,7 +14,7 @@
 
 - (void) setFeedList: feeds {
 	[feedList release];
-	feedList = [[NSMutableArray alloc] initWithArray: feeds];;
+	feedList = [[NSMutableArray alloc] initWithArray: feeds];
 }
 
 - tableView:(id)view cellForRowAtIndexPath: (id) indexPath {
@@ -23,10 +23,24 @@
 		cell = [[UITableViewCell alloc] initWithFrame: CGRectMake(0,0,1,1) reuseIdentifier:@"feedListCell"];
 		[cell setSelectionStyle: UITableViewCellSelectionStyleNone];
 	}
-	NSUInteger indexes[[indexPath length]];
-	[indexPath getIndexes:indexes];
+
+	UITableViewCell * firstCell = [view dequeueReusableCellWithIdentifier:@"refreshFeedListCell"];
+	if(firstCell == nil) {
+		firstCell = [[UITableViewCell alloc] initWithFrame: CGRectMake(0,0,1,1) reuseIdentifier:@"refreshFeedListCell"];
+		[firstCell setTarget: syncController];
+		[firstCell setAccessoryAction: @selector(syncStatusOnly:)];
+		[firstCell setAccessoryType: UITableViewCellAccessoryDetailDisclosureButton];
+		[firstCell setText: _lang(@"Reload list", "")];
+		[firstCell setTextColor: [UIColor darkGrayColor]];
+		[firstCell setIndentationLevel: 2];
+	}
+
+	int index = [self feedIndexForIndexPath:indexPath];
+	if(index == -1) {
+		return firstCell;
+	}
 	if(feedList) {
-		NSString * feedName = [feedList objectAtIndex: [TCHelpers lastIndexInPath:indexPath]];
+		NSString * feedName = [feedList objectAtIndex: index];
 		[cell setText:feedName];
 		UIColor * textColor;
 		if([selectedFeedList containsObject: feedName]) {
@@ -36,7 +50,7 @@
 			[cell setAccessoryType: UITableViewCellAccessoryNone];
 			textColor = [UIColor lightGrayColor];
 		}
-		
+	
 		[cell setTextColor: textColor];
 	} else {
 		[cell setText:@"Unable to get feed list"];
@@ -49,9 +63,15 @@
 	return 1;
 }
 
+- (int) feedIndexForIndexPath: (NSIndexPath *) path {
+	return [TCHelpers lastIndexInPath:path] - 1;
+}
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	int index = [self feedIndexForIndexPath: indexPath];
+	if(index < 0) { return; }
 	if(feedList) {
-		NSString * selectedFeed = [feedList objectAtIndex: [TCHelpers lastIndexInPath:indexPath]];
+		NSString * selectedFeed = [feedList objectAtIndex: index];
 		if([selectedFeedList containsObject:selectedFeed]) {
 			[selectedFeedList removeObject:selectedFeed];
 		} else {
@@ -66,7 +86,7 @@
 	if(!feedList) {
 		return 1;
 	} else {
-		return [feedList count];
+		return [feedList count] + 1;
 	}
 }
 
