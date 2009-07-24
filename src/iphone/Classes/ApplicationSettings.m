@@ -246,6 +246,7 @@ NSArray * deprecatedProperties;
 	[openLinksInSegmentControl setSelectedSegmentIndex: [self openLinksInSelectedIndex]];
 	[urlSaveServiceSegmentControl setSelectedSegmentIndex: [self urlSaveServiceSelectedIndex]];
 	[newestItemsFirstToggle setOn: [self sortNewestItemsFirst]];
+	[markAsReadWhenGoingBackwardsToggle setOn: [self markAsReadWhenGoingBackwards]];
 	[rotationLockToggle setOn: [self rotationLock]];
 	[self setUrlSaveServiceView];
 	[feedList setSelectedFeeds: [self tagList]];
@@ -365,6 +366,7 @@ NSArray * deprecatedProperties;
 - (void) setReadItems:(BOOL) newVal          { [self setBool:newVal forKey:keyShowReadItems]; }
 - (void) setRotationLock:(BOOL) newVal       { [self setBool:newVal forKey:keyRotationLock]; }
 - (void) setOpenLinksIn: (NSString *) newVal { [self saveValue: newVal forKey:keyOpenLinksIn]; }
+- (void) setMarkAsReadWhenGoingBackwards: (BOOL) newVal { [self setBool: newVal forKey:keyMarkAsReadWhenGoingBackwards]; }
 - (void) setUrlSaveService: (NSString *) newVal {
 	[self saveValue: newVal forKey:keyUrlSaveService];
 }
@@ -416,6 +418,8 @@ NSArray * deprecatedProperties;
 		[self setSortNewestItemsFirst: newValue];
 	} else if(sender == navBarOnTopToggle) {
 		[self setNavBarOnTop: newValue];
+	} else if(sender == markAsReadWhenGoingBackwardsToggle) {
+		[self setMarkAsReadWhenGoingBackwards: newValue];
 	} else {
 		dbg(@"unknown sender sent switchValueDidChange to ApplicationSettings");
 	}

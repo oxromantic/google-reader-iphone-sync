@@ -38,6 +38,7 @@ enum {
 	IBOutlet id showReadItemsToggle;
 	IBOutlet id rotationLockToggle;
 	IBOutlet id navBarOnTopToggle;
+	IBOutlet id markAsReadWhenGoingBackwardsToggle;
 	IBOutlet id newestItemsFirstToggle;
 	IBOutlet id openLinksInSegmentControl;
 	BOOL rotationLock;

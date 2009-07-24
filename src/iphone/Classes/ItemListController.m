@@ -46,7 +46,6 @@
 }
 
 - (void) redraw{
-	dbg_s(@"redrawing listView");
 	[listView reloadData];
 }
 
