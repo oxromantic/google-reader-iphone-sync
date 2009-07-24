@@ -181,13 +181,13 @@ NSString * escape_single_quotes(NSString * str) {
 	int pid = 0;
 	while(fgets(cline, sizeof(cline) / sizeof(char), output) != NULL) {
 		line = [NSString stringWithCString: cline encoding: NSUTF8StringEncoding];
-		line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+		line = [line stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if([line length] > 0) {
 			if([line isEqualToString: @"None"]) {
 				pid = 0;
 				break;
 			} else {
-				dbg(@"pid got line: %@", line);
+				dbg(@"pid got line: [%@]", line);
 			}
 			pid = [line intValue];
 		}
