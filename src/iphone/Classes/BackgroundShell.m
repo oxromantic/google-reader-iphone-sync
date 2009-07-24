@@ -110,7 +110,7 @@ main_end:
 		char *output = fgets(line, sizeof(line), proc);
 		if(output) {
 			if(doSendOutput) {
-				[self performSelectorOnMainThread:@selector(notifyOfOutput:) withObject:[NSString stringWithCString: line encoding: NSASCIIStringEncoding] waitUntilDone:YES];
+				[self performSelectorOnMainThread:@selector(notifyOfOutput:) withObject:[NSString stringWithCString: line encoding: NSUTF8StringEncoding] waitUntilDone:YES];
 			}
 		}
 		if(feof(proc)) {
