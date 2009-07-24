@@ -151,7 +151,7 @@ static FILE * my_popen (char * command, const char * type, pid * tid){
 		}
 		/* make child thread id the process group leader */
 		setpgid(*tid, *tid);
-		//NSLog(@"parent: my pid is %d, the childs pid is %d and MY groupID is %d and the child's is %d", getpid(), *tid, getpgrp(), getpgid(*tid));
+		// NSLog(@"parent: my pid is %d, the childs pid is %d and MY groupID is %d and the child's is %d", getpid(), *tid, getpgrp(), getpgid(*tid));
 		return fp;
 	} else if (*tid == 0) {  /* we're the child */
 		

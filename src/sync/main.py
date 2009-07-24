@@ -27,7 +27,7 @@ def new_task(description=""):
 
 def handle_signal(signum, stack):
 	global CANCELLED
-	debug("Signal caught: %s" % (signum,))
+	print "Signal caught: %s" % (signum,)
 	status("TASK_PROGRESS", TASK_PROGRESS, "Cancelled")
 	CANCELLED = True
 	cleanup()
@@ -40,11 +40,12 @@ def cleanup():
 	app_globals.READER = None
 	
 def init_signals():
-	signal.signal(signal.SIGINT, handle_signal)
-	signal.signal(signal.SIGTERM, handle_signal)
+	pass
+	# signal.signal(signal.SIGINT, handle_signal)
+	# signal.signal(signal.SIGTERM, handle_signal)
 
 def save_db_state():
-	info("saving database state...")
+	debug("saving database state...")
 	app_globals.DATABASE.close()
 	app_globals.DATABASE = DB()
 
@@ -227,5 +228,9 @@ if __name__ == '__main__':
 		if not CANCELLED:
 			error("ERROR: %s" % (e,))
 		exitstatus = 2
+	except KeyboardInterrupt:
+		info("cancelled - cleaning up")
+		cleanup()
+		print "Cancelled."
 	sys.exit(exitstatus)
 

@@ -49,6 +49,8 @@ def get_running_pid():
 	@throws: IOError, ValueError, RuntimeError
 	"""
 	filename =  get_pid_filename()
+	if not os.path.isfile(filename): return None
+	
 	try:
 		pid = int(read_file(filename).strip())
 	except (IOError, ValueError), e:
@@ -75,6 +77,7 @@ def ensure_singleton_process():
 	pid = None
 	try:
 		pid = get_running_pid()
+		debug("no pid file found at %s" % (filename,))
 	except StandardError, e:
 		pass
 
