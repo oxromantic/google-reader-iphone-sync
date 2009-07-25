@@ -84,7 +84,7 @@ NSString * escape_single_quotes(NSString * str) {
 		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"sync/main.py"]),
 		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"config.plist"]),
 		escape_single_quotes([settings docsPath]),
-		escape_single_quotes([[settings docsPath] stringByAppendingPathComponent:@"log"]),
+		escape_single_quotes([settings docsPath]),
 		extra_opts];
 	
 	NSString * proxy = [self proxySettings];
