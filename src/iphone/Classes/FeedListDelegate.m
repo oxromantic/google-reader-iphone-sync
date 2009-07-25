@@ -30,7 +30,8 @@
 		[firstCell setTarget: syncController];
 		[firstCell setAccessoryAction: @selector(syncStatusOnly:)];
 		[firstCell setAccessoryType: UITableViewCellAccessoryDetailDisclosureButton];
-		[firstCell setText: _lang(@"Reload list", "")];
+		[firstCell setTextAlignment: UITextAlignmentCenter];
+		[firstCell setText: _lang(@"Reload tag list", "")];
 		[firstCell setTextColor: [UIColor darkGrayColor]];
 		[firstCell setIndentationLevel: 2];
 	}
