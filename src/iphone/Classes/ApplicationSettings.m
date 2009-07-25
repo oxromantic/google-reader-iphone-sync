@@ -3,7 +3,7 @@
 
 NSString * _docsPath = nil;
 
-NSInteger URL_SAVE_OFFSET = 390;
+NSInteger URL_SAVE_OFFSET = 440;
 
 // these keys should not be changed without good reason - it'll break
 // configs saved with an earlier version of the app:
