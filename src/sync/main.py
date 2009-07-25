@@ -157,7 +157,11 @@ def process_item(item, item_thread_pool = None):
 				def success_func():
 					increment_subtask()
 					item.save()
-				item_thread_pool.spawn(item.process, on_success = success_func, on_error = error_reporter_for_item(item))
+				item_thread_pool.spawn(
+					item.process,
+					name = item.title[:15],
+					on_success = success_func,
+					on_error = error_reporter_for_item(item))
 
 		except StandardError,e:
 			error_reporter_for_item(item)(e)

@@ -5,7 +5,7 @@ def ping():
 	try:
 		threading.currentThread().ping()
 	except AttributeError, e:
-		debug("threading: ping() not defined for thread: %s" % (threading.currentThread(),))
+		pass
 
 # threaded decorator
 # relies on the decorated method's instance having an initialised _lock variable
@@ -37,7 +37,6 @@ class ThreadAction(threading.Thread):
 		self._killed = True
 	
 	def ping(self):
-		debug("PING! [%s]" % (self.name,))
 		self.start_time = time.time()
 	
 	def run(self):
@@ -85,7 +84,6 @@ class ThreadPool:
 		silence_threshold = 60
 		sleeps = 0
 		
-		# print "WAITING..."
 		initial_threads = list(self._threads) # take a copy
 		
 		if self._count == 0:
@@ -109,11 +107,11 @@ class ThreadPool:
 			return (old, new)
 		
 		while threads_unchanged():
-			# print "cycle.."
 			old_threads, new_threads = partition_threads()
 			if len(old_threads) > 0:
-				error("%s threads have been running over %s seconds: %r" % (len(old_threads), silence_threshold, map(lambda x: x.name, old_threads)))
+				error("%s threads have been running over %s seconds" % (len(old_threads), silence_threshold))
 				for thread_ in old_threads:
+					info(" - killing thread: %s" % (thread.name,))
 					thread_.kill()
 				error("%s threads killed" % (len(old_threads),))
 				self._threads = new_threads
@@ -124,13 +122,17 @@ class ThreadPool:
 
 	
 	@locking
-	def spawn(self, function, on_success = None, on_error = None, *args, **kwargs):
+	def spawn(self, function,
+		name = None,
+		on_success = None,
+		on_error = None,
+		*args, **kwargs):
 		while self._count >= self._max_count:
 			self._wait_for_any_thread_to_finish()
 
 		debug("there are currently %s threads running" % self._count)
 		self._global_count += 1
-		thread_id = "thread %s" % (self._global_count,)
+		thread_id = "%s.%s" % (self._global_count, ascii(name)) if name is not None else "thread %s" % (self._global_count,)
 		action = ThreadAction(
 			function,
 			name = thread_id,
