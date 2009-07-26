@@ -1,3 +1,12 @@
+0.8.0:
+	- Added PageFeed as another URL-Save mechanism option.
+	- UI overhaul: combined "sync" and "feeds" panels, fixed
+	  sync display orientation
+	- Logging overhaul - now using the standard python logger
+	  for syncing
+	- Fixed bugs where two syncs could be running simultaneously
+	- Added help screen with useful bug reporting functionality
+
 0.6.8:
 	- Spanish! And localization in general, paving the way for more
 	  languages. Thanks to Daniel Martinez for the Spanish translation.

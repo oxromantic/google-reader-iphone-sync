@@ -1,6 +1,6 @@
 Package: com.sysprosoft.gfxmonk.gris
 Name: GRiS
-Version: 0.6.8-1
+Version: 0.0.8-1
 Architecture: iphoneos-arm
 Depends: python
 Description:
