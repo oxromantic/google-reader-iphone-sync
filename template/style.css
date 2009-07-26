@@ -1,6 +1,7 @@
 html{
-	width:580px;
+	width:580px !important;
 }
+
 
 body {
 	font-family: helvetica, sans-serif;
@@ -78,4 +79,8 @@ pre {
 .content p {
 	margin-top:10px;
 	margin-bottom:10px;
+}
+
+.content * {
+	width:auto !important;
 }
