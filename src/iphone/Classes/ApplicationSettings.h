@@ -56,6 +56,8 @@ enum {
 	
 	IBOutlet id smallText;
 	IBOutlet id mainScrollView;
+	IBOutlet id helpView;
+	IBOutlet id mainContentView;
 }
 -(NSString *) docsPath;
 -(NSString *) email;
@@ -66,6 +68,9 @@ enum {
 - (IBAction) stringValueDidChange:(id)sender;
 - (IBAction) switchValueDidChange:(id) sender;
 - (IBAction) segmentValueDidChange:(id) sender;
+
+- (IBAction) showHelp:(id) sender;
+- (IBAction) hideHelp:(id) sender;
 
 - (IBAction) activatePasswordField:(id)sender;
 - (IBAction) deactivateBothFields:(id)sender;

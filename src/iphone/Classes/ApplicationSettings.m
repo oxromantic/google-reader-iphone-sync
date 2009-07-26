@@ -37,6 +37,8 @@ NSArray * urlSaveServiceViews;
 
 NSArray * deprecatedProperties;
 
+BOOL helpShown = NO;
+
 @implementation ApplicationSettings
 - (NSString *) docsPath {
 	docsPath = [ApplicationSettings docsPath];
@@ -485,6 +487,22 @@ NSArray * deprecatedProperties;
 	[[UIApplication sharedApplication] openURL: url];
 }
 
+
+- (IBAction) showHelp:(id) sender {
+	if(helpShown) {
+		helpShown = NO;
+		[self hideHelp:sender];
+		return;
+	}
+	[mainScrollView setContentView: helpView];
+	[sender setTitle: _lang(@"Back", "")];
+	helpShown = YES;
+}
+
+- (IBAction) hideHelp:(id) sender {
+	[mainScrollView setContentView: mainContentView];
+	[sender setTitle: _lang(@"Help", "")];
+}
 // TODO: hook up a "clear instapaper" button
 
 @end

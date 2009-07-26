@@ -58,6 +58,7 @@
 		22D4C5810E34AC93001E2E58 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D4C57B0E34AC93001E2E58 /* FMDatabaseAdditions.m */; };
 		22D4C5820E34AC93001E2E58 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D4C57D0E34AC93001E2E58 /* FMDatabase.m */; };
 		22D4C5840E34AD8F001E2E58 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D4C5830E34AD8F001E2E58 /* libsqlite3.0.dylib */; };
+		22D4F818101C4C4400CF34EE /* HelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D4F817101C4C4400CF34EE /* HelpController.m */; };
 		22DB0D4A0E45C8BE008CD8C7 /* ApplicationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB0D470E45C8BE008CD8C7 /* ApplicationSettings.m */; };
 		22DB0D4B0E45C8BE008CD8C7 /* BackgroundShell.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB0D490E45C8BE008CD8C7 /* BackgroundShell.m */; };
 		22F0658E0E7B4FE20021E97A /* FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F065850E7B4FE20021E97A /* FeedItem.m */; };
@@ -151,6 +152,8 @@
 		22D4C57D0E34AC93001E2E58 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = Classes/fmdb/src/FMDatabase.m; sourceTree = "<group>"; };
 		22D4C57E0E34AC93001E2E58 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = Classes/fmdb/src/FMDatabase.h; sourceTree = "<group>"; };
 		22D4C5830E34AD8F001E2E58 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		22D4F816101C4C4400CF34EE /* HelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpController.h; sourceTree = "<group>"; };
+		22D4F817101C4C4400CF34EE /* HelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpController.m; sourceTree = "<group>"; };
 		22DB0D460E45C8BE008CD8C7 /* ApplicationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSettings.h; sourceTree = "<group>"; };
 		22DB0D470E45C8BE008CD8C7 /* ApplicationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSettings.m; sourceTree = "<group>"; };
 		22DB0D480E45C8BE008CD8C7 /* BackgroundShell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundShell.h; sourceTree = "<group>"; };
@@ -312,6 +315,8 @@
 				1D3623250D0F684500981E51 /* GRiSAppDelegate.m */,
 				222CA6C40E568C0300146D8E /* StripedView.h */,
 				222CA6C50E568C0300146D8E /* StripedView.m */,
+				22D4F816101C4C4400CF34EE /* HelpController.h */,
+				22D4F817101C4C4400CF34EE /* HelpController.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				222C79FC0EFF9C9900870274 /* TCViewExtensions.m in Sources */,
 				2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */,
 				22340A4D1017210800D3F47A /* MainTabBarController.m in Sources */,
+				22D4F818101C4C4400CF34EE /* HelpController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
