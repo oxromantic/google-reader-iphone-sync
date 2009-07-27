@@ -8,11 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="265"/>
-			<integer value="731"/>
-			<integer value="666"/>
-			<integer value="350"/>
 			<integer value="309"/>
+			<integer value="350"/>
+			<integer value="666"/>
+			<integer value="731"/>
+			<integer value="265"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1050,7 +1050,7 @@ dGluZ3MiKQ</string>
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="35886727">
 						<reference key="NSNextResponder" ref="419046638"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{20, 13}, {187, 21}}</string>
 						<reference key="NSSuperview" ref="419046638"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -1140,7 +1140,7 @@ dGluZ3MiKQ</string>
 					</object>
 					<object class="IBUILabel" id="977682640">
 						<reference key="NSNextResponder" ref="419046638"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{20, 48}, {103, 21}}</string>
 						<reference key="NSSuperview" ref="419046638"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -1169,7 +1169,7 @@ dGluZ3MiKQ</string>
 					</object>
 					<object class="IBUILabel" id="88744943">
 						<reference key="NSNextResponder" ref="419046638"/>
-						<int key="NSvFlags">289</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{20, 83}, {182, 21}}</string>
 						<reference key="NSSuperview" ref="419046638"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -1648,7 +1648,7 @@ dGluZ3MiKQ</string>
 					</object>
 					<object class="IBUITextView" id="670142789">
 						<reference key="NSNextResponder" ref="156845387"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">289</int>
 						<string key="NSFrame">{{38, 315}, {167, 56}}</string>
 						<reference key="NSSuperview" ref="156845387"/>
 						<bool key="IBUIOpaque">NO</bool>
