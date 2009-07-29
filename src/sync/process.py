@@ -228,6 +228,24 @@ def unique_filename(output_filename, base_path=None):
 		i += 1
 	return output_filename
 
+import hashlib
+def limit_filename(name, length):
+	"""
+	limit a filename to be at most `length` characters
+	(for length > 16)
+
+		>>> fl = limit_filename('aaaabbbbccccddddeeeex', 20)
+		>>> len(fl)
+		20
+		>>> fl
+		'aaaa5004c72298531f66'
+	"""
+
+	if len(name) <= length:
+		return name[:]
+	
+	hash_size = 16
+	return name[:length-hash_size] + hashlib.md5(name).hexdigest()[:hash_size]
 
 import socket
 def download_file(url, output_filename=None, base_path='', allow_overwrite=False):
@@ -275,6 +293,8 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 		debug("not downloading image of type: %s" % (filetype,))
 		dl.close()
 		return None
+	
+	output_filename = limit_filename(output_filename, 64)
 	
 	if not output_filename.lower().endswith('.' + filetype):
 		output_filename += '.' + filetype
