@@ -16,7 +16,7 @@ class GoogleReaderLiveTest(unittest.TestCase):
 	def setUp(self):
 		yaml_file = os.path.join(os.path.dirname(__file__), '..', '..', 'config.yml')
 		config.load(yaml_file)
-		config.bootstrap(['-vv'])
+		config.bootstrap(['--loglevel=DEBUG'])
 		# make sure we're not mocking out google reader
 		app_globals.OPTIONS['test'] = False
 		config.parse_options(['--output-path=/tmp/gris-test', '--num-items=1'])
