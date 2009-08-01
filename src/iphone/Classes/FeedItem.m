@@ -133,10 +133,11 @@
 
 - (NSString *) htmlForPosition:(NSString *)position_info {
 	NSString * in_s = _lang(@"in", "as in, \"posted 7 hours ago _in_ this feed name\"");
-	return [[NSString stringWithFormat:
+	return [NSString stringWithFormat:
 		@"<html>                                                                                            \n\
 			<head>                                                                                          \n\
 				<meta name='viewport' content='width=580' />                                                \n\
+				<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>                    \n\
 				<link rel='stylesheet' href='template/style.css' type='text/css' />                         \n\
 			</head>                                                                                         \n\
 			<body>                                                                                          \n\
@@ -167,7 +168,7 @@
 		position_info,
 		content,
 		[self dateStr:YES], in_s, tag_name,
-		[self domainName]] autorelease];
+		[self domainName]];
 }
 
 - (void) userDidScrollPast {

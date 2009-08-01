@@ -248,7 +248,7 @@ def limit_filename(name, length):
 	return name[:length-hash_size] + hashlib.md5(name).hexdigest()[:hash_size]
 
 import socket
-def download_file(url, output_filename=None, base_path='', allow_overwrite=False):
+def download_file(url, output_filename, base_path='', allow_overwrite=False):
 	"""
 	Download an arbitrary URL. If output_filename is given, contents are written a file that looks a lot like output_filename.
 	If output_filename does not contain an extension matching the file's reported mime-type, such an extension will be added.
@@ -258,8 +258,7 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 	Files are only downloaded if their mime-type is "image/x" where x is in the image_extensions list.
 	
 	Returns: - The filename that contents were written to.
-	         - The contents of the file as a string if output_filename is not given
-	         - None if the file was not downloaded (because its type is not in image_extensions)
+	         - None if the file was not downloaded
 	"""
 	# timeout in seconds
 	socket.setdefaulttimeout(20)
@@ -307,13 +306,10 @@ def download_file(url, output_filename=None, base_path='', allow_overwrite=False
 	debug("downloaded file: %s" % (url,))
 	dl.close()
 
-	if output_filename is not None:
-		full_path = os.path.join(base_path, output_filename) if base_path else output_filename
-		out = open(full_path,'w')
-		out.write(contents)
-		return output_filename
-	else:
-		return contents
+	full_path = os.path.join(base_path, output_filename) if base_path else output_filename
+	out = open(full_path,'w')
+	out.write(contents)
+	return output_filename
 
 if __name__ == '__main__':
 	import doctest

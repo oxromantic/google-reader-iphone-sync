@@ -159,7 +159,7 @@ def process_item(item, item_thread_pool = None):
 					item.save()
 				item_thread_pool.spawn(
 					item.process,
-					name = item.title[:15],
+					name = item.title[:13],
 					on_success = success_func,
 					on_error = error_reporter_for_item(item))
 
