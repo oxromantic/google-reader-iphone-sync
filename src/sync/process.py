@@ -126,7 +126,7 @@ def download_images(soup, dest_folder, href_prefix, base_href = None):
 		>>> process.download_file.return_value = "image.jpg"
 		
 		>>> soup = BeautifulSoup('<img src="http://google.com/image.jpg?a=b&c=d"/>')
-		>>> download_images(soup, 'dest_folder', 'local_folder/')
+		>>> process.download_images(soup, 'dest_folder', 'local_folder/')
 		True
 		>>> soup
 		<img src="local_folder/image.jpg" />
