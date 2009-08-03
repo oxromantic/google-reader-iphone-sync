@@ -111,7 +111,7 @@ class ThreadPool:
 			if len(old_threads) > 0:
 				error("%s threads have been running over %s seconds" % (len(old_threads), silence_threshold))
 				for thread_ in old_threads:
-					info(" - killing thread: %s" % (thread.name,))
+					info(" - killing thread: %s" % (thread_.name,))
 					thread_.kill()
 				error("%s threads killed" % (len(old_threads),))
 				self._threads = new_threads
