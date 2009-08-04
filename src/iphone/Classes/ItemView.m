@@ -1,5 +1,6 @@
 #import "ItemView.h"
 #import "TCHelpers.h"
+#import "TCTiltScroller.h"
 #import "ApplicationSettings.h"
 
 @implementation ItemView
@@ -188,5 +189,58 @@
 - (NSString *) currentItemID {
 	return [currentItem google_id];
 }
+
+#ifdef TILT_SCROLL
+-(void)hitTest:(CGPoint)point withEvent:(UIEvent*)event
+{
+	_responderView = [super hitTest:point withEvent:event];
+	_scrollView = [[self subviews] objectAtIndex:0];
+	return self;
+}
+
+- (void) scrollVertically:(float) offset {
+	static float remainder = 0;
+
+	offset += remainder;
+	int scrollAmount = (int)(offset);
+	remainder = offset - (float)scrollAmount;
+	NSString * js = [NSString stringWithFormat:@"scrollTo(window.pageXOffset, window.pageYOffset + %d)", scrollAmount];
+	NSString * result = [self stringByEvaluatingJavaScriptFromString:js];
+	if(result == nil) {
+		dbg(@"scrolling failed!");
+	}
+}
+
+- (void) pauseAutoScroll {
+	[[TCTiltScroller instance] pause];
+}
+- (void) resumeAutoScroll {
+	[[TCTiltScroller instance] resume];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[_responderView touchesBegan:touches withEvent:event];
+	[_scrollView touchesBegan:touches withEvent: event];
+	[self pauseAutoScroll];
+}
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[_responderView touchesMoved:touches withEvent:event];
+	[_scrollView touchesMoved:touches withEvent: event];
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[_responderView touchesEnded:touches withEvent:event];
+	[_scrollView touchesEnded:touches withEvent: event];
+	[self resumeAutoScroll];
+}
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[_responderView touchesCancelled:touches withEvent:event];
+	[_scrollView touchesCancelled:touches withEvent: event];
+	[self resumeAutoScroll];
+}
+#endif // TILT_SCROLL
 
 @end

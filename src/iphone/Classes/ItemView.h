@@ -18,6 +18,9 @@
 	NSMutableArray * allItems;
 	int currentItemIndex;
 	FeedItem * currentItem;
+	
+	id _responderView;
+	id _scrollView;
 }
 - (void) loadHTMLString: (NSString *) newHTML;
 - (void) loadItem: (FeedItem *) item;
@@ -34,4 +37,5 @@
 - (IBAction) toggleSharedForCurrentItem:(id) sender;
 - (IBAction) emailCurrentItem:(id) sender;
 - (IBAction) moreActions:(id) sender;
+- (void) scrollVertically:(float) offset;
 @end

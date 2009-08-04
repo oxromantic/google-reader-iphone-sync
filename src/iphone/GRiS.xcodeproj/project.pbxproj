@@ -30,6 +30,8 @@
 		2287C18F0E9A13EA005AB6A3 /* active_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18C0E9A13EA005AB6A3 /* active_share.png */; };
 		2287C1900E9A13EA005AB6A3 /* hover_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18D0E9A13EA005AB6A3 /* hover_share.png */; };
 		2287C1910E9A13EA005AB6A3 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2287C18E0E9A13EA005AB6A3 /* share.png */; };
+		2290ACBF1028469800482C75 /* TCTiltScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 2290ACBE1028469800482C75 /* TCTiltScroller.m */; };
+		2290ACC2102846A400482C75 /* GRiSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2290ACC1102846A400482C75 /* GRiSApplication.m */; };
 		2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291CEDE0FF8E09F00C1DABA /* TCScrollView.m */; };
 		22976FD30E610459001B44DA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22976FD20E610459001B44DA /* CoreFoundation.framework */; };
 		22976FD90E610488001B44DA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22976FD80E610488001B44DA /* CFNetwork.framework */; };
@@ -116,6 +118,10 @@
 		2287C18C0E9A13EA005AB6A3 /* active_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = active_share.png; path = button_images/active_share.png; sourceTree = "<group>"; };
 		2287C18D0E9A13EA005AB6A3 /* hover_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hover_share.png; path = button_images/hover_share.png; sourceTree = "<group>"; };
 		2287C18E0E9A13EA005AB6A3 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = share.png; path = button_images/share.png; sourceTree = "<group>"; };
+		2290ACBD1028469800482C75 /* TCTiltScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCTiltScroller.h; sourceTree = "<group>"; };
+		2290ACBE1028469800482C75 /* TCTiltScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCTiltScroller.m; sourceTree = "<group>"; };
+		2290ACC0102846A400482C75 /* GRiSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRiSApplication.h; sourceTree = "<group>"; };
+		2290ACC1102846A400482C75 /* GRiSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRiSApplication.m; sourceTree = "<group>"; };
 		2291CEDD0FF8E09F00C1DABA /* TCScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCScrollView.h; sourceTree = "<group>"; };
 		2291CEDE0FF8E09F00C1DABA /* TCScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCScrollView.m; sourceTree = "<group>"; };
 		22976FD20E610459001B44DA /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -286,6 +292,8 @@
 		22F065940E7B50370021E97A /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				2290ACBD1028469800482C75 /* TCTiltScroller.h */,
+				2290ACBE1028469800482C75 /* TCTiltScroller.m */,
 				222C79FA0EFF9C9900870274 /* TCViewExtensions.h */,
 				222C79FB0EFF9C9900870274 /* TCViewExtensions.m */,
 				22A120650E84D394000647C2 /* TCObjectExtensions.h */,
@@ -303,6 +311,8 @@
 		22F065950E7B505D0021E97A /* App */ = {
 			isa = PBXGroup;
 			children = (
+				2290ACC0102846A400482C75 /* GRiSApplication.h */,
+				2290ACC1102846A400482C75 /* GRiSApplication.m */,
 				22340A4B1017210800D3F47A /* MainTabBarController.h */,
 				22340A4C1017210800D3F47A /* MainTabBarController.m */,
 				22DB0D460E45C8BE008CD8C7 /* ApplicationSettings.h */,
@@ -484,6 +494,8 @@
 				2291CEDF0FF8E09F00C1DABA /* TCScrollView.m in Sources */,
 				22340A4D1017210800D3F47A /* MainTabBarController.m in Sources */,
 				22D4F818101C4C4400CF34EE /* HelpController.m in Sources */,
+				2290ACBF1028469800482C75 /* TCTiltScroller.m in Sources */,
+				2290ACC2102846A400482C75 /* GRiSApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

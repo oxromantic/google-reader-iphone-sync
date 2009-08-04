@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 		[logPath release];
 	#endif
 
-	int retVal = UIApplicationMain(argc, argv, nil, nil);
+	int retVal = UIApplicationMain(argc, argv, @"GRiSApplication", nil);
 	[pool release];
 	return retVal;
 }
