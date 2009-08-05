@@ -14,7 +14,12 @@ body {
 	display:table-cell;
 }
 
-a{ color:#acF !important; }
+.content * {
+	width:auto !important;
+	color: #FFF !important;
+}
+
+a, .content a{ color:#acF !important; }
 
 img{ -webkit-touch-callout: none; }
 
@@ -81,6 +86,3 @@ pre {
 	margin-bottom:10px;
 }
 
-.content * {
-	width:auto !important;
-}
