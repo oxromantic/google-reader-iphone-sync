@@ -24,7 +24,7 @@ class AppEngineAuth(object):
 		urllib2.install_opener(opener)
 	
 	def login(self, app_name, app_uri):
-		self._install_cookie_jar
+		self._install_cookie_jar()
 		# get an AuthToken from Google accounts
 		authreq_data = urllib.urlencode({
 			"Email": self.email,
