@@ -1,0 +1,8 @@
+rabbitMQ:
+	http://www.rabbitmq.com/download.html
+	tutorial (python):
+		http://blogs.digitar.com/jjww/2009/01/rabbits-and-warrens/
+	libs:
+		http://barryp.org/software/py-amqplib/
+		http://pypi.python.org/pypi/carrot/0.5.1
+
