@@ -9,6 +9,13 @@ import gtk
 import gobject
 import webkit
 
+sys.path.insert(0, os.path.dirname(__file__) + '/../sync')
+import db as database
+import app_globals
+gris_folder = os.path.expanduser("~/.GRiS/")
+app_globals.OPTIONS['output_path'] = gris_folder
+db = None
+
 class Gris(object):
 	def __init__(self):
 		self.folders = ("images", "text", "foo")
@@ -31,13 +38,17 @@ class Gris(object):
 		self.init_content()
 
 	def on_feed_tree_view_select_row(self, widget, data=None):
-		_dir = os.path.dirname(os.path.abspath(__file__))
-		base = 'file://' + urllib.quote(_dir)
+		base = 'file://' + urllib.quote(gris_folder)
 		selected = []
-		col = 0
+		content_col = 2
+		title_col = 0
 		store, iter = self.feed_tree_view.get_selection().get_selected()
-		feed_name = store.get_value(iter, col)
-		self.content_view.load_html_string("<h1>yay!</h1><pre>loaded: %r</pre>" % (feed_name,), base)
+		content = store.get_value(iter, content_col)
+		title = store.get_value(iter, title_col)
+		self.content_view.load_html_string("""
+			<h1>%s</h1>
+			%s
+			""" % (title, content), base)
 
 	def init_content(self):
 		self.content_view = webkit.WebView()
@@ -45,9 +56,11 @@ class Gris(object):
 		self.content_scroll_view.show_all()
 
 	def init_feeds(self):
-		store = self.feed_tree_store = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-		store.set(store.append(None), 0, "all feeds", 1, 500)
-		store.set(store.append(None), 0, "more feeds", 1, 200)
+		store = self.feed_tree_store = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_INT, gobject.TYPE_STRING)
+		cursor = db.sql("select title, content from items")
+		print repr(cursor)
+		for feed_name, content in cursor:
+			store.set(store.append(None), 0, feed_name, 1, 100, 2, content)
 		self.feed_tree_view.set_model(store)
 	
 	def init_columns(self):
@@ -56,6 +69,7 @@ class Gris(object):
 		view.append_column(gtk.TreeViewColumn('items', gtk.CellRendererText(), text=1))
 
 if __name__ == "__main__":
+	db = database.DB(gris_folder + 'items.sqlite')
 	gris = Gris()
 	gris.window.show()
 	gtk.main()

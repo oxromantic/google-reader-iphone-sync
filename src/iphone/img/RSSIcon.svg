@@ -14,7 +14,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.46"
    version="1.0"
-   sodipodi:docname="Icon.svg"
+   sodipodi:docname="RSSIcon.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape">
   <defs
      id="defs4">
@@ -45,8 +45,8 @@
      inkscape:showpageshadow="false"
      inkscape:window-width="1400"
      inkscape:window-height="835"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-x="20"
+     inkscape:window-y="20"
      showguides="false" />
   <metadata
      id="metadata7">
@@ -109,7 +109,7 @@
        transform="translate(25.714283,15.714283)">
       <g
          id="g3189"
-         transform="translate(4.28571,-17.142857)">
+         transform="matrix(-1,0,0,1,472.85714,-17.142857)">
         <rect
            style="opacity:1;fill:#ff7f2a;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.0309999;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
            id="rect3181"
