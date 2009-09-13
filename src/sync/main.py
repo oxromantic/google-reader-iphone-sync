@@ -186,6 +186,11 @@ def download_new_items():
 		info("Fetching maximum %s items from feed %s" % (app_globals.OPTIONS['num_items'], _feed_tag))
 		feed = app_globals.READER.get_tag_feed(feed_tag, oldest_first = not app_globals.OPTIONS['newest_first'])
 		download_feed(feed, _feed_tag)
+
+	line()
+	
+	update_tag_feed_mapping()
+	save_db_state()
 		
 	line()
 	
@@ -195,6 +200,11 @@ def download_new_items():
 		info("%s items reprocessed because of previously failed image downloads" % (app_globals.STATS['reprocessed']))
 	if app_globals.STATS['failed'] > 0:
 		warning("%s items failed to parse" % app_globals.STATS['failed'])
+
+def update_tag_feed_mapping():
+	info("updating tag-to-feed mappings...")
+	db = app_globals.DATABASE
+	db.set_tag_feed_mapping(app_globals.READER.get_tag_feed_relations())
 
 def setup(opts=None):
 	"""Parse options. If none given, opts is set to sys.argv"""

@@ -37,6 +37,7 @@ class Item:
 			try: self.feed_name = feed_item['feed_name']
 			except (KeyError, TypeError):
 				self.feed_name = tag_name
+			self.feed_id = feed_item['sources'].keys()[0]
 			self.tag_name = tag_name
 			self.title = strip_html_tags(utf8(feed_item['title']))
 			self.title = unicode(BeautifulSoup(self.title, convertEntities = BeautifulSoup.HTML_ENTITIES))

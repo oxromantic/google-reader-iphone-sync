@@ -25,6 +25,8 @@ schema_history = [
 	'ALTER TABLE items ADD COLUMN is_shared BOOLEAN default 0',
 	'ALTER TABLE items ADD COLUMN instapaper_url TEXT default ""',
 	'ALTER TABLE items ADD COLUMN is_pagefeed BOOLEAN default 0',
+	'ALTER TABLE items ADD COLUMN feed_id TEXT',
+	'CREATE TABLE feeds(tag_name TEXT, feed_id TEXT, feed_name TEXT)',
 	]
 
 class VersionDB:
@@ -86,6 +88,7 @@ class DB:
 				('is_shared', 'BOOLEAN'),
 				('instapaper_url', 'TEXT'),
 				('is_pagefeed', 'BOOLEAN'),
+				('feed_id', 'TEXT'),
 			],
 			'indexes' : [ ('item_id_index', 'items(google_id)') ]
 		}
@@ -143,6 +146,11 @@ class DB:
 	def update_item(self, item):
 		self.sql("update items set is_read=?, is_starred=?, is_shared=?, is_dirty=?, instapaper_url=? where google_id=?",
 			(item.is_read, item.is_starred, item.is_shared, item.is_dirty, item.instapaper_url, item.google_id));
+
+	def set_tag_feed_mapping(self, mappings):
+		self.sql("delete from feeds")
+		for mapping in mappings:
+			self.sql("insert into feeds (tag_name, feed_id, feed_name) values (?,?,?)", mapping)
 
 	def get_items(self, condition=None, args=None):
 		sql = "select * from items"

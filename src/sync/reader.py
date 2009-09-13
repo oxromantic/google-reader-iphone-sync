@@ -34,10 +34,13 @@ class Reader:
 		
 	def get_tag_list(self):
 		if self._tag_list is None:
-			tag_list = self.gr.get_tag_list()['tags']
-			self._tag_list = [tag['id'].split('/')[-1] for tag in tag_list if '/label/' in tag['id']]
+			tag_list = [self._tag_from_id(tag['id']) for tag in self.gr.get_tag_list()['tags']]
+			self._tag_list = filter(lambda x: x is not None, tag_list)
 		return self._tag_list
 	tag_list = property(get_tag_list)
+
+	def _tag_from_id(self, id):
+		return id.split('/')[-1] if '/label/' in id else None
 		
 	def validate_tag_list(self, user_tags = None, strict=True):
 		"""
@@ -82,6 +85,15 @@ class Reader:
 				raise ReaderError("Result (%s) is not 'OK'" % (result,))
 		pass_func.__name__ = f.__name__
 		return pass_func
+
+	def get_tag_feed_relations(self):
+		subs = self.gr.get_subscription_list()['subscriptions']
+		for sub in subs:
+			tags = sub['categories']
+			for tag in tags:
+				tag_name = self._tag_from_id(tag['id'])
+				if tag_name is not None:
+					yield (tag_name, sub['id'], sub['title'])
 	
 	@passthrough_and_check
 	def set_read(): pass
