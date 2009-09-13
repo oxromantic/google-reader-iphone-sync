@@ -6,7 +6,7 @@ import sqlite3 as sqlite
 import logging
 debug = logging.debug
 
-class DB:
+class DB(object):
 	def __init__(self, filename = 'items.sqlite'):
 		self.filename = filename
 		debug("loading db: %s" % filename)
@@ -48,6 +48,13 @@ class DB:
 			return default
 		return items[0]
 
+	def get_item_list_for_feed(self, feed_id):
+		sql = "select google_id, title from items where feed_id = ?"
+		cursor = self.sql(sql, (feed_id,))
+		for id, title in cursor:
+			yield dict(id=id, title=title, count=1)
+
+
 	def get_items(self, condition=None, args=None):
 		sql = "select * from items"
 		if condition is not None:
@@ -81,9 +88,8 @@ class DB:
 			"from items inner join feeds on items.feed_id=feeds.feed_id " +
 			"group by feeds.tag_name")
 
-		return [
-			{'name':tag, 'count':count}
-			for tag, count in self.sql(sql)]
+		for tag, count in self.sql(sql):
+			yield {'id':tag, 'name':tag, 'count':count}
 
 	def get_item_count(self, condition=None, args=None):
 		sql = "select count(*) from items"
