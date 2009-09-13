@@ -8,6 +8,7 @@
     <property name="default_width">600</property>
     <property name="default_height">400</property>
     <signal name="destroy" handler="on_window_destroy"/>
+    <signal name="key_release_event" handler="on_key_press"/>
     <child>
       <object class="GtkHPaned" id="splitter">
         <property name="visible">True</property>

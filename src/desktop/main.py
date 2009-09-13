@@ -6,15 +6,21 @@ import os
 import urllib
 
 import gtk
+import gtk.keysyms
 import gobject
 import webkit
 
-sys.path.insert(0, os.path.dirname(__file__) + '/../sync')
-import db as database
-import app_globals
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+import database
 gris_folder = os.path.expanduser("~/.GRiS/")
-app_globals.OPTIONS['output_path'] = gris_folder
 db = None
+
+class Object(object):
+	def __init__(self, **kw):
+		for k,v in kw.items():
+			setattr(self,k,v)
 
 class Gris(object):
 	def __init__(self):
@@ -23,6 +29,15 @@ class Gris(object):
 
 	def on_window_destroy(self, widget, data=None):
 		gtk.main_quit()
+
+	def on_key_press(self, widget, event):
+		actions = {
+			gtk.keysyms.Escape: self.window.destroy,
+		}
+		try:
+			actions[event.keyval]()
+		except KeyError:
+			pass
 	
 	def init_ui(self):
 		builder = gtk.Builder()
@@ -33,9 +48,19 @@ class Gris(object):
 			
 		map(set_object, ("window", "feed_tree_view", "content_scroll_view"))
 		builder.connect_signals(self)
+		self.init_actions()
 		self.init_feeds()
 		self.init_columns()
 		self.init_content()
+
+	def init_actions(self):
+		accel_grp = gtk.AccelGroup()
+		exit = gtk.Action("gris.exit", "Exit", None, None)
+		exit.set_accel_group(accel_grp)
+		exit.set_accel_path("app.exit")
+		exit.connect("activate",  lambda widget, obj: self.on_window_destroy())
+		gtk.accel_map_add_entry("app.exit", gtk.keysyms.Escape, 0)
+		self.window.add_accel_group(accel_grp)
 
 	def on_feed_tree_view_select_row(self, widget, data=None):
 		base = 'file://' + urllib.quote(gris_folder)
@@ -57,10 +82,10 @@ class Gris(object):
 
 	def init_feeds(self):
 		store = self.feed_tree_store = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_INT, gobject.TYPE_STRING)
-		cursor = db.sql("select title, content from items")
-		print repr(cursor)
-		for feed_name, content in cursor:
-			store.set(store.append(None), 0, feed_name, 1, 100, 2, content)
+		store.set(store.append(None), 0, "All feeds", 1, db.get_item_count())
+		for tag in db.get_tags_and_counts():
+			store.set(store.append(None), 0, tag['name'], 1, tag['count'])
+			
 		self.feed_tree_view.set_model(store)
 	
 	def init_columns(self):
