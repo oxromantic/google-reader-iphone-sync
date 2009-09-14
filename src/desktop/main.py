@@ -68,8 +68,8 @@ class Gris(object):
 		content_col = 2
 		title_col = 0
 		store, iter = self.feed_tree_view.get_selection().get_selected()
-		content = store.get_value(iter, content_col)
-		title = store.get_value(iter, title_col)
+		content = store.get_value(iter, FeedTreeModel.COL_NAME)
+		title = store.get_value(iter, FeedTreeModel.COL_NAME)
 		self.content_view.load_html_string("""
 			<h1>%s</h1>
 			%s
@@ -123,7 +123,8 @@ class FeedTreeModel(gtk.GenericTreeModel):
 	def populate_view_columns(self, view):
 		view.append_column(gtk.TreeViewColumn('title', gtk.CellRendererText(), text=type(self).COL_NAME))
 		view.append_column(gtk.TreeViewColumn('items', gtk.CellRendererText(), text=type(self).COL_COUNT))
-
+		view.set_expander_column(view.get_column(0))
+		# view.expand_all()
 	
 	def _row_of_type(self, type, dict_):
 		return [type, dict_['id'], dict_['name'], dict_['count'], None]
@@ -131,34 +132,40 @@ class FeedTreeModel(gtk.GenericTreeModel):
 	def _children_for_tag(self, tag):
 		data = []
 		for feed in self.db.get_feeds_and_counts(tag_name=tag):
-			data.append(self._row_of_type(type(self).TYPE_FEED, feed))
+			data.append(self._row_of_type(self.TYPE_FEED, feed))
 		return data
 
 	def _children_for_feed(self, feed_id):
 		data = []
 		for entry in self.db.get_item_list_for_feed(feed_id=feed_id):
-			data.append(self._row_of_type(type(self).TYPE_ENTRY, feed))
+			data.append(self._row_of_type(self.TYPE_ENTRY, entry))
 		return data
 
-	def _children_for_row_at_depth(self, row, depth):
+	def _children_for_row_with_depth(self, row, depth):
 		logging.debug("loading children at depth=%s, row=%r" % (depth, row))
-		if depth == 1:
-			return self._children_for_tag(row[type(self).COL_NAME])
-		elif depth == 2:
-			return self._children_for_feed(row[type(self).COL_ID])
+		if depth == self.TYPE_FEED:
+			return self._children_for_tag(row[self.COL_NAME])
+		elif depth == self.TYPE_ENTRY:
+			return self._children_for_feed(row[self.COL_ID])
 		else:
 			raise RuntimeError("invalid depth requested: %s" % (depth,))
 	
-	def _lookup(self, path):
-		logging.debug("looking up path: %r" % (path,))
+	def _lookup(self, path, populate_leaf=False):
+		#logging.debug("looking up path: %r" % (path,))
+		if path is None: path = []
 		result = self.root
 		depth = 0
+		def fill(row, depth):
+			if row[-1] is None:
+				row[-1] = self._children_for_row_with_depth(row, depth)
+			
 		for index in path:
+			fill(result, depth)
 			depth += 1
-			if result[-1] is None:
-				# lazy loading not yet done!
-				result[-1] = self._children_for_row_at_depth(result, depth)
 			result = result[-1][index]
+
+		if populate_leaf:
+			fill(result, depth)
 		return result
 
 	def on_get_flags(self):
@@ -179,11 +186,19 @@ class FeedTreeModel(gtk.GenericTreeModel):
 	def on_get_value(self, rowref, column):
 		return self._lookup(rowref)[column]
 
+	def _copy_path(self, path):
+		if path is None:
+			return []
+		return list(path)[:]
+
 	def on_iter_next(self, rowref):
-		items = self._lookup(rowref[:-1])
-		if len(items) > rowref[-1]:
-			newref = list(rowref)[:]
-			newref[-1] += 1
+		items = self._lookup(rowref[:-1])[-1]
+		new_leaf_ref = rowref[-1] + 1
+		logging.debug("len(items) = %s, new_leaf_ref = %s" % (len(items), new_leaf_ref))
+		if len(items) > new_leaf_ref:
+			newref = self._copy_path(rowref)
+			newref[-1] = new_leaf_ref
+			logging.debug("iter next: returning %r" % (newref,))
 			return newref
 		return None
 
@@ -191,13 +206,15 @@ class FeedTreeModel(gtk.GenericTreeModel):
 		return self.on_iter_nth_child(parent_iter, 0)
 	
 	def on_iter_has_child(self, rowref):
-		return len(self._lookup(rowref)[-1]) > 0
+		logging.debug("has_children for rowref %r = %s" % (rowref, len(self._lookup(rowref, populate_leaf=True)[-1])))
+		return len(self._lookup(rowref, populate_leaf=True)[-1]) > 0
 
 	def on_iter_n_children(self, rowref):
-		return len(self._lookup(rowref)[-1])
+		logging.debug("n_children for rowref %r = %s" % (rowref, len(self._lookup(rowref)[-1])))
+		return len(self._lookup(rowref, populate_leaf=True)[-1])
 
 	def on_iter_nth_child(self, parent, n):
-		iter = list(parent)[:]
+		iter = self._copy_path(parent)
 		if self.on_iter_n_children(parent) > n:
 			iter.append(n)
 			return iter
@@ -205,14 +222,6 @@ class FeedTreeModel(gtk.GenericTreeModel):
 	def on_iter_parent(self, child):
 		return list(child)[:-1]
 
-
-class ItemTreeIter(gtk.TreeIter):
-	def __init__(self, *path_components):
-		self.parts = path_components
-
-	def copy(self):
-		return type(self)(*self.parts)
-	
 
 if __name__ == "__main__":
 	db = database.DB(gris_folder + 'items.sqlite')
