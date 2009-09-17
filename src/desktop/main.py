@@ -74,6 +74,8 @@ class Gris(object):
 			<h1>%s</h1>
 			%s
 			""" % (title, content), base)
+		widget.expand_row(self.feed_tree_store.get_path(iter), open_all=False)
+		widget.columns_autosize()
 
 	def init_content(self):
 		self.content_view = webkit.WebView()
@@ -85,7 +87,9 @@ class Gris(object):
 		self.feed_tree_view.set_model(self.feed_tree_store)
 	
 	def init_columns(self):
+		self.feed_tree_view.set_show_expanders(True)
 		self.feed_tree_store.populate_view_columns(self.feed_tree_view)
+		self.feed_tree_view.columns_autosize()
 
 
 class FeedTreeModel(gtk.GenericTreeModel):
@@ -93,10 +97,12 @@ class FeedTreeModel(gtk.GenericTreeModel):
 	TYPE_FEED = 1
 	TYPE_ENTRY = 2
 
-	COL_TYPE = 0
-	COL_ID = 1
-	COL_NAME = 2
-	COL_COUNT = 3
+	(
+		COL_TYPE,
+		COL_ID,
+		COL_NAME,
+		COL_COUNT,
+	) = range(4)
 
 	def __init__(self, db):
 		self.db = db
@@ -110,22 +116,21 @@ class FeedTreeModel(gtk.GenericTreeModel):
 		self.root = [None, None, None, None, tag_rows]
 		tags = self.db.get_tags_and_counts()
 
-		tag_rows.append(self._row_of_type(
-				type(self).TYPE_TAG,
-				{'id':None, 'name':'[All Items]', 'count':self.db.get_item_count()}))
-
 		for tag in tags:
 			tag_rows.append(self._row_of_type(
 				type(self).TYPE_TAG,
 				tag))
+
+		if len(tag_rows) > 1:
+			tag_rows.insert(0, self._row_of_type( None,
+					{'id':None, 'name':'[All Items]', 'count':self.db.get_item_count()}))
+
 		super(type(self), self).__init__()
 	
 	def populate_view_columns(self, view):
 		view.append_column(gtk.TreeViewColumn('title', gtk.CellRendererText(), text=type(self).COL_NAME))
 		view.append_column(gtk.TreeViewColumn('items', gtk.CellRendererText(), text=type(self).COL_COUNT))
-		view.set_expander_column(view.get_column(0))
-		# view.expand_all()
-	
+		
 	def _row_of_type(self, type, dict_):
 		return [type, dict_['id'], dict_['name'], dict_['count'], None]
 
@@ -133,6 +138,9 @@ class FeedTreeModel(gtk.GenericTreeModel):
 		data = []
 		for feed in self.db.get_feeds_and_counts(tag_name=tag):
 			data.append(self._row_of_type(self.TYPE_FEED, feed))
+		if len(data) > 1:
+			data.insert(0, self._row_of_type(None,
+				{'id':tag, 'name':'[All Items]', 'count': self.db.get_item_count(tag=tag)}))
 		return data
 
 	def _children_for_feed(self, feed_id):
@@ -140,9 +148,27 @@ class FeedTreeModel(gtk.GenericTreeModel):
 		for entry in self.db.get_item_list_for_feed(feed_id=feed_id):
 			data.append(self._row_of_type(self.TYPE_ENTRY, entry))
 		return data
+	
+	def _grandchildren_for_tag(self, tag):
+		data = []
+		for entry in self.db.get_item_list_for_tag(tag=tag):
+			data.append(self._row_of_type(self.TYPE_ENTRY, entry))
+		return data
 
 	def _children_for_row_with_depth(self, row, depth):
 		logging.debug("loading children at depth=%s, row=%r" % (depth, row))
+		if row[self.COL_TYPE] is None:
+			# it's an [All Items] element - get all feed items for the parent
+			if depth == 1:
+				print "global!"
+				# global all items
+				return self._children_for_feed(None)
+			else:
+				print "global for a tag!"
+				# all items for a given tag
+				return self._grandchildren_for_tag(row[self.COL_ID])
+
+
 		if depth == self.TYPE_FEED:
 			return self._children_for_tag(row[self.COL_NAME])
 		elif depth == self.TYPE_ENTRY:

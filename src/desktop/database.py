@@ -49,10 +49,20 @@ class DB(object):
 		return items[0]
 
 	def get_item_list_for_feed(self, feed_id):
-		sql = "select google_id, title from items where feed_id = ?"
-		cursor = self.sql(sql, (feed_id,))
+		sql = "select google_id, title from items"
+		data = None
+		if feed_id is not None:
+			sql += " where feed_id = ?"
+			data = (feed_id,)
+		cursor = self.sql(sql, data)
 		for id, title in cursor:
-			yield dict(id=id, title=title, count=1)
+			yield dict(id=id, name=title, count=1)
+	
+	def get_item_list_for_tag(self, tag):
+		sql = "select google_id, title from items join feeds on items.feed_id=feeds.feed_id where feeds.tag_name = ?"
+		cursor = self.sql(sql, (tag,))
+		for id, title in cursor:
+			yield dict(id=id, name=title, count=1)
 
 
 	def get_items(self, condition=None, args=None):
@@ -79,8 +89,15 @@ class DB(object):
 			for feed_id, name, count in self.sql(sql, data)]
 
 	def get_item_count(self, tag=None, feed_id=None):
+		def single_elem(cursor):
+			return iter(cursor).next()[0]
 		if tag is None and feed_id is None:
-			return self.sql("select count(*) from items where is_read=0")[0][0]
+			return single_elem(self.sql("select count(*) from items where is_read=0"))
+		elif tag is not None:
+			return single_elem(self.sql("select count(*) " +
+				"from items inner join feeds on items.feed_id=feeds.feed_id " +
+				"where is_read=0 and feeds.tag_name=?", (tag,)))
+
 	
 	def get_tags_and_counts(self):
 		sql = (
@@ -90,13 +107,6 @@ class DB(object):
 
 		for tag, count in self.sql(sql):
 			yield {'id':tag, 'name':tag, 'count':count}
-
-	def get_item_count(self, condition=None, args=None):
-		sql = "select count(*) from items"
-		if condition is not None:
-			sql += " where %s" % condition
-		cursor = self.sql(sql, args)
-		return cursor.next()[0]
 
 	def get_items_list(self, *args, **kwargs):
 		return [x for x in self.get_items(*args, **kwargs)]
