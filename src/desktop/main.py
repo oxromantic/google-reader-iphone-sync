@@ -10,6 +10,8 @@ import gtk.keysyms
 import gobject
 import webkit
 
+import cgi
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -63,19 +65,58 @@ class Gris(object):
 		self.window.add_accel_group(accel_grp)
 
 	def on_feed_tree_view_select_row(self, widget, data=None):
-		base = 'file://' + urllib.quote(gris_folder)
 		selected = []
 		content_col = 2
 		title_col = 0
 		store, iter = self.feed_tree_view.get_selection().get_selected()
 		content = store.get_value(iter, FeedTreeModel.COL_NAME)
-		title = store.get_value(iter, FeedTreeModel.COL_NAME)
-		self.content_view.load_html_string("""
-			<h1>%s</h1>
-			%s
-			""" % (title, content), base)
+		type = store.get_value(iter, FeedTreeModel.COL_TYPE)
+		if type == FeedTreeModel.TYPE_ENTRY:
+			id = store.get_value(iter, FeedTreeModel.COL_ID)
+			item = db.get(id)
+			self.display_item(item)
 		widget.expand_row(self.feed_tree_store.get_path(iter), open_all=False)
 		widget.columns_autosize()
+
+	def display_item(self, item):
+		print repr(item.keys())
+		base = 'file://' + urllib.quote(gris_folder)
+		position_info = "(n of p)"
+		date_str = "yesterday maybe"
+		domain = "google.com"
+		e = cgi.escape
+		contents = """
+			<html>
+				<head>
+					<meta name="viewport" content="width=580" />
+					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+					<link rel="stylesheet" href="template/style.css" type="text/css" />
+				</head>
+				<body>
+					<div class="post-info header">
+						<h1 id="title">
+							<a href="%s">%s</a>""" % (e(item['url']), e(item['title'])) + """
+						</h1>
+						<div class="via">
+							%s""" % (e(item['feed_name']),) + """
+							%s""" % (e(position_info),) + """
+						</div>
+					</div>
+					<div class="content"><p>
+						%s""" % (item['content'],) + """
+					</div>
+					<div class="post-info footer">
+						<div class="date">
+							<b>posted %s</b> in <b>%s</b>""" % (e(item['date']), e(item['tag_name'])) + """
+						</div>
+						<div>
+							(<i>%s</i>)""" % (domain,) + """
+						</div>
+					</div>
+				</body>
+			</html>
+		"""
+		self.content_view.load_html_string(contents, base)
 
 	def init_content(self):
 		self.content_view = webkit.WebView()

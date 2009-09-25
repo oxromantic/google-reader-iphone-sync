@@ -30,6 +30,7 @@ class DB(object):
 				('is_shared', 'BOOLEAN'),
 				('instapaper_url', 'TEXT'),
 				('is_pagefeed', 'BOOLEAN'),
+				('feed_id','TEXT'),
 			],
 			'indexes' : [ ('item_id_index', 'items(google_id)') ]
 		}
@@ -116,6 +117,8 @@ class DB(object):
 		item = {}
 		for i in range(len(row_as_tuple)):
 			val = row_as_tuple[i]
+			print repr(val)
+			print "( type = %s)" % (i,)
 			col_description = self.schema['columns'][i][1]
 			if 'BOOLEAN' in col_description:
 				# convert to a python boolean
