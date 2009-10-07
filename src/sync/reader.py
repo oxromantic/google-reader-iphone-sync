@@ -1,6 +1,5 @@
 from misc import *
 from output import *
-import app_globals
 from lib.GoogleReader import GoogleReader, CONST
 import os
 
@@ -9,21 +8,12 @@ class ReaderError(StandardError):
 
 class Reader:
 	def __init__(self, user=None, password=None):
-		if app_globals.OPTIONS['test']:
-			from lib.mock import Mock
-			warning("using a mock google reader object")
-			self.gr = Mock()
-		else:
-			self.gr = GoogleReader()
-			self.login(user, password)
+		self.gr = GoogleReader()
+		self.login(user, password)
 
 		self._tag_list = None
 
-	def login(self, user=None, password=None):
-		if user is None:
-			user = app_globals.OPTIONS['user']
-		if password is None:
-			password = app_globals.OPTIONS['password']
+	def login(self, user, password):
 		self.gr.identify(user, password)
 		try:
 			if not self.gr.login():
@@ -42,12 +32,10 @@ class Reader:
 	def _tag_from_id(self, id):
 		return id.split('/')[-1] if '/label/' in id else None
 		
-	def validate_tag_list(self, user_tags = None, strict=True):
+	def validate_tag_list(self, user_tags, strict=True):
 		"""
 		Raise an error if any tag (in config) does not exist in your google account
 		"""
-		if user_tags is None:
-			user_tags = app_globals.OPTIONS['tag_list']
 		valid_tags = []
 		for utag in user_tags:
 			if utag in self.tag_list:
@@ -57,18 +45,15 @@ class Reader:
 				raise ValueError("No such tag: %r" % (utag,))
 		return valid_tags
 
-	def save_tag_list(self):
-		write_file_lines(os.path.join(app_globals.OPTIONS['output_path'], 'tag_list'), self.tag_list)
+	def save_tag_list(self, output_path):
+		write_file_lines(os.path.join(output_path, 'tag_list'), self.tag_list)
 
-	def get_tag_feed(self, tag = None, count=None, oldest_first = True):
+	def get_tag_feed(self, tag = None, count=500, oldest_first = True):
 		if tag is not None:
 			tag = CONST.ATOM_PREFIXE_LABEL + tag
 		kwargs = {'exclude_target': CONST.ATOM_STATE_READ}
 		if oldest_first:
 			kwargs['order'] = CONST.ORDER_REVERSE
-
-		if count is None:
-			count = app_globals.OPTIONS['num_items']
 
 		return self.gr.get_feed(None, tag, count=count, **kwargs)
 		

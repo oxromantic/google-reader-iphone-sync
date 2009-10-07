@@ -1,20 +1,6 @@
-import app_globals
 from output import *
 
 import os, re, sys, shutil, pickle
-
-def danger(desc):
-	"""
-	if cautious mode is enabled, pauses execution of the script until the user types "yes" (or presses return).
-	Any other input will cause the program to terminate with error status 2
-	"""
-	if not app_globals.OPTIONS['cautious']: return
-	response = raw_input("%s. Continue? " % desc)
-	if not re.match('[yY]|(^$)', response):
-		print "Aborted."
-		sys.exit(2)
-		raise Exception("We should never get here!")
-	print "Continuing..."
 
 def try_remove(elem, lst):
 	"""
