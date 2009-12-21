@@ -1,3 +1,7 @@
+## Note:
+
+Google Reader iPhone Sync is currently not in active development. The author no longer uses a Mac, and no further development is planned. You should (obviously) feel free to fork the repository and make improvements :)
+
 # google-reader-iphone-sync
 
 GRis (Google Reader iPhone Sync) is an RSS feed reader for the iPhone. There are already a few available, but this one features:
