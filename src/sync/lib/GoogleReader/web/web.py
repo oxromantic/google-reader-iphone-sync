@@ -58,6 +58,7 @@ class webUrllib :
 
 class webUrllib2 :
 	def __init__( self, agent = DEFAULT_AGENT, http_proxy=None ) :
+		self.auth = None
 		self._agent = agent
 
 		openers = []
@@ -76,6 +77,9 @@ class webUrllib2 :
 
 		opener = urllib2.build_opener(*openers)
 		urllib2.install_opener(opener)
+	
+	def set_auth(self, auth):
+		self.auth = auth
 
 	def get ( self, url, postargs=None, file=None, encoding='utf-8', cookie=None ) :
 		result = ""
@@ -90,12 +94,15 @@ class webUrllib2 :
 		header = {'User-agent' : self._agent}
 		if cookie :
 			header['Cookie']=cookie
+		if self.auth:
+			header['Authorization']="GoogleLogin auth=%s" % (self.auth,)
 
 		#print self._cookiejar
 		#print url
 		request = urllib2.Request(url, postdata, header)
 
 		#print "[ %s ]" % self._cookiejar._cookies_for_request(request)
+		# print repr(header)
 		self._cookiejar.add_cookie_header(request)
 
 		f = urllib2.urlopen( request )

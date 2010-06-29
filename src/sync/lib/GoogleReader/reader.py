@@ -56,14 +56,13 @@ class GoogleReader(object) :
 		# print sidinfo
 
 		self._sid = None
-		SID_ID = 'SID='
+		SID_ID = 'Auth='
 		if SID_ID in sidinfo :
 			pos_beg = sidinfo.find(SID_ID)
 			pos_end = sidinfo.find('\n',pos_beg)
 			self._sid = sidinfo[pos_beg+len(SID_ID):pos_end]
 		if self._sid != None :
-			cookie = cookielib.Cookie(version=0, name='SID', value=self._sid, port=None, port_specified=False, domain='.google.com', domain_specified=True, domain_initial_dot=True, path='/', path_specified=True, secure=False, expires='1600000000', discard=False, comment=None, comment_url=None, rest={})
-			self._web.cookies().set_cookie(cookie)
+			self._web.set_auth(self._sid)
 
 			return True
 
